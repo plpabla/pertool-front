@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="./lib/bootstrap.min.js" defer></script>
+    <script src="./lib/konva.min.js" defer></script>
+    <script src="./app.js" defer></script>
+    <title>PERTool</title>
+</head>
+<body>
+    <div class="container-fluid" id="main">
+    <header class="navbar navbar-expand-lg navbar-light bg-light">
+            <nav class="container-fluid">
+                <a class="navbar-brand" href="#"><img src="media/logo1.png" alt="PERTool" id="img-logo"></a>
+                <button type="button" class="btn btn-secondary">Log in</button>
+            </nav>
+        </header>
+
+    <div class="container-fluid">
+        <main class="row">
+            <div id="canvas-parent"  class="col col-12 col-lg-10">
+                <div id="canvas"></div>
+            </div>
+
+            <div class="d-grid gap-2 col col-2" id="btn-menu">
+                <button type="button" class="btn btn-dark btn-block">Calculate</button>
+                <button type="button" class="btn btn-dark btn-block">Save</button>
+                <button type="button" class="btn btn-dark btn-block">Export</button>
+                <button type="button" class="btn btn-dark btn-block">Import</button>
+                <br>
+                <button type="button" class="btn btn-danger btn-block">Clear</button>
+            </div>
+        </main>
+    </div>
+
+        <footer>
+            <hr>
+            <em>&#169;&nbsp;Pawel Blaszczyk</em>
+        </footer>
+
+    </div>
+</body>
+</html>

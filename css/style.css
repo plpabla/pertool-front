@@ -1,0 +1,26 @@
+body {
+    background-color: #fef9e6;
+}
+
+#img-logo {
+    min-width: 140px;
+    max-width: 200px;
+}
+
+#main {
+    max-width: 2000px;
+}
+
+.navbar-light {
+    background-color: #fef9e6 !important;
+}
+
+#canvas {
+    min-width: 1000px;
+}
+
+.btn-block {
+    max-height: 40px;
+}
+
+

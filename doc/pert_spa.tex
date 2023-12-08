@@ -1,0 +1,36 @@
+\documentclass[]{article}
+\usepackage[a4paper, total={7in, 10in}]{geometry}
+\usepackage[OT4]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[normalem]{ulem} % strikethrough
+\usepackage{graphicx}
+\usepackage{float}          % force figure by [H] argument
+
+\newcommand{\SubItem}[1]{
+	{\setlength\itemindent{15pt} \item[-] #1}
+}
+
+
+
+% metadata
+\title{PERT diagram creator}
+\author{Pawel Blaszczyk}
+\date{Programowanie Aplikacji Webowych\\[0.5em]
+	Projekt Zaliczeniowy\\[1em]
+	2023/2024}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\input{abstract.tex}
+\end{abstract}
+
+\newpage
+
+\input{opis_projektu.tex}
+\input{wymagania.tex}
+
+
+\end{document}

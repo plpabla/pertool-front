@@ -1,6 +1,6 @@
 #LaTeX
-.log
-.aux
-.xcf
-.gz
+*.log
+*.aux
+*.xcf
+*.gz
 resources/
