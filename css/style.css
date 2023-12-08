@@ -3,8 +3,8 @@ body {
 }
 
 #img-logo {
-    min-width: 140px;
-    max-width: 200px;
+    min-width: 160px;
+    max-width: 240px;
 }
 
 #main {
@@ -19,8 +19,16 @@ body {
     min-width: 1000px;
 }
 
+#btn-menu-right {
+    align-content: flex-start;
+}
+
+#btn-clear {
+}
+
 .btn-block {
     max-height: 40px;
+    margin-bottom: 0px;
 }
 
 

@@ -69,7 +69,7 @@ layer.draw();
 
 
 function createBubbleImage(x,y,text) {
-    const r = 60;
+    const r = 30;
     const c = new Konva.Circle({
         x: 0,
         y: 0,
@@ -89,7 +89,7 @@ function createBubbleImage(x,y,text) {
 
     const txt = new Konva.Text({
         x: 0,
-        fontSize: 20,
+        fontSize: 16,
         y: -0.7*r,
         text: text
     })
@@ -111,8 +111,8 @@ function createBubbleImage(x,y,text) {
 }
 
 function connector(x1, y1, x2, y2) {
-    const r1 = 60;
-    const r2 = 60;
+    const r1 = 30;
+    const r2 = 30;
     // TODO - shift
     const px1 = x1;
     const px2 = x2;
@@ -141,7 +141,7 @@ function bubbleConnector(b1, b2, line) {
     if(line) {
         dash = [10, 5];
     }
-    const pos = calcPos(b1.attrs.x,b1.attrs.y,60,b2.attrs.x,b2.attrs.y,60);
+    const pos = calcPos(b1.attrs.x,b1.attrs.y,30,b2.attrs.x,b2.attrs.y,30);
     const a = new Konva.Arrow({
         points: [pos.x1, pos.y1, pos.x2, pos.y2],
         stroke: "black",
@@ -171,7 +171,7 @@ function bubbleConnector(b1, b2, line) {
     });
 
     function updatePos(a, b1, b2) {
-        const res = calcPos(b1.attrs.x,b1.attrs.y,60,b2.attrs.x,b2.attrs.y,60);
+        const res = calcPos(b1.attrs.x,b1.attrs.y,30,b2.attrs.x,b2.attrs.y,30);
         a.attrs.points[0] = res.x1;
         a.attrs.points[1] = res.y1;
         a.attrs.points[2] = res.x2;
