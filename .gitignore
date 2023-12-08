@@ -1,0 +1,6 @@
+#LaTeX
+.log
+.aux
+.xcf
+.gz
+resources/
