@@ -5,6 +5,13 @@
 \usepackage[normalem]{ulem} % strikethrough
 \usepackage{graphicx}
 \usepackage{float}          % force figure by [H] argument
+\usepackage{color}          %May be necessary if you want to color links
+\usepackage[hidelinks]{hyperref}       % Clickable ToC
+\hypersetup{
+	colorlinks=false, %set true if you want colored links
+	linktoc=all,     %set to all if you want both sections and subsections linked
+	linkcolor=blue,  %choose some color if you want links to stand out
+}
 
 \newcommand{\SubItem}[1]{
 	{\setlength\itemindent{15pt} \item[-] #1}
@@ -27,10 +34,14 @@
 \input{abstract.tex}
 \end{abstract}
 
+\tableofcontents
+
 \newpage
 
 \input{opis_projektu.tex}
 \input{wymagania.tex}
+\input{architektura.tex}
+\input{stos.tex}
 
 
 \end{document}

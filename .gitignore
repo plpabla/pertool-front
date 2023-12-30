@@ -1,6 +1,8 @@
 #LaTeX
 *.log
 *.aux
+*.out
+*.toc
 *.xcf
 *.gz
 resources/

@@ -136,7 +136,6 @@ function calcPos(x1, y1, r1, x2, y2, r2) {
 }
 
 function bubbleConnector(b1, b2, line) {
-    console.log(line)
     let dash = [];
     if(line) {
         dash = [10, 5];
@@ -145,6 +144,7 @@ function bubbleConnector(b1, b2, line) {
     const a = new Konva.Arrow({
         points: [pos.x1, pos.y1, pos.x2, pos.y2],
         stroke: "black",
+        strokeWidth: 2,
         fill: "black",
         dash: dash,
         pointerLength: 20,
