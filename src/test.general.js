@@ -1,6 +1,6 @@
-// TODO: change vart to const
-var assert = chai.assert;
-var expect = chai.expect;
+const chai = require('chai');
+const assert = chai.assert;
+const expect = chai.expect;
 
 describe('Framework testing - to be removed', function() {
     this.slow(10);       // highlight all tasks slower than this limit
@@ -34,8 +34,15 @@ describe('Framework testing - to be removed', function() {
     });
 });
 
+
+import Milestone from './Milestone.js';
 describe('Milestone object', function() {
     it('can be created', function() {
-        const milestone = new Milestone("custom name");
-    })
+        const m = new Milestone("custom name");
+    });
+
+    it('has correct initial name', function() {
+        const m = new Milestone("custom name");
+        expect(m.name).to.equal("custom name");
+    });
 });

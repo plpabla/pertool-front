@@ -6,3 +6,4 @@
 *.xcf
 *.gz
 resources/
+node_modules/

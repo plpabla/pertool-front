@@ -1,3 +1,5 @@
+import Konva from 'konva';
+
 let sceneWidth = 1000;
 let sceneHeight = 700;
 
