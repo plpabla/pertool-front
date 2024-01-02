@@ -37,12 +37,41 @@ describe('Framework testing - to be removed', function() {
 
 import Milestone from './Milestone.js';
 describe('Milestone object', function() {
-    it('can be created', function() {
-        const m = new Milestone("custom name");
+    before(function() {
+        this.m = new Milestone("custom name");
     });
 
     it('has correct initial name', function() {
-        const m = new Milestone("custom name");
-        expect(m.name).to.equal("custom name");
+        expect(this.m.name).to.equal("custom name");
+    });
+
+    it('has no links attached', function() {
+        expect(this.m.linksFrom).to.length(0);
+        expect(this.m.linksTo).to.length(0);
+    })
+});
+
+import Link from './Link.js';
+describe('Link object', function() {
+    before(function() {
+        this.m1 = new Milestone("from");
+        this.m2 = new Milestone("to");
+        this.l = new Link(this.m1, this.m2);
+    });
+
+    it('contains correct milestone 1', function() {
+        expect(this.l.m1.name).to.equal("from");
+    });
+
+    it('contains correct milestone 2', function() {
+        expect(this.l.m2.name).to.equal("to");
+    });
+
+    it('when created is added to the source milestone list linksTo', function() {
+        expect(this.m1.linksTo).contains(this.l);
+    });
+
+    it('when created is added to the target milestone list linksFrom', function() {
+        expect(this.m2.linksFrom).contains(this.l);
     });
 });
