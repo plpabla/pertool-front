@@ -4,6 +4,14 @@ class Milestone {
         this.linksFrom = [];
         this.linksTo = [];
     }
+
+    addLinkFrom(l) {
+        this.linksFrom.push(l);
+    }
+
+    addLinkTo(l) {
+        this.linksTo.push(l);
+    }
 }
 
-module.exports = Milestone;
+export default Milestone;

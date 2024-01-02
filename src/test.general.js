@@ -75,3 +75,18 @@ describe('Link object', function() {
         expect(this.m2.linksFrom).contains(this.l);
     });
 });
+
+import Model from './Model.js';
+describe('Model', function() {
+    before(function() {
+        this.model = new Model();
+    });
+
+    it('when created contains only one milestone', function() {
+        expect(this.model.milestones).lengthOf(1);
+    });
+
+    it('when created has root milestone', function() {
+        expect(this.model.getRoot()).instanceOf(Milestone);
+    });
+})
