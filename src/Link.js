@@ -1,9 +1,17 @@
 class Link {
     constructor(m1, m2) {
-        this.m1 = m1;
-        this.m2 = m2;
-        this.m1.addLinkTo(this);
-        this.m2.addLinkFrom(this);
+        this.sourceId = m1.getId();
+        this.destId = m2.getId();
+        m1.addLinkTo(this);
+        m2.addLinkFrom(this);
+    }
+
+    getSourceMilestoneId() {
+        return this.sourceId;
+    }
+
+    getDestinationMilestoneId() {
+        return this.destId;
     }
 }
 
