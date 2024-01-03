@@ -14,10 +14,11 @@ class Model {
 
     addMilestone(name) {
         this.milestones.push(new Milestone(name));
+        return this.milestones.length - 1;
     }
 
     getMilestoneByName(name) {
-        return this.milestones.find(m => m.getName() === name);
+        return this.milestones.findIndex(m => m.getName() === name);
     }
 
     getMilestoneById(id) {
@@ -25,18 +26,30 @@ class Model {
     }
 
     addLink(id1, id2) {
-        let m1, m2 = undefined;
+        let m1id, m2id = undefined;
         if ((typeof id1)==='number') {
-            m1 = this.getMilestoneById(id1);
-            m2 = this.getMilestoneById(id2);
+            const maxId = this.milestones.length;
+            if(id1<0 || id1>=maxId || id2<0 || id2>=maxId || id1==id2) {
+                return;
+            }
+            m1id = id1;
+            m2id = id2;
         } else {
-            m1 = this.getMilestoneByName(id1);
-            m2 = this.getMilestoneByName(id2);
+            m1id = this.getMilestoneByName(id1);
+            m2id = this.getMilestoneByName(id2);
+            if(m1id<0 || m2id<0) {
+                return;
+            }
         }
 
-        if(m1 && m2) {
-            this.links.push(new Link(m1, m2));
+        if((m1id != undefined) && (m2id != undefined)) {
+            this.links.push(new Link(m1id, m2id));
+            const linkId = this.links.length - 1;
+            this.milestones[m1id].addLinkWhereIAmSource(linkId);
+            this.milestones[m2id].addLinkWhereIAmDestination(linkId);
         }
+
+        return this.links.length - 1;
     }
 }
 

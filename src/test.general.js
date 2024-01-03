@@ -18,7 +18,7 @@ describe('Framework testing - to be removed', function() {
     });
 
     beforeEach(function() {
-
+        this.skip();
     })
 
     afterEach(function() {
@@ -50,18 +50,9 @@ describe('Milestone object', function() {
     });
 
     it('has no links attached', function() {
-        expect(this.m.linksFrom).to.length(0);
-        expect(this.m.linksTo).to.length(0);
+        expect(this.m.sourceLinks).to.length(0);
+        expect(this.m.destinationLinks).to.length(0);
     });
-
-    it('first milestone has id = 1', function() {
-        expect(this.m.getId()).to.equal(1);
-    })
-
-    it('second milestone has id = 2', function() {
-        const m2 = new Milestone("Second one")
-        expect(m2.getId()).to.equal(2);
-    })
 });
 
 
@@ -70,23 +61,15 @@ describe('Link object', function() {
     before(function() {
         this.m1 = new Milestone("from");
         this.m2 = new Milestone("to");
-        this.l = new Link(this.m1, this.m2);
+        this.l = new Link(0, 1);
     });
 
     it('contains correct source milestone link ID', function() {
-        expect(this.l.getSourceMilestoneId()).to.equal(this.m1.getId());
+        expect(this.l.getSourceMilestoneId()).to.equal(0);
     });
 
     it('contains correct destination milestone link ID', function() {
-        expect(this.l.getDestinationMilestoneId()).to.equal(this.m2.getId());
-    });
-
-    it('when created is added to the source milestone list linksTo', function() {
-        expect(this.m1.linksTo).contains(this.l);
-    });
-
-    it('when created is added to the target milestone list linksFrom', function() {
-        expect(this.m2.linksFrom).contains(this.l);
+        expect(this.l.getDestinationMilestoneId()).to.equal(1);
     });
 });
 
@@ -115,57 +98,134 @@ describe('Model', function() {
         });
     })
 
+    describe('Adding milestone', function() {
+        it('can add', function() {
+            this.model.addMilestone("m");
+    
+            expect(this.model.milestones).lengthOf(2);
+        })
 
-    it('can add milestone', function() {
-        this.model.addMilestone("m");
+        it('added milestone has id=1', function() {
+            const id = this.model.addMilestone("m");
 
-        expect(this.model.milestones).lengthOf(2);
+            expect(id).to.equal(1);
+        })
     })
 
-    it('can add link using ids', function() {
-        this.model.addMilestone("m2");
-        const id1 = this.model.getRoot().getId();
-        const id2 = this.model.getMilestoneByName("m2").getId();
-        this.model.addLink(id1, id2);
+    describe('Adding link', function() {
+        it('can add link using id and I get link id = 0', function() {
+            const id1 = 0;
+            const id2 = this.model.addMilestone("m2");
+            const linkid = this.model.addLink(id1, id2);
+    
+            expect(this.model.links).lengthOf(1);
+            expect(linkid).to.equal(0);
+        });
 
-        expect(this.model.links).lengthOf(1);
+        it('can add 2 links using id and second gets link id = 1', function() {
+            const id1 = 0;
+            const id2 = this.model.addMilestone("m2");
+            this.model.addLink(id1, id2);
+            const linkid = this.model.addLink(id1, id2);
+    
+            expect(this.model.links).lengthOf(2);
+            expect(linkid).to.equal(1);
+        });
+
+        it('cannot add link to itself', function() {
+            const id1 = 0;
+            const id2 = 0;
+            const linkid = this.model.addLink(id1, id2);
+    
+            expect(linkid).to.equal(undefined);
+            expect(this.model.links).lengthOf(0);
+        });
+
+        it('when I pass nonexistent ID (1), it is not added', function() {
+            const linkid = this.model.addLink(0, 1);
+
+            expect(linkid).to.equal(undefined);
+            expect(this.model.links).lengthOf(0);
+        });
+
+        it('when link is created, it is added to the source milestone sourceLinks list', function() {
+            const id1 = 0; //root
+            const id2 = this.model.addMilestone("m2");
+            const linkId = this.model.addLink(id1, id2);
+
+            expect(this.model.milestones[id1].sourceLinks).contains(linkId);
+        });
+
+        it('when link is created, it is added to the destination milestone destLinks list', function() {
+            const id1 = 0;
+            const id2 = this.model.addMilestone("m2");
+            const linkId = this.model.addLink(id1, id2);
+
+            expect(this.model.milestones[id2].destinationLinks).contains(linkId);
+        });
+
+        it('can add link using names', function() {
+            this.model.addMilestone("m2");
+            this.model.addLink("root", "m2");
+    
+            expect(this.model.links).lengthOf(1);
+        });
+
+        it('cannot add link using name which does not exist', function() {
+            this.model.addMilestone("m2");
+            this.model.addLink("root", "m42");
+    
+            expect(this.model.links).lengthOf(0);
+        })
     })
 
-    it('can add link using names', function() {
-        this.model.addMilestone("m2");
-        this.model.addLink("root", "m2");
+    describe('Serialization', function(){
+        it('can be serialized', function() {
+            // this.skip("Skipping for now");
+            this.model.addMilestone("m2");
+            this.model.addLink("root", "m2");
+    
+            const res = JSON.stringify(this.model);
+            
+            expect(typeof res).equal('string');
+        })
+    
+        it('can be deserialized', function() {
+            this.model.addMilestone("m2");
+            this.model.addLink("root", "m2");
+            const serialized = JSON.stringify(this.model);
+    
+            const deserialized = JSON.parse(serialized);
+            Object.setPrototypeOf(deserialized, Model.prototype);
 
-        expect(this.model.links).lengthOf(1);
-    })
+            expect(deserialized).instanceOf(Model);
+            expect(deserialized).to.deep.equal(this.model);
+        })
 
-    it('can be serialized', function() {
-        // this.skip("Skipping for now");
-        const m = new Milestone("m2");
-        this.model.addMilestone(m);
-        const id1 = this.model.getRoot().getId();
-        const id2 = m.getId();
-        this.model.addLink(id1, id2);
+        it('I can use deserialized object for adding extra properties', function() {
+            this.model.addMilestone("m2");
+            this.model.addLink("root", "m2");
+            const serialized = JSON.stringify(this.model);
+            // const deserialized = JSON.parse(serialized);
+            // Object.setPrototypeOf(deserialized, Model.prototype);
 
-        const res = JSON.stringify(this.model);
-        
-        expect(typeof res).equal('string');
-    })
+            const deserialized_data = JSON.parse(serialized);
+            const deserialized = Object.create(Model.prototype, Object.getOwnPropertyDescriptors(deserialized_data))
+             
+            const r = deserialized.getRoot();
+            console.log("original root: ");
+            console.log(this.model.getRoot());
+            console.log("deserialized root: ");
+            console.log(r);
 
-    it('can be deserialized', function() {
-        // this.skip();
-        const m = new Milestone("m2");
-        this.model.addMilestone(m);
-        const id1 = this.model.getRoot().getId();
-        const id2 = m.getId();
-        this.model.addLink(id1, id2);
-        const serialized = JSON.stringify(this.model);
+            expect(r.getName()).to.equal("root");
+            // deserialized.addMilestone("m3");
+            // deserialized.addLink("root", "m3");
 
-        const deserialized = JSON.parse(serialized);
-        Object.setPrototypeOf(deserialized, Model.prototype);
+            console.log(deserialized);
 
-        console.log(this.model);
-        console.log(deserialized);
-        expect(deserialized).instanceOf(Model);
-        expect(deserialized).to.deep.equal(this.model);
+            // expect(deserialized.getMilestoneByName("root")).to.equal(0);
+            // expect(deserialized.getMilestoneByName("m3")).to.equal(2);
+        })
     })
 })

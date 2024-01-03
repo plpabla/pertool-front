@@ -1,23 +1,16 @@
 class Milestone {
-    static ID_COUNTER = 1;
-
     constructor(name) {
         this.name = name;
-        this.linksFrom = [];
-        this.linksTo = [];
-        this.id = Milestone.ID_COUNTER++;
+        this.sourceLinks = [];
+        this.destinationLinks = [];
     }
 
-    addLinkFrom(l) {
-        this.linksFrom.push(l);
+    addLinkWhereIAmDestination(l) {
+        this.destinationLinks.push(l);
     }
 
-    addLinkTo(l) {
-        this.linksTo.push(l);
-    }
-
-    getId() {
-        return this.id;
+    addLinkWhereIAmSource(l) {
+        this.sourceLinks.push(l);
     }
 
     getName() {
