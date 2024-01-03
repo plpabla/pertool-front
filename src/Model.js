@@ -8,6 +8,25 @@ class Model {
         this.links = [];
     }
 
+    static serialize(obj) {
+        return JSON.stringify(obj);
+    }
+
+    static deserialize(str) {
+        const desrialized_data = JSON.parse(str);
+        const deserialized = Object.create(Model.prototype, Object.getOwnPropertyDescriptors(desrialized_data));
+
+        Object.setPrototypeOf(deserialized.root, Milestone.prototype);
+        deserialized.milestones.forEach(element => {
+            Object.setPrototypeOf(element, Milestone.prototype);
+        });
+        deserialized.links.forEach(element => {
+            Object.setPrototypeOf(element, Link.prototype);
+        });
+
+        return deserialized;
+    }
+
     getRoot() {
         return this.root;
     }
