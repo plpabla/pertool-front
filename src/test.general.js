@@ -28,5 +28,4 @@ describe('Model', function() {
     describe('adding milestone', modelAddMilestoneTest.bind(this));
     describe('adding link', modelAddLinkTest.bind(this));
     describe('serialization', modelSerializeTest.bind(this));
-
 })

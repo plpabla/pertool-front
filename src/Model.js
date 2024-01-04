@@ -3,8 +3,7 @@ import Link from './Link.js';
 
 class Model {
     constructor() {
-        this.root = new Milestone("root");
-        this.milestones = [this.root];
+        this.milestones = [new Milestone("root")];
         this.links = [];
     }
 
@@ -16,7 +15,6 @@ class Model {
         const desrialized_data = JSON.parse(str);
         const deserialized = Object.create(Model.prototype, Object.getOwnPropertyDescriptors(desrialized_data));
 
-        Object.setPrototypeOf(deserialized.root, Milestone.prototype);
         deserialized.milestones.forEach(element => {
             Object.setPrototypeOf(element, Milestone.prototype);
         });
@@ -28,7 +26,7 @@ class Model {
     }
 
     getRoot() {
-        return this.root;
+        return this.milestones[0];
     }
 
     addMilestone(name) {
