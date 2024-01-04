@@ -5,6 +5,7 @@ import modelCreateTest from './tests/model.create.test.js'
 import modelAddMilestoneTest from './tests/model.addMilestone.test.js'
 import modelAddLinkTest from './tests/model.addLink.test.js'
 import modelSerializeTest from './tests/model.serialize.test.js'
+import toolboxCreateTest from './tests/toolbox.create.test.js'
 
 describe('Framework', function(){
     this.slow(10);       // highlight all tasks slower than this limit
@@ -28,4 +29,9 @@ describe('Model', function() {
     describe('adding milestone', modelAddMilestoneTest.bind(this));
     describe('adding link', modelAddLinkTest.bind(this));
     describe('serialization', modelSerializeTest.bind(this));
+});
+
+
+describe('Toolbox', function() {
+    describe('creation', toolboxCreateTest.bind(this));
 })
