@@ -16,4 +16,15 @@ export default function suite() {
         expect(this.m.sourceLinks).to.length(0);
         expect(this.m.destinationLinks).to.length(0);
     });
+
+    it('inherits x,y coordinates from parent class', function() {
+        expect(this.m).to.have.property('x');
+        expect(this.m).to.have.property('y');
+    });
+
+    it('can be drawn', function() {
+        expect(() => {
+            this.m.draw();
+        }).to.not.throw();
+    });
 };

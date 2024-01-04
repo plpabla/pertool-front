@@ -1,5 +1,8 @@
-class Milestone {
+import GraphicalElement from "./GraphicalElement";
+
+class Milestone extends GraphicalElement {
     constructor(name) {
+        super();
         this.name = name;
         this.sourceLinks = [];
         this.destinationLinks = [];
@@ -15,6 +18,10 @@ class Milestone {
 
     getName() {
         return this.name;
+    }
+
+    draw() {
+        // TODO
     }
 }
 

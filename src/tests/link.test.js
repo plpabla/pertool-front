@@ -18,4 +18,15 @@ export default function suite() {
     it('contains correct destination milestone link ID', function() {
         expect(this.l.getDestinationMilestoneId()).to.equal(1);
     });
+
+    it('inherits x,y coordinates from parent class', function() {
+        expect(this.l).to.have.property('x');
+        expect(this.l).to.have.property('y');
+    });
+
+    it('can be drawn', function() {
+        expect(() => {
+            this.l.draw();
+        }).to.not.throw();
+    });
 };

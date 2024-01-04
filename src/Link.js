@@ -1,5 +1,8 @@
-class Link {
+import GraphicalElement from "./GraphicalElement";
+
+class Link extends GraphicalElement {
     constructor(sourceId, destId) {
+        super();
         this.sourceId = sourceId;
         this.destId = destId;
     }
@@ -10,6 +13,10 @@ class Link {
 
     getDestinationMilestoneId() {
         return this.destId;
+    }
+
+    draw() {
+        // TODO
     }
 }
 
