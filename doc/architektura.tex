@@ -27,7 +27,15 @@ Obiekt \textbf{Model} składa się z listy kamieni milowych (obiekty \textbf{Mil
 
 Każdy milestone może być połączony z dowolną ilością innych kamieni milowych, dlatego zawiera on listę obiektów klay \textbf{Link}. Połączenia są skierowane od danego obiektu do innego.
 
-Linki muszą być umieszczone zarówno w źródłowym, jak i docelowym milestone'ie, ponieważ przy przemieszczaniu dowolnego z nich, należy każdy link aktualizować
+Linki muszą być umieszczone zarówno w źródłowym, jak i docelowym milestone'ie, ponieważ przy przemieszczaniu dowolnego z nich, należy każdy link aktualizować.
+
+W trakcie prac prototypowania rozwiązania stwierdzono, że taka struktura danych nie zapewnia możliwości serializacji (cykliczne odwołania pomiędzy obiektami Milestone, a Link). Zdecydowano się na zmianę struktury danych.
+
+W obiekcie Model zawarto dwie tablice: milestones oraz links zawierające odpowiednio obiekty Milestone i Link. Indeks w tablicy odpowiada za identyfiację danego obiektu. 
+
+Powiązania pomiędzy obiektami zrealizowano przy użyciu tych właśnie indeksów: ich wartości liczbowych zamiast obiektów.
+
+---------------   TODO   ------------------   dodanie nowego diagramu klas   ------------------
 
 \subsection{Maszyna stanu}
 \textbf{Toolbox} zawiera stan związany z wybranym narzędziem. Najbardziej skomplikowana (jak do tej pory) operacja to połączenie dwóch milestone'ów - musimy rozróżnić, czy wybrany został już pierwszy z nich, czy już wybrano docelowy. Również musimy sprawdzać, czy źródłowy i docelowy milestone to dwa różne obiekty.
