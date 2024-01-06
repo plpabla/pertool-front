@@ -63,6 +63,17 @@ export default function suite() {
         expect(deserialized.links[0].getSourceMilestoneId()).to.equal(this.model.links[0].getSourceMilestoneId());
     })
 
+    it('I can access milestone postiotion from deserialized object', function() {
+        this.model.addMilestone("m2");
+        this.model.milestones[1].setPos([10, 42]);
+        this.model.addLink("root", "m2");
+        const serialized = Model.serialize(this.model);
+
+        const deserialized = Model.deserialize(serialized);
+
+        expect(deserialized.milestones[1].getPos()).to.eql([10, 42]);
+    })
+
     it('I can access work with deserialized object by adding links and milestones to it', function() {
         this.model.addMilestone("m2");
         this.model.addLink("root", "m2");

@@ -22,9 +22,7 @@ export default function suite() {
         expect(this.m).to.have.property('y');
     });
 
-    it('can be drawn', function() {
-        expect(() => {
-            this.m.draw();
-        }).to.not.throw();
+    it('initial postion is (0,0)', function() {
+        expect(this.m.getPos()).to.eql([0, 0]);       // deep equality
     });
 };
