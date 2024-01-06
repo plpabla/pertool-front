@@ -7,11 +7,12 @@ class Toolbox extends GraphicalElement {
         super();
         this.layer = layer;
         this.milestoneTemplate = new Milestone("");
+        this.milestoneTemplate.setPos([0,0])
     }
 
-    draw() {
+    getImg() {
         console.log('TODO: drawing toolbox');
-        this.milestoneTemplate.draw();
+        this.milestoneTemplate.getImg();
     }
 }
 

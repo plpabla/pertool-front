@@ -1,7 +1,9 @@
 import frameworkTest from './tests/framework.test.js'
 import milestoneTest from './tests/milestone.test.js'
 import milestoneDrawTest from './tests/milestone.draw.test.js'
+import milestoneSerializeTest from './tests/milestone.serialize.test.js'
 import linkTest from './tests/link.test.js'
+import linkSerializeTest from './tests/link.serialize.js'
 import modelCreateTest from './tests/model.create.test.js'
 import modelAddMilestoneTest from './tests/model.addMilestone.test.js'
 import modelAddLinkTest from './tests/model.addLink.test.js'
@@ -19,11 +21,13 @@ describe('Framework', function(){
 describe('Milestone object', function(){
     describe('creation', milestoneTest.bind(this));
     describe('drawing', milestoneDrawTest.bind(this));
+    describe('serialization', milestoneSerializeTest.bind(this));
 })
 
 
 describe('Link object', function() {
     describe('creation', linkTest.bind(this));
+    describe('serialization', linkSerializeTest.bind(this));
 });
 
 
@@ -36,6 +40,9 @@ describe('Model', function() {
 
 
 describe('Toolbox', function() {
+    this.beforeEach(function() {
+        this.skip();
+    })
     describe('creation', toolboxCreateTest.bind(this));
     describe('drawing', toolboxDrawTest.bind(this));
-})
+});

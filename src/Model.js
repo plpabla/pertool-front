@@ -3,7 +3,7 @@ import Link from './Link.js';
 
 class Model {
     constructor() {
-        this.milestones = [new Milestone("root")];
+        this.milestones = [new Milestone(0, 0, "root")];
         this.links = [];
     }
 
@@ -12,8 +12,8 @@ class Model {
     }
 
     static deserialize(str) {
-        const desrialized_data = JSON.parse(str);
-        const deserialized = Object.create(Model.prototype, Object.getOwnPropertyDescriptors(desrialized_data));
+        const deserialized_data = JSON.parse(str);
+        const deserialized = Object.create(Model.prototype, Object.getOwnPropertyDescriptors(deserialized_data));
 
         deserialized.milestones.forEach(element => {
             Object.setPrototypeOf(element, Milestone.prototype);
@@ -29,13 +29,17 @@ class Model {
         return this.milestones[0];
     }
 
-    addMilestone(name) {
-        this.milestones.push(new Milestone(name));
+    addMilestone(x, y, name) {
+        this.milestones.push(new Milestone(x, y, name));
         return this.milestones.length - 1;
+    }
+    
+    findMilestoneIDByName(name) {
+        return this.milestones.findIndex(m => m.getName() === name);
     }
 
     getMilestoneByName(name) {
-        return this.milestones.findIndex(m => m.getName() === name);
+        return this.milestones[this.findMilestoneIDByName(name)];
     }
 
     getMilestoneById(id) {
@@ -52,8 +56,8 @@ class Model {
             m1id = id1;
             m2id = id2;
         } else {
-            m1id = this.getMilestoneByName(id1);
-            m2id = this.getMilestoneByName(id2);
+            m1id = this.findMilestoneIDByName(id1);
+            m2id = this.findMilestoneIDByName(id2);
             if(m1id<0 || m2id<0) {
                 return;
             }

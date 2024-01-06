@@ -5,7 +5,7 @@ import Milestone from '../Milestone.js';
 
 export default function suite() {
     before(function() {
-        this.m = new Milestone("custom name");
+        this.m = new Milestone(0, 0, "custom name");
     });
 
     it('has correct initial name', function() {
@@ -17,12 +17,11 @@ export default function suite() {
         expect(this.m.destinationLinks).to.length(0);
     });
 
-    it('inherits x,y coordinates from parent class', function() {
-        expect(this.m).to.have.property('x');
-        expect(this.m).to.have.property('y');
+    it('inherits img coordinates from parent class', function() {
+        expect(this.m).to.have.property('img');
     });
 
-    it('initial postion is (0,0)', function() {
-        expect(this.m.getPos()).to.eql([0, 0]);       // deep equality
+    it('has image', function() {
+        expect(this.m.img).to.be.not.null;
     });
 };

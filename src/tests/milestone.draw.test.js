@@ -2,21 +2,25 @@ const chai = require('chai');
 const assert = chai.assert;
 const expect = chai.expect;
 import Milestone from '../Milestone.js';
+const Konva = require('konva');
 
 export default function suite() {
     before(function() {
-        this.m = new Milestone("custom name");
+        this.m = new Milestone(0, 0, "custom name");
     });
 
-    it('can be drawn', function() {
+    it('can get image object', function() {
+        let img;
+
         expect(() => {
-            this.m.draw();
+            img = this.m.getImg();
         }).to.not.throw();
+        expect(img).instanceOf(Konva.Group);
     });
 
-    it('can be moved to different position', function() {
-        this.m.setPos([10, 10]);
+    it('is drawn at given postion', function() {
+        const m = new Milestone(42, 100, "test");
 
-        expect(this.m.getPos()).to.eql([10, 10]);
+        expect(m.getPos()).eqls([42, 100]);
     })
 };

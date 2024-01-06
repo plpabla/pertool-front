@@ -1,20 +1,22 @@
 class GraphicalElement {
     constructor() {
-        this.x = 0;
-        this.y = 0;
+        this.img = null;
     }
 
-    draw() {
+    getImg() {
+        return this.img;
+    }
+
+    createImg(args) {
         throw new Error('Not implemented');
     }
 
-    getPos() {
-        return [this.x, this.y];
+    static serialize(obj) {
+        throw new Error('Not implemented');
     }
 
-    setPos(pos) {
-        this.x = pos[0];
-        this.y = pos[1];
+    static deserialize(str) {
+        throw new Error('Not implemented');
     }
 }
 
