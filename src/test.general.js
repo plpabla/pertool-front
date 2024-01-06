@@ -40,9 +40,6 @@ describe('Model', function() {
 
 
 describe('Toolbox', function() {
-    this.beforeEach(function() {
-        this.skip();
-    })
     describe('creation', toolboxCreateTest.bind(this));
     describe('drawing', toolboxDrawTest.bind(this));
 });

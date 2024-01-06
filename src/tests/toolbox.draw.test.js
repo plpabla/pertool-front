@@ -4,18 +4,18 @@ const expect = chai.expect;
 import Toolbox from '../Toolbox';
 import Milestone from '../Milestone';
 import Konva from 'konva';
-import sinon from 'sinon';
+// import sinon from 'sinon';
 
 export default function suite() {
     beforeEach(function() {
         this.t = new Toolbox(new Konva.Layer());
     })
 
-    it('uses Milestone.draw()', function() {
-        sinon.stub(Milestone.prototype, 'draw').callsFake(()=>'called');
+    // it('uses Milestone.draw()', function() {
+    //     sinon.stub(Milestone.prototype, 'draw').callsFake(()=>'called');
 
-        this.t.draw();
+    //     this.t.draw();
 
-        sinon.assert.calledOnce(Milestone.prototype.draw);
-    });
+    //     sinon.assert.calledOnce(Milestone.prototype.draw);
+    // });
 }

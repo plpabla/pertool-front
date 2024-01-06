@@ -7,7 +7,7 @@ class Milestone extends GraphicalElement {
         this.name = name;
         this.sourceLinks = [];
         this.destinationLinks = [];
-        this.img = Milestone.createImg(x,y);
+        this.img = Milestone.createImg(x,y,name);
     }
 
     addLinkWhereIAmDestination(l) {
@@ -27,7 +27,7 @@ class Milestone extends GraphicalElement {
         return [pos.x, pos.y];
     }
 
-    static createImg(x, y) {
+    static createImg(x, y, name) {
         const r = 30;
         const c = new Konva.Circle({
             x: 0,
@@ -50,7 +50,7 @@ class Milestone extends GraphicalElement {
             x: 0,
             fontSize: 16,
             y: -0.7*r,
-            text: this.name
+            text: name
         })
         // Center
         txt.offsetX(txt.width() / 2);
@@ -90,7 +90,7 @@ class Milestone extends GraphicalElement {
         // recreate image
         const pos = deserialized.pos;
         delete deserialized.pos;
-        deserialized.img = Milestone.createImg(pos[0],pos[1]);
+        deserialized.img = Milestone.createImg(pos[0],pos[1],deserialized.name);
         return deserialized;
     }
 }
