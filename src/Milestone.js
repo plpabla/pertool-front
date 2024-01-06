@@ -74,7 +74,11 @@ class Milestone extends GraphicalElement {
         const img = obj.img;
         delete obj.img;
         const str = JSON.stringify(obj);
+
+        // restore object state
+        delete obj.pos;
         obj.img = img;
+        
         return str;
     }
 

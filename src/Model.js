@@ -8,20 +8,41 @@ class Model {
     }
 
     static serialize(obj) {
-        return JSON.stringify(obj);
+        // console.log('serialiation');
+        // console.log(obj);
+        const milestones = obj.milestones;
+        const links = obj.links;
+
+        obj.milestones = [];
+        obj.links = [];
+        milestones.forEach(m=>obj.milestones.push(Milestone.serialize(m)));
+        links.forEach(l=>obj.links.push(Link.serialize(l)));
+
+        const str = JSON.stringify(obj);
+        // console.log('Serialized: ' + str);
+
+        // restore original elements
+        obj.milestones = milestones;
+        obj.links = links;
+        return str;
     }
 
     static deserialize(str) {
+        // console.log('String to deserialize: ' + str)
         const deserialized_data = JSON.parse(str);
         const deserialized = Object.create(Model.prototype, Object.getOwnPropertyDescriptors(deserialized_data));
 
+        const milestones = [];
+        const links = [];
         deserialized.milestones.forEach(element => {
-            Object.setPrototypeOf(element, Milestone.prototype);
+            milestones.push(Milestone.deserialize(element));
         });
         deserialized.links.forEach(element => {
-            Object.setPrototypeOf(element, Link.prototype);
+            links.push(Link.deserialize(element));
         });
 
+        deserialized.milestones = milestones;
+        deserialized.links = links;
         return deserialized;
     }
 
@@ -51,6 +72,7 @@ class Model {
         if ((typeof id1)==='number') {
             const maxId = this.milestones.length;
             if(id1<0 || id1>=maxId || id2<0 || id2>=maxId || id1==id2) {
+                // console.log(`Warning: adding link ${id1}->${id2} failed (maxId=${maxId})`);
                 return;
             }
             m1id = id1;
@@ -59,6 +81,7 @@ class Model {
             m1id = this.findMilestoneIDByName(id1);
             m2id = this.findMilestoneIDByName(id2);
             if(m1id<0 || m2id<0) {
+                // console.log(`Warning: adding link ${id1}->${id2} failed found ids(${m1id}, ${m2id})`);
                 return;
             }
         }
