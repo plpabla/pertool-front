@@ -1,3 +1,7 @@
+/* Base:    #fef9e6
+   Triade:  #E6FEF9       darker:  #0af0c0
+            #F9E6FE       darker:  #D243F7 */
+
 body {
     background-color: #fef9e6;
 }
@@ -30,4 +34,8 @@ body {
 
 .testing-only {
     /* display: none; */
+}
+
+button {
+    box-shadow: 4px 5px 16px #000000;
 }

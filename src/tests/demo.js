@@ -15,13 +15,16 @@ const layer = new Konva.Layer();
 stage.add(layer);
 
 layer.add(new Konva.Rect({
-    x:2,
-    y:2,
-    width: stage.width()-4,
-    height: stage.height()-4,
+    x:0,
+    y:0,
+    width: stage.width(),
+    height: stage.height(),
     stroke: "black",
     strokeWidth: 2
 }));
 
 let toolbox = new Toolbox(layer);
-toolbox.draw();
+toolbox.bind("cursor", () => {console.log("cursor clicked")});
+toolbox.bind("milestone", () => {console.log("milestone clicked")});
+toolbox.bind("link", () => {console.log("link clicked")});
+toolbox.bind("fake-link", () => {console.log("fake-link clicked")});

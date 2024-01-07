@@ -43,3 +43,7 @@ describe('Toolbox', function() {
     describe('creation', toolboxCreateTest.bind(this));
     describe('drawing', toolboxDrawTest.bind(this));
 });
+
+describe('Canva', function() {
+    
+})
