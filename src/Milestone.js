@@ -28,22 +28,26 @@ class Milestone extends GraphicalElement {
     }
 
     static createImg(x, y, name) {
-        const r = 30;
+        const param = { "mainColor":"black", 
+                        "secondaryColor": "red",
+                        "radius": 30};
+
+        const r = param.radius;
         const c = new Konva.Circle({
             x: 0,
             y: 0,
             fill: "white",
-            stroke: "black",
-            radius: r
+            stroke: param.mainColor,
+            radius: r,
         })
     
         const l1 = new Konva.Line({
             points: [-Math.sin(Math.PI/4)*r, -Math.cos(Math.PI/4)*r, Math.sin(Math.PI/4)*r, Math.cos(Math.PI/4)*r],
-            stroke: "red"
+            stroke: param.secondaryColor
         })
         const l2 = new Konva.Line({
             points: [Math.sin(Math.PI/4)*r, -Math.cos(Math.PI/4)*r, -Math.sin(Math.PI/4)*r, Math.cos(Math.PI/4)*r],
-            stroke: "red"
+            stroke: param.secondaryColor
         })
     
         const txt = new Konva.Text({

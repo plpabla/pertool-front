@@ -6,14 +6,16 @@ class Toolbox extends GraphicalElement {
     constructor(layer) {
         super();
         this.layer = layer;
-        const stage = this.layer.getStage();
+        // const stage = this.layer.getStage();
         this.menuItems = [];
-        this.param = {  "stageWidth": stage.width(),
-                        "stageHeight": stage.height(),
+        this.param = {  "stageWidth": layer.canvas.width,
+                        "stageHeight": layer.canvas.height,
                         "menuItemWidth": 64,
                         "menuItemHeight": 64,
                         "paddingX": 10,
-                        "paddingY": 10}
+                        "paddingY": 10,
+                        "mainColor": '#D243F7',             // '#D243F7'
+                        "secondaryColor": "#0af0c0"}
         this.draw();
     }
 
@@ -46,13 +48,13 @@ class Toolbox extends GraphicalElement {
             width: this.param.menuItemWidth,
             height: this.param.menuItemHeight,
             fill: null,
-            stroke: "#0af0c0",
+            stroke: this.param.secondaryColor,
             strokeWidth: 2,
             strokeEnabled: false,
             opacity: 1,
         });
 
-        console.log(`Adding item ${name} at pos (${x}, ${y})`);
+        // console.log(`Adding item ${name} at pos (${x}, ${y})`);
         border.on('click', (e) => {
             this.menuItems.forEach(item => item.border.strokeEnabled(false));
             const item = e.currentTarget;
@@ -72,14 +74,17 @@ class Toolbox extends GraphicalElement {
         this.menuItems = [];
         let y = this.param.paddingY;
 
-        this.createMenuField(this.param.paddingX, y, "cursor", this.createImgPlaceholder());
+        this.createMenuField(this.param.paddingX, y, "cursor", this.createImgCursor());
         shiftY();        
         this.createMenuField(this.param.paddingX, y, "milestone", this.createImgMilestone());
         shiftY();
-        this.createMenuField(this.param.paddingX, y, "link", this.createImgPlaceholder());
+        this.createMenuField(this.param.paddingX, y, "link", this.createImgArrow());
         shiftY();
-        this.createMenuField(this.param.paddingX, y, "fake-link", this.createImgPlaceholder());
+        this.createMenuField(this.param.paddingX, y, "fake-link", this.createImgArrowDashed());
         shiftY();
+
+        // Select first item
+        this.menuItems[0].border.fire('click');
 
         function shiftY() {
             y += this_.param.menuItemHeight + this_.param.paddingY;
@@ -93,9 +98,46 @@ class Toolbox extends GraphicalElement {
         }
     }
 
+    createImgCursor() {
+        return new Konva.Path({
+            x: 0,
+            y: 0,
+            data: 'M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103zM2.25 8.184l3.897 1.67a.5.5 0 0 1 .262.263l1.67 3.897L12.743 3.52z',
+            fill: this.param.mainColor,
+            scaleX: 4,
+            scaleY: 4,
+          });
+    }
+
     createImgMilestone() {
         const m = new Milestone(32,32,"");
-        return m.img;
+        return changeLineColor(m.img, this.param.mainColor);
+        
+        function changeLineColor(img, color) {
+            img.children.forEach(e => {
+                if(e instanceof(Konva.Line)) {
+                    e.stroke(color);
+                }
+            })
+            return img;
+        }
+    }
+
+    createImgArrow() {
+        return new Konva.Arrow({
+            x: 0,
+            y: 0,
+            points: [this.param.menuItemWidth*0.1, this.param.menuItemHeight*0.9, this.param.menuItemWidth*0.9, this.param.menuItemHeight*0.1],
+            stroke: this.param.mainColor,
+            fill: this.param.mainColor,
+            strokeWidth: 4,
+        })
+    }
+
+    createImgArrowDashed() {
+        const a = this.createImgArrow();
+        a.dash([5, 3]);
+        return a;
     }
 
     createImgPlaceholder() {
@@ -105,7 +147,7 @@ class Toolbox extends GraphicalElement {
             text: "TO DO\n!!!",
             fontSize: 22,
             fontFamily: 'Calibri',
-            fill: '#D243F7'
+            fill: this.param.mainColor
         });
     }
 

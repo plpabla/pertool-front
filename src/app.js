@@ -65,8 +65,12 @@ connections = connections.filter(c=>c)
 bubbles.forEach(b=>layer.add(b.image))
 connections.forEach(c=>layer.add(c))
 
-layer.draw();
-
+import Toolbox from './Toolbox';
+let toolbox = new Toolbox(layer);
+toolbox.bind("cursor", () => {console.log("cursor clicked")});
+toolbox.bind("milestone", () => {console.log("milestone clicked")});
+toolbox.bind("link", () => {console.log("link clicked")});
+toolbox.bind("fake-link", () => {console.log("fake-link clicked")});
 
 
 

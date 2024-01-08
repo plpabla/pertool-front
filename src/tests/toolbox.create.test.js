@@ -54,4 +54,38 @@ export default function suite() {
         expect(item.border).instanceOf(Konva.Rect);
         expect(item.border.getClientRect()).eqls({"x": posX, "y": posY, "width": w, "height" : h})
     });
+
+    it('when created, cursor tool is selected', function() {
+        const cursor = this.t.menuItems.find((item)=>item.name === "cursor");
+
+        expect(cursor.border.strokeEnabled()).to.be.true;
+    })
+
+    it('when created, no other items than cursor are selected', function() {
+        const cursor = this.t.menuItems.find((item)=>item.name === "cursor");
+
+        this.t.menuItems.forEach(element => {
+            if(element===cursor) return;
+            expect(element.border.strokeEnabled()).to.be.false;
+        });
+    })
+
+
+    it('when milestone is clicked, border on cursor is off', function() {
+        const cursor = this.t.menuItems.find((item)=>item.name === "cursor");
+        const milestone = this.t.menuItems.find((item)=>item.name === "milestone");
+
+        milestone.border.fire('click');
+
+        expect(cursor.border.strokeEnabled()).to.be.false;
+    })
+
+    it('when milestone is clicked, border on milestone is on', function() {
+        const cursor = this.t.menuItems.find((item)=>item.name === "cursor");
+        const milestone = this.t.menuItems.find((item)=>item.name === "milestone");
+
+        milestone.border.fire('click');
+
+        expect(milestone.border.strokeEnabled()).to.be.true;
+    })
 }
