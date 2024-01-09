@@ -3,12 +3,13 @@ import milestoneTest from './tests/milestone.test.js'
 import milestoneDrawTest from './tests/milestone.draw.test.js'
 import milestoneSerializeTest from './tests/milestone.serialize.test.js'
 import linkTest from './tests/link.test.js'
-import linkSerializeTest from './tests/link.serialize.js'
+import linkSerializeTest from './tests/link.serialize.test.js'
 import modelCreateTest from './tests/model.create.test.js'
 import modelAddMilestoneTest from './tests/model.addMilestone.test.js'
 import modelAddLinkTest from './tests/model.addLink.test.js'
 import modelSerializeTest from './tests/model.serialize.test.js'
 import toolboxCreateTest from './tests/toolbox.create.test.js'
+import editorCreateTest from './tests/editor.create.test.js'
 
 describe('Framework', function(){
     this.slow(10);       // highlight all tasks slower than this limit
