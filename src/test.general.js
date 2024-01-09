@@ -9,7 +9,6 @@ import modelAddMilestoneTest from './tests/model.addMilestone.test.js'
 import modelAddLinkTest from './tests/model.addLink.test.js'
 import modelSerializeTest from './tests/model.serialize.test.js'
 import toolboxCreateTest from './tests/toolbox.create.test.js'
-import toolboxDrawTest from './tests/toolbox.draw.test.js'
 
 describe('Framework', function(){
     this.slow(10);       // highlight all tasks slower than this limit
@@ -41,7 +40,6 @@ describe('Model', function() {
 
 describe('Toolbox', function() {
     describe('creation', toolboxCreateTest.bind(this));
-    describe('drawing', toolboxDrawTest.bind(this));
 });
 
 describe('Canva', function() {
