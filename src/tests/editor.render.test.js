@@ -13,17 +13,21 @@ export default function suite() {
         this.e = new Editor(this.stage);
     });
 
-    it('has Toolbox object', function() {
-        expect(this.e).to.have.property('toolbox');
-        expect(this.e.toolbox).instanceOf(Toolbox);
+    it('can call render()', function() {
+        expect(() => {
+            this.e.render();
+        }).to.not.throw();
     });
 
-    it('has mode object', function() {
-        expect(this.e).to.have.property('model');
-        expect(this.e.model).instanceOf(Model);
+    it('does not call Toolbox.draw()', function() {
+        const spy = sinon.stub(Toolbox.prototype, 'draw').callsFake(()=>{});
+
+        this.e.render();
+
+        sinon.assert.notCalled(spy);
     });
 
-    it('has render() method', function() {
-        expect(this.e).to.have.property('render');
-    });
+    it('when clicked on cursor, cursorCallback() is called', function() {
+        // TODO
+    })
 };

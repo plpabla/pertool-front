@@ -3,7 +3,7 @@ import Link from './Link.js';
 
 class Model {
     constructor() {
-        this.milestones = [new Milestone(0, 0, "root")];
+        this.milestones = [new Milestone(200, 300, "root")];
         this.links = [];
     }
 
@@ -64,7 +64,7 @@ class Model {
     }
 
     getMilestoneById(id) {
-        return this.milestones.find(m => m.getId() === id);
+        return this.milestones[id];
     }
 
     addLink(id1, id2) {

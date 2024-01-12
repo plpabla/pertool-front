@@ -1,5 +1,5 @@
 import Konva from 'konva';
-import Toolbox from '../Toolbox';
+import Editor from '../Editor';
 
 let sceneWidth = 900;
 let sceneHeight = 700;
@@ -23,8 +23,10 @@ layer.add(new Konva.Rect({
     strokeWidth: 2
 }));
 
-let toolbox = new Toolbox(layer);
-toolbox.bind("cursor", () => {console.log("cursor clicked")});
-toolbox.bind("milestone", () => {console.log("milestone clicked")});
-toolbox.bind("link", () => {console.log("link clicked")});
-toolbox.bind("fake-link", () => {console.log("fake-link clicked")});
+const editor = new Editor(stage);
+editor.testUpdate();
+
+// toolbox.bind("cursor", () => {console.log("cursor clicked")});
+// toolbox.bind("milestone", () => {console.log("milestone clicked")});
+// toolbox.bind("link", () => {console.log("link clicked")});
+// toolbox.bind("fake-link", () => {console.log("fake-link clicked")});
