@@ -6,7 +6,7 @@ class Editor {
         this.stage = stage;
 
         this.modelLayer = new Konva.Layer();
-        // this.stage.on('click', this.onMenuItemChange);
+        this.stage.on('click', this.onClick);
         this.stage.add(this.modelLayer);
 
         this.toolboxLayer = new Konva.Layer();
@@ -16,13 +16,9 @@ class Editor {
         this.render();
 
         this.toolbox = new Toolbox(this.toolboxLayer);
-        this.toolbox.bind("cursor", this.onMenuItemChange);
-        this.toolbox.bind("milestone", this.onMenuItemChange);
-        this.toolbox.bind("link", this.onMenuItemChange);
-        this.toolbox.bind("fake-link", this.onMenuItemChange);
     }
 
-    onMenuItemChange(e) {
+    onClick(e) {
         const target = e.target;
         const clickedItem = target.attrs.menuItemName;
         console.log(clickedItem + " clicked. TODO - add processing");

@@ -10,12 +10,10 @@ import sinon from 'sinon';
 export default function suite() {
     beforeEach(function() {
         this.stage = sinon.createStubInstance(Konva.Stage);
-        this.onMenuItemChangeSpy = sinon.spy(Editor.prototype, "onMenuItemChange");
         this.e = new Editor(this.stage);
     });
 
     afterEach(function() {
-        this.onMenuItemChangeSpy.restore();
     })
 
     it('can call render()', function() {
@@ -33,21 +31,5 @@ export default function suite() {
 
         sinon.assert.notCalled(spy);
     });
-
-    ["cursor", "milestone", "link", "fake-link"].forEach(function(name) {
-        it('when clicked on ' + name + ', onMenuItemChange() is called with target "' + name + '"', function() {
-            const menu = this.e.toolbox.menuItems;
-            const cursor = menu.find((item)=>item.name === name);
-    
-            cursor.border.fire('click');
-    
-            expect(this.onMenuItemChangeSpy.callCount).to.equal(1);
-            const callParam = this.onMenuItemChangeSpy.firstCall;
-            const target = callParam.args[0].target;
-            const clickedItem = target.attrs.menuItemName;
-            expect(clickedItem).to.equal(name);
-        });
-    });
-
 
 };
