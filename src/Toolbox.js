@@ -52,6 +52,7 @@ class Toolbox extends GraphicalElement {
             strokeWidth: 2,
             strokeEnabled: false,
             opacity: 1,
+            menuItemName: name
         });
 
         // console.log(`Adding item ${name} at pos (${x}, ${y})`);

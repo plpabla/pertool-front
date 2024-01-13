@@ -30,6 +30,10 @@ export default function suite() {
         expect(this.t.layer).instanceOf(Konva.Layer);
     });
 
+    it('contains initially 4 fields', function() {
+        expect(this.t.menuItems).length(4);
+    });
+
     it('create menu field creates menu item', function() {
         this.t.menuItems = [];
 
@@ -87,5 +91,11 @@ export default function suite() {
         milestone.border.fire('click');
 
         expect(milestone.border.strokeEnabled()).to.be.true;
+    })
+
+    it('created menu field border has property menuItemName with a given name so I can identify what was clicked', function() {
+        const cursor = this.t.menuItems.find((item)=>item.name === "cursor");
+
+        expect(cursor.border.attrs.menuItemName).to.equal("cursor");
     })
 }
