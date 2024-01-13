@@ -1,12 +1,14 @@
 import Model from './Model';
 import Toolbox from './Toolbox';
+import MilestoneState from './states/Milestone';
+import PointerState from './states/Pointer';
 
 class Editor {
     constructor(stage) {
         this.stage = stage;
+        this.stage.on('click', this.onClick);
 
         this.modelLayer = new Konva.Layer();
-        this.stage.on('click', this.onClick);
         this.stage.add(this.modelLayer);
 
         this.toolboxLayer = new Konva.Layer();
@@ -16,11 +18,16 @@ class Editor {
         this.render();
 
         this.toolbox = new Toolbox(this.toolboxLayer);
+
+        this.state = new PointerState();
     }
 
     onClick(e) {
         const target = e.target;
-        const clickedItem = target.attrs.menuItemName;
+        const clickedItem = target.attrs.name;
+        if(clickedItem == undefined) {
+            console.log(target);
+        }
         console.log(clickedItem + " clicked. TODO - add processing");
     }
 

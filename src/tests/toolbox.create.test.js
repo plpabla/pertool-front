@@ -93,9 +93,9 @@ export default function suite() {
         expect(milestone.border.strokeEnabled()).to.be.true;
     })
 
-    it('created menu field border has property menuItemName with a given name so I can identify what was clicked', function() {
+    it('created menu field border has property name with a given name so I can identify what was clicked', function() {
         const cursor = this.t.menuItems.find((item)=>item.name === "cursor");
 
-        expect(cursor.border.attrs.menuItemName).to.equal("cursor");
+        expect(cursor.border.attrs.name).to.equal("cursor");
     })
 }

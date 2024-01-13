@@ -37,6 +37,7 @@ class Toolbox extends GraphicalElement {
             stroke: "black",
             fill: "#E6FEF9",
             strokeWidth: 0,
+            name: "toolbox"
         });
         this.layer.add(border);
     }
@@ -52,7 +53,7 @@ class Toolbox extends GraphicalElement {
             strokeWidth: 2,
             strokeEnabled: false,
             opacity: 1,
-            menuItemName: name
+            name: name
         });
 
         // console.log(`Adding item ${name} at pos (${x}, ${y})`);

@@ -11,6 +11,7 @@ import modelSerializeTest from './tests/model.serialize.test.js';
 import toolboxCreateTest from './tests/toolbox.create.test.js';
 import editorCreateTest from './tests/editor.create.test.js';
 import editorRenderTest from './tests/editor.render.test.js';
+import editorSMTest from './tests/editor.statemachine.test.js';
 
 // describe('Framework', function(){
 //     this.slow(10);       // highlight all tasks slower than this limit
@@ -47,4 +48,5 @@ describe('Toolbox', function() {
 describe('Editor', function() {
     describe('creation', editorCreateTest.bind(this));
     describe('renderintg', editorRenderTest.bind(this));
+    describe('state machine', editorSMTest.bind(this));
 })
