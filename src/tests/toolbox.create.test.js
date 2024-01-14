@@ -23,7 +23,7 @@ export default function suite() {
 
     beforeEach(function() {
         this.layer = new Konva.Layer();
-        this.t = new Toolbox(this.layer);
+        this.t = new Toolbox(this.layer, (e)=> {});
     })
 
     it('uses Konva layer to be drawn at', function() {

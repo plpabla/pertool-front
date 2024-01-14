@@ -3,9 +3,10 @@ import GraphicalElement from "./GraphicalElement";
 import Milestone from "./Milestone";
 
 class Toolbox extends GraphicalElement {
-    constructor(layer) {
+    constructor(layer, onClickCallback) {
         super();
         this.layer = layer;
+        this.onClickCallback = onClickCallback;
         // const stage = this.layer.getStage();
         this.menuItems = [];
         this.param = {  "stageWidth": layer.canvas.width,
@@ -62,6 +63,8 @@ class Toolbox extends GraphicalElement {
             const item = e.currentTarget;
             item.strokeEnabled(true);
         });
+        border.on('click', this.onClickCallback);
+
         const item = {
             "border": border,
             "img": img.move({x: x, y: y}),

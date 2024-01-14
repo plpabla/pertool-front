@@ -9,44 +9,58 @@ import sinon from 'sinon';
 
 export default function suite() {
     beforeEach(function() {
-        this.stage = sinon.createStubInstance(Konva.Stage);
+        // this.stage = sinon.createStubInstance(Konva.Stage);
+        this.stage = new Konva.Stage({
+            height: 600,
+            width: 800,
+            container: "canvas",
+            draggable: false
+        });
         this.onClickSpy = sinon.spy(Editor.prototype, "onClick");
         this.e = new Editor(this.stage);
     });
 
     afterEach(function() {
         this.onClickSpy.restore();
-    })
-
-    it('can call render()', function() {
-        this.skip("I'm not going to use this method directly");
-        expect(() => {
-            this.e.render();
-        }).to.not.throw();
+        this.stage.clear();
+        // this.stage.clearCache();
+        // this.stage.destroyChildren();
+        // this.stage.destroy();
+        // delete this.stage;
     });
 
-    it('does not call Toolbox.draw()', function() {
-        this.skip("I'm not going to use this method directly");
-        const spy = sinon.stub(Toolbox.prototype, 'draw').callsFake(()=>{});
+    // it('can call render()', function() {
+    //     this.skip("I'm not going to use this method directly");
+    //     expect(() => {
+    //         this.e.render();
+    //     }).to.not.throw();
+    // });
 
-        this.e.render();
+    // it('does not call Toolbox.draw()', function() {
+    //     this.skip("I'm not going to use this method directly");
+    //     const spy = sinon.stub(Toolbox.prototype, 'draw').callsFake(()=>{});
 
-        sinon.assert.notCalled(spy);
+    //     this.e.render();
+
+    //     sinon.assert.notCalled(spy);
+    // });
+
+    it('when loaded, one click is trigerred (initial cursor selection)', function() {
+        expect(this.onClickSpy.callCount).to.equal(1);
     });
 
     ["cursor", "milestone", "link", "fake-link"].forEach(function(name) {
         it('when clicked on ' + name + ', onMenuItemChange() is called with target "' + name + '"', function() {
             const menu = this.e.toolbox.menuItems;
             const menuItem = menu.find((item)=>item.name === name);
-    
+
             menuItem.border.fire('click');
     
-            expect(this.onClickSpy.callCount).to.equal(1);
-            // This to be checked when I fix callCount
-            // const callParam = this.onClickSpy.firstCall;
-            // const target = callParam.args[0].target;
-            // const clickedItem = target.attrs.menuItemName;
-            // expect(clickedItem).to.equal(name);
+            expect(this.onClickSpy.callCount).to.equal(2);
+            const callParam = this.onClickSpy.secondCall;
+            const target = callParam.args[0].target;
+            const clickedItem = target.attrs.name;
+            expect(clickedItem).to.equal(name);
         });
     });
 

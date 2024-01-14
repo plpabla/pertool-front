@@ -7,6 +7,7 @@ class Editor {
     constructor(stage) {
         this.stage = stage;
         this.stage.on('click', this.onClick);
+        console.error("Now it is called twice, fix it!");
 
         this.modelLayer = new Konva.Layer();
         this.stage.add(this.modelLayer);
@@ -17,7 +18,7 @@ class Editor {
         this.model = new Model();
         this.render();
 
-        this.toolbox = new Toolbox(this.toolboxLayer);
+        this.toolbox = new Toolbox(this.toolboxLayer, this.onClick);
 
         this.state = new PointerState();
     }
