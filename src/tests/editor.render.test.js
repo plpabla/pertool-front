@@ -9,44 +9,33 @@ import sinon from 'sinon';
 
 export default function suite() {
     beforeEach(function() {
-        // this.stage = sinon.createStubInstance(Konva.Stage);
-        this.stage = new Konva.Stage({
-            height: 600,
-            width: 800,
-            container: "canvas",
-            draggable: false
-        });
+        this.stage = sinon.createStubInstance(Konva.Stage);
         this.onClickSpy = sinon.spy(Editor.prototype, "onClick");
         this.e = new Editor(this.stage);
+        // Assign callback manually. In the app it is assigned to the stage which we stub here
+        this.e.toolbox.menuItems.forEach((item)=>{
+            item.border.on('click', this.e.onClick);
+        });
     });
 
     afterEach(function() {
         this.onClickSpy.restore();
-        this.stage.clear();
-        // this.stage.clearCache();
-        // this.stage.destroyChildren();
-        // this.stage.destroy();
-        // delete this.stage;
     });
 
-    // it('can call render()', function() {
-    //     this.skip("I'm not going to use this method directly");
-    //     expect(() => {
-    //         this.e.render();
-    //     }).to.not.throw();
-    // });
+    it('can call render()', function() {
+        this.skip("I'm not going to use this method directly");
+        expect(() => {
+            this.e.render();
+        }).to.not.throw();
+    });
 
-    // it('does not call Toolbox.draw()', function() {
-    //     this.skip("I'm not going to use this method directly");
-    //     const spy = sinon.stub(Toolbox.prototype, 'draw').callsFake(()=>{});
+    it('does not call Toolbox.draw()', function() {
+        this.skip("I'm not going to use this method directly");
+        const spy = sinon.stub(Toolbox.prototype, 'draw').callsFake(()=>{});
 
-    //     this.e.render();
+        this.e.render();
 
-    //     sinon.assert.notCalled(spy);
-    // });
-
-    it('when loaded, one click is trigerred (initial cursor selection)', function() {
-        expect(this.onClickSpy.callCount).to.equal(1);
+        sinon.assert.notCalled(spy);
     });
 
     ["cursor", "milestone", "link", "fake-link"].forEach(function(name) {
@@ -56,8 +45,8 @@ export default function suite() {
 
             menuItem.border.fire('click');
     
-            expect(this.onClickSpy.callCount).to.equal(2);
-            const callParam = this.onClickSpy.secondCall;
+            expect(this.onClickSpy.callCount).to.equal(1);
+            const callParam = this.onClickSpy.firstCall;
             const target = callParam.args[0].target;
             const clickedItem = target.attrs.name;
             expect(clickedItem).to.equal(name);

@@ -11,6 +11,9 @@ export default function suite() {
     beforeEach(function() {
         this.stage = sinon.createStubInstance(Konva.Stage);
         this.e = new Editor(this.stage);
+        this.e.toolbox.menuItems.forEach((item)=>{
+            item.border.on('click', this.e.onClick);
+        });
     });
 
     it('starts with pointer state', function() {
