@@ -6,7 +6,8 @@ import PointerState from './states/Pointer';
 class Editor {
     constructor(stage) {
         this.stage = stage;
-        this.stage.on('click', this.onClick);
+        this.onClickCallback = this.makeOnClicker();
+        this.stage.on('click', this.onClickCallback);
         this.modelLayer = new Konva.Layer();
         this.stage.add(this.modelLayer);
         this.toolboxLayer = new Konva.Layer();
@@ -20,14 +21,27 @@ class Editor {
         this.state = new PointerState();
     }
 
-    onClick(e) {
-        const target = e.target;
-        const clickedItem = target.attrs.name;
-        if(clickedItem == undefined) {
-            console.log(target);
+    makeOnClicker() {
+        const editor = this;
+        return function(e) {
+            editor.state = editor.state.onClick(e);
+            // console.log(editor.state.getName());
         }
-        console.log(clickedItem + " clicked. TODO - add processing");
     }
+
+    // onClick(e) {
+    //     console.log("uuuuuuuuuuuuu")
+    //     console.log(e);
+    //     console.log(this);
+    //     console.log("<<<uuu")
+    //     // this.state = this.state.onClick(e);
+    //     // const target = e.target;
+    //     // const clickedItem = target.attrs.name;
+    //     // if(clickedItem == undefined) {
+    //     //     console.log(target);
+    //     // }
+    //     // console.log(clickedItem + " clicked. TODO - add processing");
+    // }
 
     render() {
         this.model.milestones.forEach(m => this.drawMilestone(m));

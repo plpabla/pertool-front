@@ -3,10 +3,15 @@ import State from "./State";
 class MilestoneState extends State {
     constructor() {
         super();
+        // console.log("MilestoneState created");
     }
 
     onClick(args) {
-        throw new Error('Not implemented');
+        return this;
+    }
+
+    getName() {
+        return "MilestoneState";
     }
 }
 

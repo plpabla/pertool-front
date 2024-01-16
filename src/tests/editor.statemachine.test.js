@@ -12,12 +12,21 @@ export default function suite() {
         this.stage = sinon.createStubInstance(Konva.Stage);
         this.e = new Editor(this.stage);
         this.e.toolbox.menuItems.forEach((item)=>{
-            item.border.on('click', this.e.onClick);
+            item.border.on('click', this.e.makeOnClicker());
         });
     });
 
     it('starts with pointer state', function() {
         expect(this.e).to.have.property('state');
+        expect(this.e.state).instanceOf(PointerState);
+    });
+
+    it('when clicked on cursor item, pointer state remains', function() {
+        const menu = this.e.toolbox.menuItems;
+        const cursor = menu.find((item)=>item.name === "cursor");
+
+        cursor.border.fire('click');
+
         expect(this.e.state).instanceOf(PointerState);
     });
 

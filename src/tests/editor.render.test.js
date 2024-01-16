@@ -8,18 +8,20 @@ import Konva from 'konva';
 import sinon from 'sinon';
 
 export default function suite() {
+    let lastOnClickCallArg = undefined;
     beforeEach(function() {
         this.stage = sinon.createStubInstance(Konva.Stage);
-        this.onClickSpy = sinon.spy(Editor.prototype, "onClick");
+        this.onClickStub = sinon.stub(Editor.prototype, "makeOnClicker");
+        this.onClickStub.returns(function(e) {lastOnClickCallArg = e;});
+
         this.e = new Editor(this.stage);
-        // Assign callback manually. In the app it is assigned to the stage which we stub here
         this.e.toolbox.menuItems.forEach((item)=>{
-            item.border.on('click', this.e.onClick);
+            item.border.on('click', this.e.makeOnClicker());
         });
     });
 
     afterEach(function() {
-        this.onClickSpy.restore();
+        this.onClickStub.restore();
     });
 
     it('can call render()', function() {
@@ -38,16 +40,18 @@ export default function suite() {
         sinon.assert.notCalled(spy);
     });
 
+    it('when created, onClick fn creator is called 5 times (as we create Editor and have 4 items)', function() {
+        expect(this.onClickStub.callCount).to.equal(5);
+    });
+
     ["cursor", "milestone", "link", "fake-link"].forEach(function(name) {
         it('when clicked on ' + name + ', onMenuItemChange() is called with target "' + name + '"', function() {
             const menu = this.e.toolbox.menuItems;
             const menuItem = menu.find((item)=>item.name === name);
 
             menuItem.border.fire('click');
-    
-            expect(this.onClickSpy.callCount).to.equal(1);
-            const callParam = this.onClickSpy.firstCall;
-            const target = callParam.args[0].target;
+
+            const target = lastOnClickCallArg.target;
             const clickedItem = target.attrs.name;
             expect(clickedItem).to.equal(name);
         });

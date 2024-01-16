@@ -1,12 +1,19 @@
+import MilestoneState from "./Milestone";
 import State from "./State";
 
 class PointerState extends State {
     constructor() {
         super();
+        // console.log("PointerState created");
     }
 
     onClick(args) {
-        throw new Error('Not implemented');
+        return this;
+        return new MilestoneState();
+    }
+
+    getName() {
+        return "PointerState";
     }
 }
 
