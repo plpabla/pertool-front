@@ -7,7 +7,7 @@ class State {
         throw new Error('Not implemented');
     }
 
-    getName() {
+    static getName() {
         return "<<abstract>> State";
     }
 }

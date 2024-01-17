@@ -8,12 +8,6 @@ import PointerState from '../states/Pointer';
 import MilestoneState from '../states/Milestone';
 
 export default function suite() {
-    let lastOnClickCallArg = undefined;
-    before(function() {
-        this.onClickStub = sinon.stub(Editor.prototype, "makeOnClicker");
-        this.onClickStub.returns(function(e) {lastOnClickCallArg = e;});
-    });
-
     beforeEach(function() {
         this.stage = sinon.createStubInstance(Konva.Stage);
 
@@ -24,32 +18,38 @@ export default function suite() {
     });
 
     afterEach(function() {
-
     });
 
-    after(function(){
-        this.onClickStub.restore();
-    });
 
     it('starts with pointer state', function() {
         expect(this.e).to.have.property('state');
         expect(this.e.state).instanceOf(PointerState);
     });
 
-    it('when clicked on pointer item, pointer state remains', function() {
-        const menu = this.e.toolbox.menuItems;
-        const pointer = menu.find((item)=>item.name === "pointer");
-        pointer.border.fire('click');
+    const states = [{from: PointerState, clickOn:"pointer", to: PointerState},
+                    {from: PointerState, clickOn:"milestone", to: MilestoneState},
+                    // {from: PointerState, clickOn:"link", to: LinkFirstElState},
+                    // {from: PointerState, clickOn:"fake-link", to: LinkFirstElState},
+                    {from: PointerState, clickOn: undefined, to: PointerState},
+                    {from: MilestoneState, clickOn:"pointer", to: PointerState},
+                    {from: MilestoneState, clickOn:"milestone", to: MilestoneState},
+    ];
 
-        expect(this.e.state).instanceOf(PointerState);
-    });
+    states.forEach(function(testCase){
+        it(`given in ${testCase.from.getName()} when clicked on ${testCase.clickOn} item, then ${testCase.to.getName()} is reached`, function() {
+            const menu = this.e.toolbox.menuItems;
+            const itemToClick = menu.find((item)=>item.name === testCase.clickOn);
+            this.e.state = new testCase.from();
 
-    it('when clicked on milestone item, milestone state is set', function() {
-        const menu = this.e.toolbox.menuItems;
-        const milestone = menu.find((item)=>item.name === "milestone");
+            if(testCase.clickOn) {
+                itemToClick.border.fire('click');
+            } else {
+                // For undefined, trigger callback manually
+                this.e.state = this.e.state.onClick({target: {attrs: {}}});
+            }
 
-        milestone.border.fire('click');
-
-        expect(this.e.state).instanceOf(MilestoneState);
+    
+            expect(this.e.state).instanceOf(testCase.to);
+        });
     });
 };
