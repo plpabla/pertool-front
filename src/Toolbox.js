@@ -77,7 +77,7 @@ class Toolbox extends GraphicalElement {
         this.menuItems = [];
         let y = this.param.paddingY;
 
-        this.createMenuField(this.param.paddingX, y, "cursor", this.createImgCursor());
+        this.createMenuField(this.param.paddingX, y, "pointer", this.createImgPointer());
         shiftY();        
         this.createMenuField(this.param.paddingX, y, "milestone", this.createImgMilestone());
         shiftY();
@@ -101,7 +101,7 @@ class Toolbox extends GraphicalElement {
         }
     }
 
-    createImgCursor() {
+    createImgPointer() {
         return new Konva.Path({
             x: 0,
             y: 0,

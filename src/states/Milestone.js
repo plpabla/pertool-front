@@ -13,7 +13,7 @@ class MilestoneState extends State {
         console.log(clickedItem);
         if(clickedItem == undefined)
             return this;
-        if(clickedItem === "cursor")
+        if(clickedItem === "pointer")
             return new PointerState();
         return this;
     }

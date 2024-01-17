@@ -11,7 +11,7 @@ export default function suite() {
     let lastOnClickCallArg = undefined;
     beforeEach(function() {
         this.stage = sinon.createStubInstance(Konva.Stage);
-        
+
         this.onClickStub = sinon.stub(Editor.prototype, "makeOnClicker");
         this.onClickStub.returns(function(e) {lastOnClickCallArg = e;});
 
@@ -45,7 +45,7 @@ export default function suite() {
         expect(this.onClickStub.callCount).to.equal(5);
     });
 
-    ["cursor", "milestone", "link", "fake-link"].forEach(function(name) {
+    ["pointer", "milestone", "link", "fake-link"].forEach(function(name) {
         it('when clicked on ' + name + ', onMenuItemChange() is called with target "' + name + '"', function() {
             const menu = this.e.toolbox.menuItems;
             const menuItem = menu.find((item)=>item.name === name);

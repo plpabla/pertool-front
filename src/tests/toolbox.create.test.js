@@ -59,33 +59,33 @@ export default function suite() {
         expect(item.border.getClientRect()).eqls({"x": posX, "y": posY, "width": w, "height" : h})
     });
 
-    it('when created, cursor tool is selected', function() {
-        const cursor = this.t.menuItems.find((item)=>item.name === "cursor");
+    it('when created, pointer tool is selected', function() {
+        const pointer = this.t.menuItems.find((item)=>item.name === "pointer");
 
-        expect(cursor.border.strokeEnabled()).to.be.true;
+        expect(pointer.border.strokeEnabled()).to.be.true;
     })
 
-    it('when created, no other items than cursor are selected', function() {
-        const cursor = this.t.menuItems.find((item)=>item.name === "cursor");
+    it('when created, no other items than pointer are selected', function() {
+        const pointer = this.t.menuItems.find((item)=>item.name === "pointer");
 
         this.t.menuItems.forEach(element => {
-            if(element===cursor) return;
+            if(element===pointer) return;
             expect(element.border.strokeEnabled()).to.be.false;
         });
     })
 
 
-    it('when milestone is clicked, border on cursor is off', function() {
-        const cursor = this.t.menuItems.find((item)=>item.name === "cursor");
+    it('when milestone is clicked, border on pointer is off', function() {
+        const pointer = this.t.menuItems.find((item)=>item.name === "pointer");
         const milestone = this.t.menuItems.find((item)=>item.name === "milestone");
 
         milestone.border.fire('click');
 
-        expect(cursor.border.strokeEnabled()).to.be.false;
+        expect(pointer.border.strokeEnabled()).to.be.false;
     })
 
     it('when milestone is clicked, border on milestone is on', function() {
-        const cursor = this.t.menuItems.find((item)=>item.name === "cursor");
+        const pointer = this.t.menuItems.find((item)=>item.name === "pointer");
         const milestone = this.t.menuItems.find((item)=>item.name === "milestone");
 
         milestone.border.fire('click');
@@ -94,8 +94,8 @@ export default function suite() {
     })
 
     it('created menu field border has property name with a given name so I can identify what was clicked', function() {
-        const cursor = this.t.menuItems.find((item)=>item.name === "cursor");
+        const pointer = this.t.menuItems.find((item)=>item.name === "pointer");
 
-        expect(cursor.border.attrs.name).to.equal("cursor");
+        expect(pointer.border.attrs.name).to.equal("pointer");
     })
 }

@@ -36,11 +36,10 @@ export default function suite() {
         expect(this.e.state).instanceOf(PointerState);
     });
 
-    it('when clicked on cursor item, pointer state remains', function() {
+    it('when clicked on pointer item, pointer state remains', function() {
         const menu = this.e.toolbox.menuItems;
-        const cursor = menu.find((item)=>item.name === "cursor");
-
-        cursor.border.fire('click');
+        const pointer = menu.find((item)=>item.name === "pointer");
+        pointer.border.fire('click');
 
         expect(this.e.state).instanceOf(PointerState);
     });
