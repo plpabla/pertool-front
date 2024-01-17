@@ -6,6 +6,8 @@ import Konva from 'konva';
 import sinon from 'sinon';
 import PointerState from '../states/Pointer';
 import MilestoneState from '../states/Milestone';
+import LinkFirstElState from '../states/LinkFirstEl';
+import LinkSecondElState from '../states/LinkSecondEl';
 
 export default function suite() {
     beforeEach(function() {
@@ -28,11 +30,15 @@ export default function suite() {
 
     const states = [{from: PointerState, clickOn:"pointer", to: PointerState},
                     {from: PointerState, clickOn:"milestone", to: MilestoneState},
-                    // {from: PointerState, clickOn:"link", to: LinkFirstElState},
-                    // {from: PointerState, clickOn:"fake-link", to: LinkFirstElState},
+                    {from: PointerState, clickOn:"link", to: LinkFirstElState},
+                    {from: PointerState, clickOn:"fake-link", to: LinkFirstElState},
                     {from: PointerState, clickOn: undefined, to: PointerState},
+
                     {from: MilestoneState, clickOn:"pointer", to: PointerState},
                     {from: MilestoneState, clickOn:"milestone", to: MilestoneState},
+                    {from: MilestoneState, clickOn:"link", to: LinkFirstElState},
+                    {from: MilestoneState, clickOn:"fake-link", to: LinkFirstElState},
+                    {from: MilestoneState, clickOn: undefined, to: PointerState},       // Note - addMilestone() should be called; Also maybe we want to remain in Milestone?
     ];
 
     states.forEach(function(testCase){
