@@ -11,6 +11,7 @@ export default function suite() {
     let lastOnClickCallArg = undefined;
     beforeEach(function() {
         this.stage = sinon.createStubInstance(Konva.Stage);
+        
         this.onClickStub = sinon.stub(Editor.prototype, "makeOnClicker");
         this.onClickStub.returns(function(e) {lastOnClickCallArg = e;});
 

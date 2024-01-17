@@ -8,12 +8,27 @@ import PointerState from '../states/Pointer';
 import MilestoneState from '../states/Milestone';
 
 export default function suite() {
+    let lastOnClickCallArg = undefined;
+    before(function() {
+        this.onClickStub = sinon.stub(Editor.prototype, "makeOnClicker");
+        this.onClickStub.returns(function(e) {lastOnClickCallArg = e;});
+    });
+
     beforeEach(function() {
         this.stage = sinon.createStubInstance(Konva.Stage);
+
         this.e = new Editor(this.stage);
         this.e.toolbox.menuItems.forEach((item)=>{
             item.border.on('click', this.e.makeOnClicker());
         });
+    });
+
+    afterEach(function() {
+
+    });
+
+    after(function(){
+        this.onClickStub.restore();
     });
 
     it('starts with pointer state', function() {

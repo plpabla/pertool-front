@@ -4,12 +4,18 @@ import State from "./State";
 class PointerState extends State {
     constructor() {
         super();
-        // console.log("PointerState created");
+        console.log("PointerState created");
     }
 
     onClick(args) {
+        const target = args.target;
+        const clickedItem = target.attrs.name;
+        console.log(clickedItem);
+        if(clickedItem == undefined)
+            return this;
+        if(clickedItem === "milestone")
+            return new MilestoneState();
         return this;
-        return new MilestoneState();
     }
 
     getName() {
