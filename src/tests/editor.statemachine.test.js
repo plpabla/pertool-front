@@ -8,6 +8,7 @@ import PointerState from '../states/Pointer';
 import MilestoneState from '../states/Milestone';
 import LinkFirstElState from '../states/LinkFirstEl';
 import LinkSecondElState from '../states/LinkSecondEl';
+import GetMilestoneNameState from '../states/GetMilestoneName';
 
 export default function suite() {
     beforeEach(function() {
@@ -38,7 +39,7 @@ export default function suite() {
                     {from: MilestoneState, clickOn:"milestone", to: MilestoneState},
                     {from: MilestoneState, clickOn:"link", to: LinkFirstElState},
                     {from: MilestoneState, clickOn:"fake-link", to: LinkFirstElState},
-                    {from: MilestoneState, clickOn: undefined, to: PointerState},       // Note - addMilestone() should be called; Also maybe we want to remain in Milestone?
+                    {from: MilestoneState, clickOn: undefined, to: GetMilestoneNameState},       // Note - addMilestone() should be called
     ];
 
     states.forEach(function(testCase){
@@ -58,4 +59,12 @@ export default function suite() {
             expect(this.e.state).instanceOf(testCase.to);
         });
     });
+
+    it('When clicked on the canvas being in Milestone state, a new milestone is added', function() {
+        this.e.state = new MilestoneState();
+
+        this.e.state.onClick({target: {attrs: {}}});
+
+        expect(this.e.model.milestones).length(2);
+    })
 };

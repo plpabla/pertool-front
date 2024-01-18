@@ -8,7 +8,7 @@ const stage = new Konva.Stage({
     height: sceneHeight,
     width: sceneWidth,
     container: "canvas",
-    draggable: false
+    draggable: false,
 });
 
 const layer = new Konva.Layer();

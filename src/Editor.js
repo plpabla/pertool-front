@@ -4,11 +4,13 @@ import MilestoneState from './states/Milestone';
 import PointerState from './states/Pointer';
 
 class Editor {
+    
     constructor(stage) {
         this.stage = stage;
         this.onClickCallback = this.makeOnClicker();
         this.stage.on('click', this.onClickCallback);
         this.modelLayer = new Konva.Layer();
+
         this.stage.add(this.modelLayer);
         this.toolboxLayer = new Konva.Layer();
         this.stage.add(this.toolboxLayer);
@@ -24,8 +26,12 @@ class Editor {
     makeOnClicker() {
         const editor = this;
         return function(e) {
+            // const oldState = editor.state;
+            // const newState = editor.state.onClick(e);
+            // if(oldState != newState)
+            //     console.log("stage changed");
+            // editor.state = newState;
             editor.state = editor.state.onClick(e);
-            // console.log(editor.state.getName());
         }
     }
 
