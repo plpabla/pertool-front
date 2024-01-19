@@ -1,5 +1,6 @@
 import Konva from 'konva';
 import Editor from '../Editor';
+import InputBox from '../InputBox';
 
 let sceneWidth = 900;
 let sceneHeight = 700;
@@ -26,7 +27,6 @@ layer.add(new Konva.Rect({
 const editor = new Editor(stage);
 editor.testUpdate();
 
-// toolbox.bind("pointer", () => {console.log("pointer clicked")});
-// toolbox.bind("milestone", () => {console.log("milestone clicked")});
-// toolbox.bind("link", () => {console.log("link clicked")});
-// toolbox.bind("fake-link", () => {console.log("fake-link clicked")});
+const prompt = new InputBox(layer, "Please enter something:", {x: 100, y: 200}, (txt) => {
+    console.log("text: " + txt);
+});

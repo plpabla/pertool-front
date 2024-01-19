@@ -13,6 +13,7 @@ import GetMilestoneNameState from '../states/GetMilestoneName';
 export default function suite() {
     beforeEach(function() {
         this.stage = sinon.createStubInstance(Konva.Stage);
+        this.stage.getPointerPosition = sinon.stub(function() {return {x: 0, y: 0};});
 
         this.e = new Editor(this.stage);
         this.e.toolbox.menuItems.forEach((item)=>{
@@ -46,7 +47,7 @@ export default function suite() {
         it(`given in ${testCase.from.getName()} when clicked on ${testCase.clickOn} item, then ${testCase.to.getName()} is reached`, function() {
             const menu = this.e.toolbox.menuItems;
             const itemToClick = menu.find((item)=>item.name === testCase.clickOn);
-            this.e.state = new testCase.from();
+            this.e.state = new testCase.from(this.e);
 
             if(testCase.clickOn) {
                 itemToClick.border.fire('click');
@@ -61,7 +62,7 @@ export default function suite() {
     });
 
     it('When clicked on the canvas being in Milestone state, a new milestone is added', function() {
-        this.e.state = new MilestoneState();
+        this.e.state = new MilestoneState(this.e);
 
         this.e.state.onClick({target: {attrs: {}}});
 

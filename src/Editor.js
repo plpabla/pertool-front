@@ -20,17 +20,12 @@ class Editor {
         
         this.toolbox = new Toolbox(this.toolboxLayer);
 
-        this.state = new PointerState();
+        this.state = new PointerState(this);
     }
 
     makeOnClicker() {
         const editor = this;
         return function(e) {
-            // const oldState = editor.state;
-            // const newState = editor.state.onClick(e);
-            // if(oldState != newState)
-            //     console.log("stage changed");
-            // editor.state = newState;
             editor.state = editor.state.onClick(e);
         }
     }
