@@ -5,8 +5,8 @@ import State from "./State";
 
 
 class MilestoneState extends State {
-    constructor() {
-        super();
+    constructor(context) {
+        super(context);
         console.log("Create new MilestoneState");
     }
 
@@ -16,15 +16,14 @@ class MilestoneState extends State {
         console.log("MilestoneState. Click on item " + clickedItem);
 
         if(clickedItem == undefined) {
-            // TODO: Create a new milestone (somehow)
-            return new GetMilestoneNameState();
+            return new GetMilestoneNameState(this.context);
         }
         if(clickedItem === "pointer")
-            return new PointerState();
+            return new PointerState(this.context);
         if(clickedItem === "milestone")
             return this;
         if(clickedItem === "link" || clickedItem === "fake-link")
-            return new LinkFirstElState();
+            return new LinkFirstElState(this.context);
         return this;
     }
 

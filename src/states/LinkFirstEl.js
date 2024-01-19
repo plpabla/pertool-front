@@ -1,8 +1,8 @@
 import State from "./State";
 
 class LinkFirstElState extends State {
-    constructor() {
-        super();
+    constructor(context) {
+        super(context);
         console.log("Create new LinkFirstElState");
     }
 
