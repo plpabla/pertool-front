@@ -1,5 +1,9 @@
 class InputBox {
     constructor(layer, prompt, pos, callbackFn) {
+        this.init(layer, prompt, pos, callbackFn);
+    }
+
+    init(layer, prompt, pos, callbackFn) {
         this.stageBox = layer.getStage().container().getBoundingClientRect();
         this.layer = layer;
         this.prompt = prompt;
@@ -7,18 +11,10 @@ class InputBox {
         this.callbackFn = callbackFn;
 
         this.param = {
-            fontSize: 16,
-            borderWidth: '2px',
-            borderColor: '#0af0c0',
-            backgroundColor: '#E6FEF9',
-            padding: '3px',
-            gapBetweenFields: '10px',
-            height: '50px',
         }
 
         this.draw();
     }
-
 
     draw() {
         const areaPos = {
@@ -31,26 +27,19 @@ class InputBox {
 
     createForm(areaPos) {
         const formDiv = document.createElement('div');
-        formDiv.style.width = 'fit-content';
-        formDiv.style.height = this.param.height;
-        formDiv.style.border = `${this.param.borderWidth} ${this.param.borderColor} solid`;
-        formDiv.style.padding = this.param.padding;
-        formDiv.style.backgroundColor = this.param.backgroundColor;
+        formDiv.classList.add("input-box");
         formDiv.style.position = 'absolute';
         formDiv.style.top = areaPos.y + 'px';
         formDiv.style.left = areaPos.x + 'px';
-        formDiv.style.display = "flex";
-        formDiv.style.alignItems = "center";
-        formDiv.style.gap = this.param.gapBetweenFields;
         document.body.appendChild(formDiv);
         
+
         const txt = document.createElement('label');
         txt.innerHTML = this.prompt;
         formDiv.appendChild(txt);
 
         const box = document.createElement('input');
         box.type = 'text';
-        box.size = '16';
         formDiv.appendChild(box);
         box.focus();
 

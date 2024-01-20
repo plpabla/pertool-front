@@ -1,5 +1,5 @@
-/* Base:    #fef9e6
-   Triade:  #E6FEF9       darker:  #0af0c0
+/* Base:    #fef9e6       darker:  #fcedb5
+   Triade:  #E6FEF9       darker:  #0af0c0        darker: #06846a
             #F9E6FE       darker:  #D243F7 */
 
 body {
@@ -38,4 +38,30 @@ body {
 
 button {
     box-shadow: 4px 5px 16px #000000;
+}
+
+.input-box {
+    background-color: #E6FEF9;
+    border: 2px #0af0c0 solid;
+    border-radius: 8px;
+    box-shadow: 5px 5px 10px #06846a;
+    width: fit-content;
+    height: fit-content;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-box > input[type=text] {
+    border: 1px solid #0af0c0;
+    background-color: #fef9e6;
+    width: 12em;
+    padding: 3px;
+}
+
+.input-box > input[type=text]:focus {
+    outline: none;
+    border: 3px solid #0af0c0;
+    padding: 1px;
 }
