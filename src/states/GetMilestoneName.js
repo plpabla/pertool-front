@@ -1,24 +1,21 @@
 import State from "./State";
+import InputBox from "../InputBox";
+import PointerState from "./Pointer";
+import MilestoneState from "./Milestone";
 
 class GetMilestoneNameState extends State {
     constructor(context) {
         super(context);
         console.log("Create new GetMilestoneNameState");
         const pos = context.stage.getPointerPosition();
-        const l = new Konva.Line({
-            stroke: '#df4b26',
-            strokeWidth: 5,
-            globalCompositeOperation:'source-over',
-            // round cap for smoother lines
-            lineCap: 'round',
-            lineJoin: 'round',
-            // add point twice, so we have some drawings even on a simple click
-            points: [pos.x, pos.y, pos.x, pos.y],
-          });
-        context.modelLayer.add(l);
-        // TODO
-        // const milestoneName = prompt("Milestone name");
-        // console.log(milestoneName);
+        new InputBox(context.modelLayer, "Milestone name:", pos, (y) => {
+            if(y) {
+                context.state = new MilestoneState(context);
+            } else {
+                context.state = new PointerState(context);
+                context.toolbox.select("pointer");
+            }
+        });
     }
 
     onClick(args) {

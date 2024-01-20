@@ -9,6 +9,7 @@ import MilestoneState from '../states/Milestone';
 import LinkFirstElState from '../states/LinkFirstEl';
 import LinkSecondElState from '../states/LinkSecondEl';
 import GetMilestoneNameState from '../states/GetMilestoneName';
+import InputBox from '../InputBox';
 
 export default function suite() {
     beforeEach(function() {
@@ -19,9 +20,15 @@ export default function suite() {
         this.e.toolbox.menuItems.forEach((item)=>{
             item.border.on('click', this.e.makeOnClicker());
         });
+
+        this.InputBoxStub = sinon.stub(InputBox.prototype, 'init');
+        this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
+            callbackFn("name entered in the input box");
+        });
     });
 
     afterEach(function() {
+        this.InputBoxStub.restore();
     });
 
 
@@ -56,16 +63,51 @@ export default function suite() {
                 this.e.state = this.e.state.onClick({target: {attrs: {}}});
             }
 
-    
             expect(this.e.state).instanceOf(testCase.to);
         });
     });
 
-    it('When clicked on the canvas being in Milestone state, a new milestone is added', function() {
+    it('When clicked on the canvas while in Milestone state, input box object is created', function() {
+        this.e.state = new MilestoneState(this.e);
+       
+        this.e.state.onClick({target: {attrs: {}}});
+
+        expect(this.InputBoxStub.called).to.be.true;
+    });
+
+    it('When clicked on the canvas while in Milestone state and passed a string, a milestone state is reached', function() {
+        this.e.state = new MilestoneState(this.e);
+       
+        this.e.state.onClick({target: {attrs: {}}});
+
+        expect(this.e.state).instanceOf(MilestoneState);
+    });
+
+    it('When clicked on the canvas while in Milestone state and passed an empty string, a pointer state is reached', function() {
+        this.e.state = new MilestoneState(this.e);
+        this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
+            callbackFn("");
+        });
+       
+        this.e.state.onClick({target: {attrs: {}}});
+
+        expect(this.e.state).instanceOf(PointerState);
+    });
+
+    it('When clicked on the canvas while in Milestone state and passed an empty string, a pointer state is reached so the border is around that component', function() {
+        this.e.state = new MilestoneState(this.e);
+        const pointer = this.e.toolbox.menuItems.find((item)=>item.name === "pointer");
+       
+        this.e.state.onClick({target: {attrs: {}}});
+
+        expect(pointer.border.strokeEnabled()).to.be.true;
+    });
+
+    it('When clicked on the canvas while in Milestone state and passed a string, a milestone is added', function() {
         this.e.state = new MilestoneState(this.e);
 
         this.e.state.onClick({target: {attrs: {}}});
 
         expect(this.e.model.milestones).length(2);
-    })
+    });
 };
