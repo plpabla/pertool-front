@@ -30,20 +30,6 @@ class Editor {
         }
     }
 
-    // onClick(e) {
-    //     console.log("uuuuuuuuuuuuu")
-    //     console.log(e);
-    //     console.log(this);
-    //     console.log("<<<uuu")
-    //     // this.state = this.state.onClick(e);
-    //     // const target = e.target;
-    //     // const clickedItem = target.attrs.name;
-    //     // if(clickedItem == undefined) {
-    //     //     console.log(target);
-    //     // }
-    //     // console.log(clickedItem + " clicked. TODO - add processing");
-    // }
-
     render() {
         this.model.milestones.forEach(m => this.drawMilestone(m));
     }
