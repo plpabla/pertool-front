@@ -1,4 +1,5 @@
 import Konva from 'konva';
+import Editor from './Editor';
 
 let sceneWidth = 1000;
 let sceneHeight = 700;
@@ -45,6 +46,8 @@ layer.add(new Konva.Rect({
     strokeWidth: 2
 }));
 
+const editor = new Editor(stage);
+
 const bubbles = [];
 let connections = [];
 bubbles.push(new Bubble(100,300, "A"));
@@ -64,15 +67,6 @@ connections = connections.filter(c=>c)
 
 bubbles.forEach(b=>layer.add(b.image))
 connections.forEach(c=>layer.add(c))
-
-import Toolbox from './Toolbox';
-let toolbox = new Toolbox(layer);
-toolbox.bind("pointer", () => {console.log("pointer clicked")});
-toolbox.bind("milestone", () => {console.log("milestone clicked")});
-toolbox.bind("link", () => {console.log("link clicked")});
-toolbox.bind("fake-link", () => {console.log("fake-link clicked")});
-
-
 
 function createBubbleImage(x,y,text) {
     const r = 30;
