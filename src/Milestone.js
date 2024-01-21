@@ -28,7 +28,8 @@ class Milestone extends GraphicalElement {
     }
 
     static createImg(x, y, name) {
-        const param = { "mainColor":"black", 
+        const param = { "name": "milestone-element",
+                        "mainColor": "black", 
                         "secondaryColor": "red",
                         "radius": 30};
 
@@ -39,22 +40,26 @@ class Milestone extends GraphicalElement {
             fill: "white",
             stroke: param.mainColor,
             radius: r,
+            name: param.name
         })
     
         const l1 = new Konva.Line({
             points: [-Math.sin(Math.PI/4)*r, -Math.cos(Math.PI/4)*r, Math.sin(Math.PI/4)*r, Math.cos(Math.PI/4)*r],
-            stroke: param.secondaryColor
+            stroke: param.secondaryColor,
+            name: param.name
         })
         const l2 = new Konva.Line({
             points: [Math.sin(Math.PI/4)*r, -Math.cos(Math.PI/4)*r, -Math.sin(Math.PI/4)*r, Math.cos(Math.PI/4)*r],
-            stroke: param.secondaryColor
+            stroke: param.secondaryColor,
+            name: param.name
         })
     
         const txt = new Konva.Text({
             x: 0,
             fontSize: 16,
             y: -0.7*r,
-            text: name
+            text: name,
+            name: param.name
         })
         // Center
         txt.offsetX(txt.width() / 2);
@@ -62,7 +67,7 @@ class Milestone extends GraphicalElement {
         const img = new Konva.Group({
             x: x,
             y: y,
-            draggable: true
+            draggable: true,
         })
     
         img.add(c);

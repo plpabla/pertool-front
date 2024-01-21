@@ -14,14 +14,21 @@ class LinkFirstElState extends State {
         const clickedItem = target.attrs.name;
         console.log("LinkFirstElState. Click on item " + clickedItem);
 
-        if(clickedItem == undefined)
+        if(clickedItem == undefined) {
             return this;
-        if(clickedItem === "pointer")
+        }
+        if(clickedItem === "pointer") {
             return new PointerState(this.context);
-        if(clickedItem === "milestone")
+        }
+        if(clickedItem === "milestone") {
             return new MilestoneState(this.context);
-        if(clickedItem === "link" || clickedItem === "fake-link")
+        }
+        if(clickedItem === "link" || clickedItem === "fake-link") {
             return this;
+        }
+        if(clickedItem === "milestone-element") {
+            return new LinkSecondElState(this.context);
+        }
         return this;
     }
 

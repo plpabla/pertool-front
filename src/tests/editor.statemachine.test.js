@@ -63,12 +63,8 @@ export default function suite() {
             const itemToClick = menu.find((item)=>item.name === testCase.clickOn);
             this.e.state = new testCase.from(this.e);
 
-            if(testCase.clickOn) {
-                itemToClick.border.fire('click');
-            } else {
-                // For undefined, trigger callback manually
-                this.e.state = this.e.state.onClick({target: {attrs: {}}});
-            }
+            // Note: I can also trigger click manaully if I want: itemToClick.border.fire('click');
+            this.e.state = this.e.state.onClick({target: {attrs: {name: testCase.clickOn}}});
 
             expect(this.e.state).instanceOf(testCase.to);
         });
