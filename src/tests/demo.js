@@ -25,8 +25,3 @@ layer.add(new Konva.Rect({
 }));
 
 const editor = new Editor(stage);
-editor.testUpdate();
-
-// const prompt = new InputBox(layer, "Please enter something:", {x: 100, y: 200}, (txt) => {
-//     console.log("text: " + txt);
-// });

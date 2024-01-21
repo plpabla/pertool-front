@@ -43,12 +43,6 @@ class Editor {
         const m = this.model.getMilestoneById(id);
         this.modelLayer.add(m.img);
     }
-
-    testUpdate() {
-        this.addMilestone(100, 400, "a");
-        this.addMilestone(400, 500, "y");
-        this.addMilestone(300, 100, "xD");
-    }
 }
 
 export default Editor;

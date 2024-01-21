@@ -6,6 +6,30 @@ body {
     background-color: #fef9e6;
 }
 
+.btn {
+    color: #fef9e6;
+}
+
+.btn-primary {
+    background-color: #06846a;
+}
+
+.btn-primary:hover {
+    background-color: #07ab88;
+    transition-duration: 0.4s;
+}
+
+.btn-secondary {
+    color:#000000;
+    background-color: #F9E6FE;
+}
+
+.btn-secondary:hover {
+    color:#000000;
+    background-color: #D243F7;
+    transition-duration: 0.4s;
+}
+
 #img-logo {
     min-width: 160px;
     max-width: 240px;

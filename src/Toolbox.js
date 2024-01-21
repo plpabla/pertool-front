@@ -37,7 +37,13 @@ class Toolbox extends GraphicalElement {
             stroke: "black",
             fill: "#E6FEF9",
             strokeWidth: 0,
-            name: "toolbox"
+            name: "toolbox",
+            shadowColor: 'black',
+            shadowBlur: 30,
+            shadowOffsetX: 10,
+            shadowOffsetY: 0, 
+            shadowOpacity: 0.6,
+            shadowEnabled: true,
         });
         this.layer.add(border);
     }
@@ -48,12 +54,12 @@ class Toolbox extends GraphicalElement {
             y:y,
             width: this.param.menuItemWidth,
             height: this.param.menuItemHeight,
-            fill: null,
             stroke: this.param.secondaryColor,
             strokeWidth: 2,
             strokeEnabled: false,
+            fill: null,
             opacity: 1,
-            name: name
+            name: name,
         });
 
         // console.log(`Adding item ${name} at pos (${x}, ${y})`);

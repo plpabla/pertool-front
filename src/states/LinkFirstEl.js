@@ -1,3 +1,6 @@
+import PointerState from "./Pointer";
+import MilestoneState from "./Milestone";
+import LinkSecondElState from "./LinkSecondEl";
 import State from "./State";
 
 class LinkFirstElState extends State {
@@ -10,6 +13,15 @@ class LinkFirstElState extends State {
         const target = args.target;
         const clickedItem = target.attrs.name;
         console.log("LinkFirstElState. Click on item " + clickedItem);
+
+        if(clickedItem == undefined)
+            return this;
+        if(clickedItem === "pointer")
+            return new PointerState(this.context);
+        if(clickedItem === "milestone")
+            return new MilestoneState(this.context);
+        if(clickedItem === "link" || clickedItem === "fake-link")
+            return this;
         return this;
     }
 

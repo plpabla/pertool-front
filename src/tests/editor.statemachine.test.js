@@ -47,7 +47,14 @@ export default function suite() {
                     {from: MilestoneState, clickOn:"milestone", to: MilestoneState},
                     {from: MilestoneState, clickOn:"link", to: LinkFirstElState},
                     {from: MilestoneState, clickOn:"fake-link", to: LinkFirstElState},
-                    {from: MilestoneState, clickOn: undefined, to: GetMilestoneNameState},       // Note - addMilestone() should be called
+                    {from: MilestoneState, clickOn: undefined, to: GetMilestoneNameState},
+
+                    {from: LinkFirstElState, clickOn:"pointer", to: PointerState},
+                    {from: LinkFirstElState, clickOn:"milestone", to: MilestoneState},
+                    {from: LinkFirstElState, clickOn:"link", to: LinkFirstElState},
+                    {from: LinkFirstElState, clickOn:"fake-link", to: LinkFirstElState},
+                    {from: LinkFirstElState, clickOn: undefined, to: LinkFirstElState},
+                    {from: LinkFirstElState, clickOn: "milestone-element", to: LinkSecondElState},
     ];
 
     states.forEach(function(testCase){

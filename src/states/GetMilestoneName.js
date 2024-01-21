@@ -10,6 +10,7 @@ class GetMilestoneNameState extends State {
         const pos = context.stage.getPointerPosition();
         new InputBox(context.modelLayer, "Milestone name:", pos, (y) => {
             if(y) {
+                context.addMilestone(pos.x, pos.y, y);
                 context.state = new MilestoneState(context);
             } else {
                 context.state = new PointerState(context);
