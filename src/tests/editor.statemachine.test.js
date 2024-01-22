@@ -60,11 +60,21 @@ export default function suite() {
     states.forEach(function(testCase){
         it(`given in ${testCase.from.getName()} when clicked on ${testCase.clickOn} item, then ${testCase.to.getName()} is reached`, function() {
             const menu = this.e.toolbox.menuItems;
-            const itemToClick = menu.find((item)=>item.name === testCase.clickOn);
             this.e.state = new testCase.from(this.e);
 
-            // Note: I can also trigger click manaully if I want: itemToClick.border.fire('click');
-            this.e.state = this.e.state.onClick({target: {attrs: {name: testCase.clickOn}}});
+            this.e.state = this.e.state.onClick({
+                target: {
+                    parent: {
+                        attrs: {
+                            objInstance: {
+                                getName: function() {return "test"; }
+                            }
+                        }
+                    }, 
+                    attrs: {
+                        name: testCase.clickOn
+                    }}
+                });
 
             expect(this.e.state).instanceOf(testCase.to);
         });

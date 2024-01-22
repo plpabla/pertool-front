@@ -27,7 +27,7 @@ class LinkFirstElState extends State {
             return this;
         }
         if(clickedItem === "milestone-element") {
-            return new LinkSecondElState(this.context);
+            return new LinkSecondElState(this.context, target.parent.attrs.objInstance);
         }
         return this;
     }

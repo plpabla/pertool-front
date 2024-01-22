@@ -13,7 +13,7 @@ class Toolbox extends GraphicalElement {
                         "menuItemWidth": 64,
                         "menuItemHeight": 64,
                         "paddingX": 10,
-                        "paddingY": 10,
+                        "paddingY": 20,
                         "mainColor": '#D243F7',             // '#D243F7'
                         "secondaryColor": "#0af0c0"}
         this.draw();
@@ -23,6 +23,7 @@ class Toolbox extends GraphicalElement {
         this.createMenuItems();
         this.drawBorder();
         this.menuItems.forEach(el => {
+            this.layer.add(el.bottom);
             this.layer.add(el.img);
             this.layer.add(el.border);
         })
@@ -49,6 +50,25 @@ class Toolbox extends GraphicalElement {
     }
 
     createMenuField(x, y, name, img) {
+        const bottomLayerForShadow = new Konva.Rect({
+            x:x,
+            y:y,
+            width: this.param.menuItemWidth,
+            height: this.param.menuItemHeight,
+            stroke: this.param.secondaryColor,
+            strokeWidth: 2,
+            strokeEnabled: false,
+            fill: '#E6FEF9',
+            opacity: 1,
+            name: name,
+            shadowColor: 'black',
+            shadowBlur: 15,
+            shadowOffsetX: 5,
+            shadowOffsetY: 5, 
+            shadowOpacity: 1,
+            shadowEnabled: false,
+        });
+
         const border = new Konva.Rect({
             x:x,
             y:y,
@@ -60,16 +80,22 @@ class Toolbox extends GraphicalElement {
             fill: null,
             opacity: 1,
             name: name,
+            bottomLayer: bottomLayerForShadow
         });
 
         // console.log(`Adding item ${name} at pos (${x}, ${y})`);
         border.on('click', (e) => {
-            this.menuItems.forEach(item => item.border.strokeEnabled(false));
+            this.menuItems.forEach(item => {
+                item.border.strokeEnabled(false);
+                item.border.attrs.bottomLayer.shadowEnabled(false);
+            });
             const item = e.currentTarget;
             item.strokeEnabled(true);
+            item.attrs.bottomLayer.shadowEnabled(true);
         });
 
         const item = {
+            "bottom": bottomLayerForShadow,
             "border": border,
             "img": img.move({x: x, y: y}),
             "name": name

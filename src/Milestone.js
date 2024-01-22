@@ -7,7 +7,7 @@ class Milestone extends GraphicalElement {
         this.name = name;
         this.sourceLinks = [];
         this.destinationLinks = [];
-        this.img = Milestone.createImg(x,y,name);
+        this.img = Milestone.createImg(x,y,name,this);
     }
 
     addLinkWhereIAmDestination(l) {
@@ -27,7 +27,7 @@ class Milestone extends GraphicalElement {
         return [pos.x, pos.y];
     }
 
-    static createImg(x, y, name) {
+    static createImg(x, y, name, instance) {
         const param = { "name": "milestone-element",
                         "mainColor": "black", 
                         "secondaryColor": "red",
@@ -46,12 +46,12 @@ class Milestone extends GraphicalElement {
         const l1 = new Konva.Line({
             points: [-Math.sin(Math.PI/4)*r, -Math.cos(Math.PI/4)*r, Math.sin(Math.PI/4)*r, Math.cos(Math.PI/4)*r],
             stroke: param.secondaryColor,
-            name: param.name
+            name: param.name,
         })
         const l2 = new Konva.Line({
             points: [Math.sin(Math.PI/4)*r, -Math.cos(Math.PI/4)*r, -Math.sin(Math.PI/4)*r, Math.cos(Math.PI/4)*r],
             stroke: param.secondaryColor,
-            name: param.name
+            name: param.name,
         })
     
         const txt = new Konva.Text({
@@ -59,7 +59,7 @@ class Milestone extends GraphicalElement {
             fontSize: 16,
             y: -0.7*r,
             text: name,
-            name: param.name
+            name: param.name,
         })
         // Center
         txt.offsetX(txt.width() / 2);
@@ -68,6 +68,7 @@ class Milestone extends GraphicalElement {
             x: x,
             y: y,
             draggable: true,
+            objInstance: instance
         })
     
         img.add(c);
