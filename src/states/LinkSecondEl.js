@@ -5,6 +5,7 @@ class LinkSecondElState extends State {
         super(context);
         console.log("Create new LinkSecondElState from " + milestone1.getName());
         this.milestone1 = milestone1;
+        this.linkArrow = null;
         this.createArrowFollowingCursor();
     }
 
@@ -12,26 +13,28 @@ class LinkSecondElState extends State {
         const target = args.target;
         const clickedItem = target.attrs.name;
         console.log("LinkSecondElState. Click on item " + clickedItem);
+        this.context.stage.off('mousemove.arrowFollowingCursor touchmove.arrowFollowingCursor');
         return this;
     }
 
     createArrowFollowingCursor() {
         const cursorPos = this.context.stage.getPointerPosition();
-        const a = new Konva.Arrow({
+        this.linkArrow = new Konva.Arrow({
             points: [this.milestone1.img.attrs.x, this.milestone1.img.attrs.y, 
                 cursorPos.x, cursorPos.y],
             stroke: "black"
         });
-        this.context.stage.on('mousemove touchmove', (e) => {
-            console.log(e.evt);
-            a.attrs.points[0] = this.milestone1.img.attrs.x;
-            a.attrs.points[1] = this.milestone1.img.attrs.y;
-            a.attrs.points[2] = e.evt.x;
-            a.attrs.points[3] = e.evt.y;
-            a.draw();
-            console.log(`Move to (${this.milestone1.img.attrs.x}, ${this.milestone1.img.attrs.y}) -> (${e.evt.x}, ${e.evt.y})`);
+        const stageBox = this.context.stage.container().getBoundingClientRect();
+        const offset = {
+            x: stageBox.left,
+            y: stageBox.top 
+        };
+
+        this.context.stage.on('mousemove.arrowFollowingCursor touchmove.arrowFollowingCursor', (e) => {
+            const pos = [this.milestone1.img.attrs.x, this.milestone1.img.attrs.y, e.evt.x-offset.x, e.evt.y-offset.y];
+            this.linkArrow.points(pos);
         })
-        this.context.modelLayer.add(a);
+        this.context.modelLayer.add(this.linkArrow);
     }
 
     static getName() {
