@@ -10,11 +10,13 @@ import LinkFirstElState from '../states/LinkFirstEl';
 import LinkSecondElState from '../states/LinkSecondEl';
 import GetMilestoneNameState from '../states/GetMilestoneName';
 import InputBox from '../InputBox';
+import Milestone from '../Milestone';
 
 export default function suite() {
     beforeEach(function() {
         this.stage = sinon.createStubInstance(Konva.Stage);
         this.stage.getPointerPosition = sinon.stub(function() {return {x: 0, y: 0};});
+        this.stage.getRelativePointerPosition = sinon.stub(function() {return {x: 0, y: 0};});
 
         this.e = new Editor(this.stage);
         this.e.toolbox.menuItems.forEach((item)=>{
@@ -67,7 +69,13 @@ export default function suite() {
                     parent: {
                         attrs: {
                             objInstance: {
-                                getName: function() {return "test"; }
+                                getName: function() {return "test"; },
+                                img: {
+                                    attrs: {
+                                        x: 0,
+                                        y: 0
+                                    }
+                                }
                             }
                         }
                     }, 
