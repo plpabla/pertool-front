@@ -7,6 +7,7 @@ class LinkSecondElState extends State {
         this.milestone1 = milestone1;
         this.linkArrow = null;
         this.createArrowFollowingCursor();
+        this.createOnKeyPressListener();
     }
 
     onClick(args) {
@@ -36,6 +37,27 @@ class LinkSecondElState extends State {
         })
         this.context.modelLayer.add(this.linkArrow);
     }
+
+    createOnKeyPressListener() {
+        document.addEventListener("keydown", processKeyDownEvent);
+
+        const self = processKeyDownEvent;
+        const this_ = this;
+        function processKeyDownEvent(e) {
+            if(e.key==="Escape") {
+                document.removeEventListener("keydown", self);
+                this_.cancel();
+            }
+        }
+    }
+
+    cancel() {
+        this.context.stage.off('mousemove.arrowFollowingCursor touchmove.arrowFollowingCursor');
+        this.linkArrow.destroy();
+        console.error("TODO - change state");
+    }
+
+
 
     static getName() {
         return "LinkSecondElState";
