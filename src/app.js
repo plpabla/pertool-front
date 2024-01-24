@@ -48,26 +48,6 @@ layer.add(new Konva.Rect({
 
 const editor = new Editor(stage);
 
-const bubbles = [];
-let connections = [];
-bubbles.push(new Bubble(100,300, "A"));
-bubbles.push(new Bubble(400,300, "B"));
-bubbles.push(new Bubble(600,200, "C1"));
-bubbles.push(new Bubble(700,500, "C2"));
-bubbles.push(new Bubble(800,300, "x"));
-
-connections.push(connectBubbles(bubbles, "A", "Cx"))
-connections.push(connectBubbles(bubbles, "A", "B"))
-connections.push(connectBubbles(bubbles, "B", "C1"))
-connections.push(connectBubbles(bubbles, "B", "C2"))
-connections.push(connectBubbles(bubbles, "C1", "x"))
-connections.push(connectBubbles(bubbles, "C2", "x", true))
-// Remove undefined values
-connections = connections.filter(c=>c)
-
-bubbles.forEach(b=>layer.add(b.image))
-connections.forEach(c=>layer.add(c))
-
 function createBubbleImage(x,y,text) {
     const r = 30;
     const c = new Konva.Circle({

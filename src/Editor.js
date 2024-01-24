@@ -15,6 +15,9 @@ class Editor {
         this.toolboxLayer = new Konva.Layer();
         this.stage.add(this.toolboxLayer);
 
+        // how to do it correctly?
+        // document.addEventListener('keydown', function (e) {console.log(e.keyCode)});
+
         this.model = new Model();
         this.render();
         
