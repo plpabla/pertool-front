@@ -1,3 +1,6 @@
+import PointerState from "./Pointer";
+import MilestoneState from "./Milestone";
+import LinkFirstElState from "./LinkFirstEl";
 import State from "./State";
 
 class LinkSecondElState extends State {
@@ -14,7 +17,28 @@ class LinkSecondElState extends State {
         const target = args.target;
         const clickedItem = target.attrs.name;
         console.log("LinkSecondElState. Click on item " + clickedItem);
+
+        if(clickedItem === undefined) {
+            return this;
+        }
+
         this.context.stage.off('mousemove.arrowFollowingCursor touchmove.arrowFollowingCursor');
+        this.cancel();
+
+        if(clickedItem === "pointer") {
+            return new PointerState(this.context);
+        }
+        if(clickedItem === "milestone") {
+            this.context.toolbox.select("milestone");
+            return new MilestoneState(this.context);
+        }
+        if(clickedItem === "link" || clickedItem === "fake-link") {
+            this.context.toolbox.select("link");
+            return new LinkFirstElState(this.context);
+        }
+        if(clickedItem === "milestone-element") {
+            // TODO: Check if not the same - if not, create a link
+        }
         return this;
     }
 
@@ -36,6 +60,8 @@ class LinkSecondElState extends State {
             this.linkArrow.points(pos);
         })
         this.context.modelLayer.add(this.linkArrow);
+        // move back so I can still hit milestones
+        this.linkArrow.zIndex(0);
     }
 
     createOnKeyPressListener() {
@@ -54,10 +80,9 @@ class LinkSecondElState extends State {
     cancel() {
         this.context.stage.off('mousemove.arrowFollowingCursor touchmove.arrowFollowingCursor');
         this.linkArrow.destroy();
-        console.error("TODO - change state");
+        this.context.state = new PointerState(this.context);
+        this.context.toolbox.select("pointer");
     }
-
-
 
     static getName() {
         return "LinkSecondElState";

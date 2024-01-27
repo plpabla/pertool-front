@@ -57,12 +57,18 @@ export default function suite() {
                     {from: LinkFirstElState, clickOn:"fake-link", to: LinkFirstElState},
                     {from: LinkFirstElState, clickOn: undefined, to: LinkFirstElState},
                     {from: LinkFirstElState, clickOn: "milestone-element", to: LinkSecondElState},
+
+                    {from: LinkSecondElState, clickOn:"pointer", to: PointerState},
+                    {from: LinkSecondElState, clickOn:"milestone", to: MilestoneState},
+                    {from: LinkSecondElState, clickOn:"link", to: LinkFirstElState},
+                    {from: LinkSecondElState, clickOn: undefined, to: LinkSecondElState},
+                    // {from: LinkSecondElState, clickOn: "milestone-element", to: GetTaskLengthState},
     ];
 
     states.forEach(function(testCase){
         it(`given in ${testCase.from.getName()} when clicked on ${testCase.clickOn} item, then ${testCase.to.getName()} is reached`, function() {
             const menu = this.e.toolbox.menuItems;
-            this.e.state = new testCase.from(this.e);
+            this.e.state = new testCase.from(this.e, new Milestone(10,10,"test"));
 
             this.e.state = this.e.state.onClick({
                 target: {
