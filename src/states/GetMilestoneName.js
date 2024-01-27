@@ -7,10 +7,11 @@ class GetMilestoneNameState extends State {
     constructor(context) {
         super(context);
         console.log("Create new GetMilestoneNameState");
-        const pos = context.stage.getPointerPosition();
-        new InputBox(context.modelLayer, "Milestone name:", pos, (y) => {
+        const posOnCanvas = context.stage.getPointerPosition();
+        const posAbsolute = context.stage.getRelativePointerPosition();
+        new InputBox(context.modelLayer, "Milestone name:", posOnCanvas, (name) => {
             if(y) {
-                context.addMilestone(pos.x, pos.y, y);
+                context.addMilestone(posAbsolute.x, posAbsolute.y, name);
                 context.state = new MilestoneState(context);
             } else {
                 context.state = new PointerState(context);
