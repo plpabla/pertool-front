@@ -1,7 +1,6 @@
 import Model from './Model';
 import Toolbox from './Toolbox';
-import MilestoneState from './states/Milestone';
-import PointerState from './states/Pointer';
+import PointerState from './states/PointerState';
 
 class Editor {
     
