@@ -15,9 +15,6 @@ class Editor {
         this.toolboxLayer = new Konva.Layer();
         this.stage.add(this.toolboxLayer);
 
-        // how to do it correctly?
-        // document.addEventListener('keydown', function (e) {console.log(e.keyCode)});
-
         this.model = new Model();
         this.render();
         
@@ -34,6 +31,8 @@ class Editor {
     }
 
     render() {
+        // Note: Right now it is used only to draw intitial milestone
+        // later we will use it to render full diagram after loading it
         this.model.milestones.forEach(m => this.drawMilestone(m));
     }
 
