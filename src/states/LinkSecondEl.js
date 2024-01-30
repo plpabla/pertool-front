@@ -6,7 +6,6 @@ import State from "./State";
 class LinkSecondElState extends State {
     constructor(context, milestone1) {
         super(context);
-        console.log("Create new LinkSecondElState from " + milestone1.getName());
         this.milestone1 = milestone1;
         this.linkArrow = null;
         this.createArrowFollowingCursor();
@@ -16,7 +15,6 @@ class LinkSecondElState extends State {
     onClick(args) {
         const target = args.target;
         const clickedItem = target.attrs.name;
-        console.log("LinkSecondElState. Click on item " + clickedItem);
 
         if(clickedItem === undefined) {
             return this;

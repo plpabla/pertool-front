@@ -137,4 +137,32 @@ export default function suite() {
 
         expect(this.e.model.milestones).length(2);
     });
+
+    it('When clicked on the same milestone in LinkSecondElState, we remain in the same state', function() {
+        this.skip();
+        const milestone = new Milestone(10,10,"test");
+        this.e.state = new LinkSecondElState(this.e, milestone);
+
+        this.e.state = this.e.state.onClick({
+            target: {
+                parent: {
+                    attrs: {
+                        objInstance: {
+                            getName: function() {return "test"; },
+                            img: {
+                                attrs: {
+                                    x: 0,
+                                    y: 0
+                                }
+                            }
+                        }
+                    }
+                }, 
+                attrs: {
+                    name: "milestone"
+                }}
+            });
+
+        expect(this.e.state).instanceOf(LinkSecondElState);
+    });
 };

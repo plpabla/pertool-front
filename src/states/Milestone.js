@@ -7,13 +7,11 @@ import State from "./State";
 class MilestoneState extends State {
     constructor(context) {
         super(context);
-        console.log("Create new MilestoneState");
     }
 
     onClick(args) {
         const target = args.target;
         const clickedItem = target.attrs.name;
-        console.log("MilestoneState. Click on item " + clickedItem);
 
         if(clickedItem == undefined) {
             return new GetMilestoneNameState(this.context);

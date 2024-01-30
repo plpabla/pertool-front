@@ -6,7 +6,6 @@ import MilestoneState from "./Milestone";
 class GetMilestoneNameState extends State {
     constructor(context) {
         super(context);
-        console.log("Create new GetMilestoneNameState");
         const posOnCanvas = context.stage.getPointerPosition();
         const posAbsolute = context.stage.getRelativePointerPosition();
         new InputBox(context.modelLayer, "Milestone name:", posOnCanvas, (name) => {
@@ -23,8 +22,6 @@ class GetMilestoneNameState extends State {
     onClick(args) {
         const target = args.target;
         const clickedItem = target.attrs.name;
-        console.log("GetMilestoneNameState. Click on item " + clickedItem);
-        console.log(this.context);
         return this;
     }
 
