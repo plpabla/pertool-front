@@ -42,19 +42,16 @@ export default function suite() {
     const states = [{from: PointerState, clickOn:"pointer", to: PointerState},
                     {from: PointerState, clickOn:"milestone", to: MilestoneState},
                     {from: PointerState, clickOn:"link", to: LinkFirstElState},
-                    {from: PointerState, clickOn:"fake-link", to: LinkFirstElState},
                     {from: PointerState, clickOn: undefined, to: PointerState},
 
                     {from: MilestoneState, clickOn:"pointer", to: PointerState},
                     {from: MilestoneState, clickOn:"milestone", to: MilestoneState},
                     {from: MilestoneState, clickOn:"link", to: LinkFirstElState},
-                    {from: MilestoneState, clickOn:"fake-link", to: LinkFirstElState},
                     {from: MilestoneState, clickOn: undefined, to: GetMilestoneNameState},
 
                     {from: LinkFirstElState, clickOn:"pointer", to: PointerState},
                     {from: LinkFirstElState, clickOn:"milestone", to: MilestoneState},
                     {from: LinkFirstElState, clickOn:"link", to: LinkFirstElState},
-                    {from: LinkFirstElState, clickOn:"fake-link", to: LinkFirstElState},
                     {from: LinkFirstElState, clickOn: undefined, to: LinkFirstElState},
                     {from: LinkFirstElState, clickOn: "milestone-element", to: LinkSecondElState},
 

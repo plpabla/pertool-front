@@ -30,7 +30,7 @@ class LinkSecondElState extends State {
             this.context.toolbox.select("milestone");
             return new MilestoneState(this.context);
         }
-        if(clickedItem === "link" || clickedItem === "fake-link") {
+        if(clickedItem === "link") {
             this.context.toolbox.select("link");
             return new LinkFirstElState(this.context);
         }

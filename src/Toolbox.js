@@ -37,8 +37,6 @@ class Toolbox {
         shiftY();
         this.createMenuField(this.param.paddingX, y, "link", this.createImgArrow());
         shiftY();
-        this.createMenuField(this.param.paddingX, y, "fake-link", this.createImgArrowDashed());
-        shiftY();
 
         // Select first item
         this.menuItems[0].border.fire('click');
@@ -171,12 +169,6 @@ class Toolbox {
             fill: this.param.mainColor,
             strokeWidth: 4,
         })
-    }
-
-    createImgArrowDashed() {
-        const a = this.createImgArrow();
-        a.dash([5, 3]);
-        return a;
     }
 
     createImgPlaceholder() {

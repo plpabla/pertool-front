@@ -17,7 +17,7 @@ class PointerState extends State {
             return this;
         if(clickedItem === "milestone")
             return new MilestoneState(this.context);
-        if(clickedItem === "link" || clickedItem === "fake-link")
+        if(clickedItem === "link")
             return new LinkFirstElState(this.context);
         return this;
     }

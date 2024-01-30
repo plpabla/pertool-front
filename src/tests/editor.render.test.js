@@ -41,11 +41,11 @@ export default function suite() {
         sinon.assert.notCalled(spy);
     });
 
-    it('when created, onClick fn creator is called 5 times (as we create Editor and have 4 items)', function() {
-        expect(this.onClickStub.callCount).to.equal(5);
+    it('when created, onClick fn creator is called 4 times (as we create Editor and have 3 items)', function() {
+        expect(this.onClickStub.callCount).to.equal(4);
     });
 
-    ["pointer", "milestone", "link", "fake-link"].forEach(function(name) {
+    ["pointer", "milestone", "link"].forEach(function(name) {
         it('when clicked on ' + name + ', onMenuItemChange() is called with target "' + name + '"', function() {
             const menu = this.e.toolbox.menuItems;
             const menuItem = menu.find((item)=>item.name === name);

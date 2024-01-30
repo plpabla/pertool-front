@@ -30,8 +30,8 @@ export default function suite() {
         expect(this.t.layer).instanceOf(Konva.Layer);
     });
 
-    it('contains initially 4 fields', function() {
-        expect(this.t.menuItems).length(4);
+    it('contains initially 3 fields', function() {
+        expect(this.t.menuItems).length(3);
     });
 
     it('create menu field creates menu item', function() {
