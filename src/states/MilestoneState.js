@@ -1,6 +1,6 @@
-import PointerState from "./Pointer";
-import LinkFirstElState from "./LinkFirstEl";
-import GetMilestoneNameState from '../states/GetMilestoneName';
+import PointerState from "./PointerState";
+import LinkFirstElState from "./LinkFirstElState";
+import GetMilestoneNameState from './GetMilestoneNameState';
 import State from "./State";
 
 

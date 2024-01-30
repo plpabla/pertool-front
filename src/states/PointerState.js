@@ -1,5 +1,5 @@
-import LinkFirstElState from "./LinkFirstEl";
-import MilestoneState from "./Milestone";
+import LinkFirstElState from "./LinkFirstElState";
+import MilestoneState from "./MilestoneState";
 import State from "./State";
 
 class PointerState extends State {

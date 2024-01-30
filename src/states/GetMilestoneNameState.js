@@ -1,7 +1,7 @@
 import State from "./State";
 import InputBox from "../InputBox";
-import PointerState from "./Pointer";
-import MilestoneState from "./Milestone";
+import PointerState from "./PointerState";
+import MilestoneState from "./MilestoneState";
 
 class GetMilestoneNameState extends State {
     constructor(context) {

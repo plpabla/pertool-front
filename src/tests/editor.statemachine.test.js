@@ -4,11 +4,11 @@ const expect = chai.expect;
 import Editor from '../Editor';
 import Konva from 'konva';
 import sinon from 'sinon';
-import PointerState from '../states/Pointer';
-import MilestoneState from '../states/Milestone';
-import LinkFirstElState from '../states/LinkFirstEl';
-import LinkSecondElState from '../states/LinkSecondEl';
-import GetMilestoneNameState from '../states/GetMilestoneName';
+import PointerState from '../states/PointerState';
+import MilestoneState from '../states/MilestoneState';
+import LinkFirstElState from '../states/LinkFirstElState';
+import LinkSecondElState from '../states/LinkSecondElState';
+import GetMilestoneNameState from '../states/GetMilestoneNameState';
 import InputBox from '../InputBox';
 import Milestone from '../Milestone';
 
