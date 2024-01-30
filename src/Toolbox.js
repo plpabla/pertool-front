@@ -26,24 +26,26 @@ class Toolbox {
         })
     }
 
-    drawBorder() {
-        const border = new Konva.Rect({
-            x:0,
-            y:0,
-            width: this.param.menuItemWidth + 2*this.param.paddingX,
-            height: this.param.stageHeight,
-            stroke: "black",
-            fill: "#E6FEF9",
-            strokeWidth: 0,
-            name: "toolbox",
-            shadowColor: 'black',
-            shadowBlur: 30,
-            shadowOffsetX: 10,
-            shadowOffsetY: 0, 
-            shadowOpacity: 0.6,
-            shadowEnabled: true,
-        });
-        this.layer.add(border);
+    createMenuItems() {
+        const this_ = this;   // will be used for closure
+        this.menuItems = [];
+        let y = this.param.paddingY;
+
+        this.createMenuField(this.param.paddingX, y, "pointer", this.createImgPointer());
+        shiftY();        
+        this.createMenuField(this.param.paddingX, y, "milestone", this.createImgMilestone());
+        shiftY();
+        this.createMenuField(this.param.paddingX, y, "link", this.createImgArrow());
+        shiftY();
+        this.createMenuField(this.param.paddingX, y, "fake-link", this.createImgArrowDashed());
+        shiftY();
+
+        // Select first item
+        this.menuItems[0].border.fire('click');
+
+        function shiftY() {
+            y += this_.param.menuItemHeight + this_.param.paddingY;
+        }
     }
 
     createMenuField(x, y, name, img) {
@@ -101,26 +103,24 @@ class Toolbox {
         this.menuItems.push(item);
     }
 
-    createMenuItems() {
-        const this_ = this;   // will be used for closure
-        this.menuItems = [];
-        let y = this.param.paddingY;
-
-        this.createMenuField(this.param.paddingX, y, "pointer", this.createImgPointer());
-        shiftY();        
-        this.createMenuField(this.param.paddingX, y, "milestone", this.createImgMilestone());
-        shiftY();
-        this.createMenuField(this.param.paddingX, y, "link", this.createImgArrow());
-        shiftY();
-        this.createMenuField(this.param.paddingX, y, "fake-link", this.createImgArrowDashed());
-        shiftY();
-
-        // Select first item
-        this.menuItems[0].border.fire('click');
-
-        function shiftY() {
-            y += this_.param.menuItemHeight + this_.param.paddingY;
-        }
+    drawBorder() {
+        const border = new Konva.Rect({
+            x:0,
+            y:0,
+            width: this.param.menuItemWidth + 2*this.param.paddingX,
+            height: this.param.stageHeight,
+            stroke: "black",
+            fill: "#E6FEF9",
+            strokeWidth: 0,
+            name: "toolbox",
+            shadowColor: 'black',
+            shadowBlur: 30,
+            shadowOffsetX: 10,
+            shadowOffsetY: 0, 
+            shadowOpacity: 0.6,
+            shadowEnabled: true,
+        });
+        this.layer.add(border);
     }
 
     select(name) {
@@ -129,12 +129,13 @@ class Toolbox {
             item.border.fire('click');
     }
 
-    bind(menuItemName, callback) {
-        const el = this.menuItems.find((item)=>item.name === menuItemName);
-        if(el) {
-            el.border.on('click', callback);
-        }
-    }
+    // Not used as we bind events in the state machine by checking what is a "name" of clicked component
+    // bind(menuItemName, callback) {
+    //     const el = this.menuItems.find((item)=>item.name === menuItemName);
+    //     if(el) {
+    //         el.border.on('click', callback);
+    //     }
+    // }
 
     createImgPointer() {
         return new Konva.Path({
