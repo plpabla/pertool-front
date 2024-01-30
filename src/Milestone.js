@@ -1,9 +1,7 @@
 const Konva = require('konva');
-import GraphicalElement from "./GraphicalElement";
 
-class Milestone extends GraphicalElement {
+class Milestone {
     constructor(x,y,name) {
-        super();
         this.name = name;
         this.sourceLinks = [];
         this.destinationLinks = [];
@@ -20,6 +18,10 @@ class Milestone extends GraphicalElement {
 
     getName() {
         return this.name;
+    }
+
+    getImg() {
+        return this.img;
     }
 
     getPos() {

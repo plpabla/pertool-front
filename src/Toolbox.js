@@ -1,10 +1,7 @@
-import GraphicalElement from "./GraphicalElement";
-// import Konva from 'konva';
 import Milestone from "./Milestone";
 
-class Toolbox extends GraphicalElement {
+class Toolbox {
     constructor(layer) {
-        super();
         this.layer = layer;
         // const stage = this.layer.getStage();
         this.menuItems = [];

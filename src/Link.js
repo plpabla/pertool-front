@@ -1,9 +1,7 @@
 const Konva = require('konva');
-import GraphicalElement from "./GraphicalElement";
 
-class Link extends GraphicalElement {
+class Link {
     constructor(sourceId, destId) {
-        super();
         this.sourceId = sourceId;
         this.destId = destId;
         this.img = Link.createImg(sourceId, destId);
@@ -22,6 +20,10 @@ class Link extends GraphicalElement {
             points: [1, 2, 3, 4],
             stroke: "black"
         })
+    }
+
+    getImg() {
+        return this.img;
     }
 
     static serialize(obj) {
