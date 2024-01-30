@@ -12,11 +12,19 @@ body {
 
 .btn-primary {
     background-color: #06846a;
+    border-color: #03483a;
 }
 
 .btn-primary:hover {
     background-color: #07ab88;
     transition-duration: 0.4s;
+}
+
+.btn-primary:focus {
+    background-color: #06846a;
+    border-color: #03483a;
+    border-width: 1px;
+    box-shadow: inherit;
 }
 
 .btn-secondary {
