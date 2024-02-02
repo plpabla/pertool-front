@@ -152,4 +152,16 @@ export default function suite() {
 
         expect(this.e.state).instanceOf(LinkSecondElState);
     });
+
+
+    it('When clicked on a different milestone in LinkSecondElState, input box object is created', function() {
+        // Note - it can be complex form in the future
+        const milestone = new Milestone(10,10,"test");
+        const anotherMilestone = new Milestone(10, 10, "test as well");
+        this.e.state = new LinkSecondElState(this.e, milestone);
+
+        this.e.state.onClick(createClickedObject("milestone-element", anotherMilestone));
+
+        expect(this.InputBoxStub.called).to.be.true;
+    });
 };

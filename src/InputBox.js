@@ -1,17 +1,15 @@
 class InputBox {
-    constructor(layer, prompt, pos, callbackFn) {
-        this.init(layer, prompt, pos, callbackFn);
+    constructor(layer, prompt, pos, callbackFn, defaultValue) {
+        this.init(layer, prompt, pos, callbackFn, defaultValue);
     }
 
-    init(layer, prompt, pos, callbackFn) {
+    init(layer, prompt, pos, callbackFn, defaultValue) {
         this.stageBox = layer.getStage().container().getBoundingClientRect();
         this.layer = layer;
         this.prompt = prompt;
         this.pos = pos;
         this.callbackFn = callbackFn;
-
-        this.param = {
-        }
+        this.defaultValue = defaultValue;
 
         this.draw();
     }
@@ -40,8 +38,10 @@ class InputBox {
 
         const box = document.createElement('input');
         box.type = 'text';
+        box.value = this.defaultValue ? this.defaultValue : "";
         formDiv.appendChild(box);
         box.focus();
+        box.select();
 
         const callbackFn = this.callbackFn;
         box.addEventListener('keydown', function (e) {
