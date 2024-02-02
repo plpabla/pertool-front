@@ -33,6 +33,28 @@ export default function suite() {
         this.InputBoxStub.restore();
     });
 
+    function createClickedObject(objName) 
+    {
+        return {
+            target: {
+                parent: {
+                    attrs: {
+                        objInstance: {
+                            getName: function() {return "test"; },
+                            img: {
+                                attrs: {
+                                    x: 0,
+                                    y: 0
+                                }
+                            }
+                        }
+                    }
+                }, 
+                attrs: {
+                    name: objName
+                }}
+            }
+    };
 
     it('starts with pointer state', function() {
         expect(this.e).to.have.property('state');
@@ -67,25 +89,7 @@ export default function suite() {
             const menu = this.e.toolbox.menuItems;
             this.e.state = new testCase.from(this.e, new Milestone(10,10,"test"));
 
-            this.e.state = this.e.state.onClick({
-                target: {
-                    parent: {
-                        attrs: {
-                            objInstance: {
-                                getName: function() {return "test"; },
-                                img: {
-                                    attrs: {
-                                        x: 0,
-                                        y: 0
-                                    }
-                                }
-                            }
-                        }
-                    }, 
-                    attrs: {
-                        name: testCase.clickOn
-                    }}
-                });
+            this.e.state = this.e.state.onClick(createClickedObject(testCase.clickOn));
 
             expect(this.e.state).instanceOf(testCase.to);
         });
@@ -94,7 +98,7 @@ export default function suite() {
     it('When clicked on the canvas while in Milestone state, input box object is created', function() {
         this.e.state = new MilestoneState(this.e);
        
-        this.e.state.onClick({target: {attrs: {}}});
+        this.e.state.onClick(createClickedObject(undefined));
 
         expect(this.InputBoxStub.called).to.be.true;
     });
@@ -102,7 +106,7 @@ export default function suite() {
     it('When clicked on the canvas while in Milestone state and passed a string, a milestone state is reached', function() {
         this.e.state = new MilestoneState(this.e);
        
-        this.e.state.onClick({target: {attrs: {}}});
+        this.e.state.onClick(createClickedObject(undefined));
 
         expect(this.e.state).instanceOf(MilestoneState);
     });
@@ -113,7 +117,7 @@ export default function suite() {
             callbackFn("");
         });
        
-        this.e.state.onClick({target: {attrs: {}}});
+        this.e.state.onClick(createClickedObject(undefined));
 
         expect(this.e.state).instanceOf(PointerState);
     });
@@ -122,7 +126,7 @@ export default function suite() {
         this.e.state = new MilestoneState(this.e);
         const pointer = this.e.toolbox.menuItems.find((item)=>item.name === "pointer");
        
-        this.e.state.onClick({target: {attrs: {}}});
+        this.e.state.onClick(createClickedObject(undefined));
 
         expect(pointer.border.strokeEnabled()).to.be.true;
     });
@@ -130,7 +134,7 @@ export default function suite() {
     it('When clicked on the canvas while in Milestone state and passed a string, a milestone is added', function() {
         this.e.state = new MilestoneState(this.e);
 
-        this.e.state.onClick({target: {attrs: {}}});
+        this.e.state.onClick(createClickedObject(undefined));
 
         expect(this.e.model.milestones).length(2);
     });
@@ -140,25 +144,7 @@ export default function suite() {
         const milestone = new Milestone(10,10,"test");
         this.e.state = new LinkSecondElState(this.e, milestone);
 
-        this.e.state = this.e.state.onClick({
-            target: {
-                parent: {
-                    attrs: {
-                        objInstance: {
-                            getName: function() {return "test"; },
-                            img: {
-                                attrs: {
-                                    x: 0,
-                                    y: 0
-                                }
-                            }
-                        }
-                    }
-                }, 
-                attrs: {
-                    name: "milestone"
-                }}
-            });
+        this.e.state.onClick(createClickedObject("milestone"));
 
         expect(this.e.state).instanceOf(LinkSecondElState);
     });
