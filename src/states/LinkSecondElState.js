@@ -20,22 +20,24 @@ class LinkSecondElState extends State {
             return this;
         }
 
-        this.context.stage.off('mousemove.arrowFollowingCursor touchmove.arrowFollowingCursor');
-        this.cancel();
-
         if(clickedItem === "pointer") {
+            this.cancel();
             return new PointerState(this.context);
         }
         if(clickedItem === "milestone") {
+            this.cancel();
             this.context.toolbox.select("milestone");
             return new MilestoneState(this.context);
         }
         if(clickedItem === "link") {
+            this.cancel();
             this.context.toolbox.select("link");
             return new LinkFirstElState(this.context);
         }
         if(clickedItem === "milestone-element") {
             // TODO: Check if not the same - if not, create a link
+            console.log(this.milestone1);
+            console.log(target.parent.attrs.objInstance);
         }
         return this;
     }

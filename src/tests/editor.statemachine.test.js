@@ -33,21 +33,26 @@ export default function suite() {
         this.InputBoxStub.restore();
     });
 
-    function createClickedObject(objName) 
+    function createClickedObject(objName, clickedObjectInstance) 
     {
+        let objInstance = clickedObjectInstance;
+        if (objInstance === undefined) {
+            objInstance = {
+                getName: function() {return "test"; },
+                img: {
+                    attrs: {
+                        x: 0,
+                        y: 0
+                    }
+                }
+            }
+        }
+
         return {
             target: {
                 parent: {
                     attrs: {
-                        objInstance: {
-                            getName: function() {return "test"; },
-                            img: {
-                                attrs: {
-                                    x: 0,
-                                    y: 0
-                                }
-                            }
-                        }
+                        objInstance: objInstance
                     }
                 }, 
                 attrs: {
@@ -140,11 +145,10 @@ export default function suite() {
     });
 
     it('When clicked on the same milestone in LinkSecondElState, we remain in the same state', function() {
-        this.skip();
         const milestone = new Milestone(10,10,"test");
         this.e.state = new LinkSecondElState(this.e, milestone);
 
-        this.e.state.onClick(createClickedObject("milestone"));
+        this.e.state.onClick(createClickedObject("milestone-element", milestone));
 
         expect(this.e.state).instanceOf(LinkSecondElState);
     });
