@@ -21,7 +21,7 @@ export default function suite() {
         expect(this.model.getRoot()).instanceOf(Milestone);
     });
 
-    it('root milestone has name "root"', function() {
-        expect(this.model.getRoot().name).to.equal('root');
+    it('root milestone has name "0"', function() {
+        expect(this.model.getRoot().name).to.equal('0');
     });
 }

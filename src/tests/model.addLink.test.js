@@ -61,14 +61,14 @@ export default function suite() {
 
     it('can add link using names', function() {
         this.model.addMilestone(0, 0, "m2");
-        this.model.addLink("root", "m2");
+        this.model.addLink("0", "m2");
 
         expect(this.model.links).lengthOf(1);
     });
 
     it('cannot add link using name which does not exist', function() {
         this.model.addMilestone(0, 0, "m2");
-        this.model.addLink("root", "m42");
+        this.model.addLink("0", "m42");
 
         expect(this.model.links).lengthOf(0);
     });

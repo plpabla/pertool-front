@@ -10,7 +10,7 @@ export default function suite() {
 
     it('can be serialized', function() {
         this.model.addMilestone(0, 0, "m2");
-        this.model.addLink("root", "m2");
+        this.model.addLink("0", "m2");
 
         const res = Model.serialize(this.model);
         
@@ -19,7 +19,7 @@ export default function suite() {
 
     it('can be deserialized', function() {
         this.model.addMilestone(0, 0, "m2");
-        this.model.addLink("root", "m2");
+        this.model.addLink("0", "m2");
         const serialized = Model.serialize(this.model);
 
         const deserialized = Model.deserialize(serialized);
@@ -33,12 +33,12 @@ export default function suite() {
         const deserialized = Model.deserialize(serialized);
         const rootObj = deserialized.getRoot();
 
-        expect(rootObj.getName()).to.equal("root");
+        expect(rootObj.getName()).to.equal("0");
     })
 
     it('Restored milestone has the same properties', function() {
         this.model.addMilestone(0, 0, "m2");
-        this.model.addLink("root", "m2");
+        this.model.addLink("0", "m2");
         const serialized = Model.serialize(this.model);
 
         const deserialized = Model.deserialize(serialized);
@@ -67,7 +67,7 @@ export default function suite() {
 
     it('I can access link in deserialized object', function() {
         this.model.addMilestone(0, 0, "m2");
-        this.model.addLink("root", "m2");
+        this.model.addLink("0", "m2");
         const serialized = Model.serialize(this.model);
 
         const deserialized = Model.deserialize(serialized);
@@ -78,7 +78,7 @@ export default function suite() {
 
     it('I can access milestone postiotion from deserialized object', function() {
         this.model.addMilestone(10, 42, "m2");
-        this.model.addLink("root", "m2");
+        this.model.addLink("0", "m2");
         const serialized = Model.serialize(this.model);
 
         const deserialized = Model.deserialize(serialized);
@@ -88,16 +88,16 @@ export default function suite() {
 
     it('I can access work with deserialized object by adding links and milestones to it', function() {
         this.model.addMilestone(0, 0, "m2");
-        this.model.addLink("root", "m2");
+        this.model.addLink("0", "m2");
         const serialized = Model.serialize(this.model);
 
         const deserialized = Model.deserialize(serialized);
         deserialized.addMilestone(0, 0, "m3");
-        deserialized.addLink("root", "m3");
+        deserialized.addLink("0", "m3");
 
         expect(deserialized.milestones).lengthOf(3);
         expect(deserialized.links).lengthOf(2);
-        expect(deserialized.milestones[0].getName()).to.equal("root");
+        expect(deserialized.milestones[0].getName()).to.equal("0");
         expect(deserialized.milestones[1].getName()).to.equal("m2");
         expect(deserialized.milestones[2].getName()).to.equal("m3");
         expect(deserialized.findMilestoneIDByName("m2")).to.equal(1);

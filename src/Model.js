@@ -3,7 +3,7 @@ import Link from './Link.js';
 
 class Model {
     constructor() {
-        this.milestones = [new Milestone(200, 300, "root")];
+        this.milestones = [new Milestone(200, 300, "0")];
         this.links = [];
     }
 
