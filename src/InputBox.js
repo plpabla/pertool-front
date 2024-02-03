@@ -43,6 +43,12 @@ class InputBox {
         box.focus();
         box.select();
 
+        const ok = document.createElement('button');
+        ok.classList.add('btn');
+        ok.classList.add('btn-primary');
+        ok.innerText = "OK";
+        formDiv.appendChild(ok);
+
         const callbackFn = this.callbackFn;
         box.addEventListener('keydown', function (e) {
             if (e.key === "Enter") {
@@ -55,6 +61,12 @@ class InputBox {
                 callbackFn("");
             }
         });
+
+        ok.addEventListener('click', function() {
+            const txt = box.value;
+            document.body.removeChild(formDiv);
+            callbackFn(txt);
+        })
     }
 }
 

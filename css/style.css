@@ -104,3 +104,8 @@ button {
     border: 3px solid #0af0c0;
     padding: 1px;
 }
+
+.input-box > button {
+    background-color: #07ab88;
+    box-shadow: 4px 5px 4px #00000049;
+}
