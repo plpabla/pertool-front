@@ -38,6 +38,13 @@ body {
     transition-duration: 0.4s;
 }
 
+.btn-secondary:focus {
+    color:#000000;
+    background-color: #F9E6FE;
+    border-color: #000000;
+    box-shadow: inherit;
+}
+
 #img-logo {
     min-width: 160px;
     max-width: 240px;
