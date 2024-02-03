@@ -3,10 +3,19 @@ import Milestone from "./Milestone";
 class Toolbox {
     constructor(layer) {
         this.layer = layer;
-        // const stage = this.layer.getStage();
+
+        // Set values which are mocked in the test
+        let w = layer.canvas.width,
+            h = layer.canvas.height;
+        // but in reality we should use those which include browser scaling
+        if(layer.parent) {
+            w = layer.parent.attrs.width,
+            h = layer.parent.attrs.height
+        }
+
         this.menuItems = [];
-        this.param = {  "stageWidth": layer.canvas.width,
-                        "stageHeight": layer.canvas.height,
+        this.param = {  "stageWidth": w,
+                        "stageHeight": h,
                         "menuItemWidth": 64,
                         "menuItemHeight": 64,
                         "paddingX": 10,
