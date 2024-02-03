@@ -3,10 +3,10 @@ import Milestone from "./Milestone";
 class Toolbox {
     constructor(layer) {
         this.layer = layer;
-        // const stage = this.layer.getStage();
+
         this.menuItems = [];
-        this.param = {  "stageWidth": layer.canvas.width,
-                        "stageHeight": layer.canvas.height,
+        this.param = {  "stageWidth": layer.parent.attrs.width,
+                        "stageHeight": layer.parent.attrs.height,
                         "menuItemWidth": 64,
                         "menuItemHeight": 64,
                         "paddingX": 10,
