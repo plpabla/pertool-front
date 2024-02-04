@@ -2,6 +2,7 @@ import PointerState from "./PointerState";
 import MilestoneState from "./MilestoneState";
 import LinkFirstElState from "./LinkFirstElState";
 import State from "./State";
+import GetTaskLengthState from "./GetTaskLengthState";
 
 class LinkSecondElState extends State {
     constructor(context, milestone1) {
@@ -35,9 +36,13 @@ class LinkSecondElState extends State {
             return new LinkFirstElState(this.context);
         }
         if(clickedItem === "milestone-element") {
-            // TODO: Check if not the same - if not, create a link
-            console.log(this.milestone1);
-            console.log(target.parent.attrs.objInstance);
+            const milestone2 = target.parent.attrs.objInstance;
+            if (this.milestone1 !== milestone2) {
+                this.pause();
+                return new GetTaskLengthState(this.context, this.milestone1, milestone2, this.linkArrow);
+            } else {
+                return this;
+            }
         }
         return this;
     }
@@ -78,10 +83,14 @@ class LinkSecondElState extends State {
     }
 
     cancel() {
-        this.context.stage.off('mousemove.arrowFollowingCursor touchmove.arrowFollowingCursor');
+        this.pause();
         this.linkArrow.destroy();
         this.context.state = new PointerState(this.context);
         this.context.toolbox.select("pointer");
+    }
+
+    pause() {
+        this.context.stage.off('mousemove.arrowFollowingCursor touchmove.arrowFollowingCursor');
     }
 
     static getName() {
