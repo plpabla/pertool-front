@@ -1,5 +1,6 @@
 import State from "./State";
 import InputBox from "../InputBox";
+import LinkFirstElState from "./LinkFirstElState";
 
 class GetTaskLengthState extends State {
     constructor(context, m1, m2, arrow) {
@@ -8,17 +9,16 @@ class GetTaskLengthState extends State {
         this.m2 = m2;
         this.arrow = arrow;
         const posOnCanvas = context.stage.getPointerPosition();
-        const posAbsolute = context.stage.getRelativePointerPosition();
-        const defaultValue = context.model.milestones.length;
+        const defaultValue = "0";
         new InputBox(context.modelLayer, "Task length:", posOnCanvas, (str) => {
             const value = Number.parseFloat(str);
+            console.log(`>>> Entered value: ${str}. Numeric: ${value}`);
             if(value) {
-                // context.addMilestone(posAbsolute.x, posAbsolute.y, name);
-                // context.state = new MilestoneState(context);
+                // context.addLink(m1, m2, value);
             } else {
-                // context.state = new PointerState(context);
-                // context.toolbox.select("pointer");
             }
+            context.state = new LinkFirstElState(context);
+            context.toolbox.select("link");
             arrow.destroy();
         },
         defaultValue);
