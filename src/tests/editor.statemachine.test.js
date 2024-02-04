@@ -169,6 +169,41 @@ export default function suite() {
             expect(this.InputBoxStub.called).to.be.true;
         });
 
+        const cases = [
+            {descr: "numeric value", value: 42, createdLink: true, nextState: LinkFirstElState},
+            {descr: "empty field", value: "", createdLink: false, nextState: LinkFirstElState},
+            {descr: "non-numeric value", value: "kopytko", createdLink: false, nextState: LinkFirstElState}
+        ];
+
+        cases.forEach(function(testCase) {
+            it(`when passed ${testCase.descr}, link is ${testCase.createdLink ? "":"not "}created`, function() {
+                const m1 = new Milestone(10, 20, "0");
+                const m2 = new Milestone(10, 20, "1");
+                const fakeArrow = sinon.fake();
+                fakeArrow.destroy = sinon.fake();
+                this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
+                    callbackFn(testCase.value);
+                });
+
+                const state = new GetTaskLengthState(this.e, m1, m2, fakeArrow);
+
+                expect(this.e.model.links.length).equals(testCase.createdLink ? 1 : 0);
+            });
+    
+            it(`when passed ${testCase.descr}, we move to ${testCase.nextState.getName()} state`, function() {
+                const m1 = new Milestone(10, 20, "0");
+                const m2 = new Milestone(10, 20, "1");
+                const fakeArrow = sinon.fake();
+                fakeArrow.destroy = sinon.fake();
+                this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
+                    callbackFn(testCase.value);
+                });
+
+                const state = new GetTaskLengthState(this.e, m1, m2, fakeArrow);
+
+                expect(this.e.state).instanceOf(testCase.nextState);
+            });
+        })
     });
 
 };
