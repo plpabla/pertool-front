@@ -9,6 +9,7 @@ import MilestoneState from '../states/MilestoneState';
 import LinkFirstElState from '../states/LinkFirstElState';
 import LinkSecondElState from '../states/LinkSecondElState';
 import GetMilestoneNameState from '../states/GetMilestoneNameState';
+import GetTaskLengthState from '../states/GetTaskLengthState';
 import InputBox from '../InputBox';
 import Milestone from '../Milestone';
 
@@ -86,7 +87,7 @@ export default function suite() {
                     {from: LinkSecondElState, clickOn:"milestone", to: MilestoneState},
                     {from: LinkSecondElState, clickOn:"link", to: LinkFirstElState},
                     {from: LinkSecondElState, clickOn: undefined, to: LinkSecondElState},
-                    // {from: LinkSecondElState, clickOn: "milestone-element", to: GetTaskLengthState},
+                    {from: LinkSecondElState, clickOn: "milestone-element", to: GetTaskLengthState},
     ];
 
     states.forEach(function(testCase){
@@ -94,74 +95,80 @@ export default function suite() {
             const menu = this.e.toolbox.menuItems;
             this.e.state = new testCase.from(this.e, new Milestone(10,10,"test"));
 
-            this.e.state = this.e.state.onClick(createClickedObject(testCase.clickOn));
+            this.e.state = this.e.state.onClick(createClickedObject(testCase.clickOn, new Milestone(20,20,"other")));
 
             expect(this.e.state).instanceOf(testCase.to);
         });
     });
 
-    it('When clicked on the canvas while in Milestone state, input box object is created', function() {
-        this.e.state = new MilestoneState(this.e);
-       
-        this.e.state.onClick(createClickedObject(undefined));
+    describe('in Milestone state', function() {
+        it('When clicked on the canvas, input box object is created', function() {
+            this.e.state = new MilestoneState(this.e);
+        
+            this.e.state.onClick(createClickedObject(undefined));
 
-        expect(this.InputBoxStub.called).to.be.true;
-    });
-
-    it('When clicked on the canvas while in Milestone state and passed a string, a milestone state is reached', function() {
-        this.e.state = new MilestoneState(this.e);
-       
-        this.e.state.onClick(createClickedObject(undefined));
-
-        expect(this.e.state).instanceOf(MilestoneState);
-    });
-
-    it('When clicked on the canvas while in Milestone state and passed an empty string, a pointer state is reached', function() {
-        this.e.state = new MilestoneState(this.e);
-        this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
-            callbackFn("");
+            expect(this.InputBoxStub.called).to.be.true;
         });
-       
-        this.e.state.onClick(createClickedObject(undefined));
 
-        expect(this.e.state).instanceOf(PointerState);
+        it('When clicked on the canvas and passed a string, a milestone state is reached', function() {
+            this.e.state = new MilestoneState(this.e);
+        
+            this.e.state.onClick(createClickedObject(undefined));
+
+            expect(this.e.state).instanceOf(MilestoneState);
+        });
+
+        it('When clicked on the canvas and passed an empty string, a pointer state is reached', function() {
+            this.e.state = new MilestoneState(this.e);
+            this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
+                callbackFn("");
+            });
+        
+            this.e.state.onClick(createClickedObject(undefined));
+
+            expect(this.e.state).instanceOf(PointerState);
+        });
+
+        it('When clicked on the canvas and passed an empty string, a pointer state is reached so the border is around that component', function() {
+            this.e.state = new MilestoneState(this.e);
+            const pointer = this.e.toolbox.menuItems.find((item)=>item.name === "pointer");
+        
+            this.e.state.onClick(createClickedObject(undefined));
+
+            expect(pointer.border.strokeEnabled()).to.be.true;
+        });
+
+        it('When clicked on the canvas and passed a string, a milestone is added', function() {
+            this.e.state = new MilestoneState(this.e);
+
+            this.e.state.onClick(createClickedObject(undefined));
+
+            expect(this.e.model.milestones).length(2);
+        });
     });
 
-    it('When clicked on the canvas while in Milestone state and passed an empty string, a pointer state is reached so the border is around that component', function() {
-        this.e.state = new MilestoneState(this.e);
-        const pointer = this.e.toolbox.menuItems.find((item)=>item.name === "pointer");
-       
-        this.e.state.onClick(createClickedObject(undefined));
+    describe('in LinkSecondElState', function() {
+        it('When clicked on the same milestone, we remain in the same state', function() {
+            const milestone = new Milestone(10,10,"test");
+            this.e.state = new LinkSecondElState(this.e, milestone);
 
-        expect(pointer.border.strokeEnabled()).to.be.true;
+            this.e.state.onClick(createClickedObject("milestone-element", milestone));
+
+            expect(this.e.state).instanceOf(LinkSecondElState);
+        });
+
+
+        it('When clicked on a different milestone, input box object is created', function() {
+            // Note - it can be complex form in the future
+            const milestone = new Milestone(10,10,"test");
+            const anotherMilestone = new Milestone(10, 10, "test as well");
+            this.e.state = new LinkSecondElState(this.e, milestone);
+
+            this.e.state.onClick(createClickedObject("milestone-element", anotherMilestone));
+
+            expect(this.InputBoxStub.called).to.be.true;
+        });
+
     });
 
-    it('When clicked on the canvas while in Milestone state and passed a string, a milestone is added', function() {
-        this.e.state = new MilestoneState(this.e);
-
-        this.e.state.onClick(createClickedObject(undefined));
-
-        expect(this.e.model.milestones).length(2);
-    });
-
-    it('When clicked on the same milestone in LinkSecondElState, we remain in the same state', function() {
-        const milestone = new Milestone(10,10,"test");
-        this.e.state = new LinkSecondElState(this.e, milestone);
-
-        this.e.state.onClick(createClickedObject("milestone-element", milestone));
-
-        expect(this.e.state).instanceOf(LinkSecondElState);
-    });
-
-
-    it('When clicked on a different milestone in LinkSecondElState, input box object is created', function() {
-        // Note - it can be complex form in the future
-        const milestone = new Milestone(10,10,"test");
-        const anotherMilestone = new Milestone(10, 10, "test as well");
-        this.e.state = new LinkSecondElState(this.e, milestone);
-
-        this.e.state.onClick(createClickedObject("milestone-element", anotherMilestone));
-
-        expect(this.InputBoxStub.called).to.be.true;
-    });
 };
