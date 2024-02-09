@@ -29,6 +29,10 @@ class Milestone {
         return [pos.x, pos.y];
     }
 
+    onMove() {
+        console.error(">>>> TODO");
+    }
+
     static createImg(x, y, name, instance) {
         const param = { "name": "milestone-element",
                         "mainColor": "black", 

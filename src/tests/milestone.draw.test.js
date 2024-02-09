@@ -22,5 +22,15 @@ export default function suite() {
         const m = new Milestone(42, 100, "test");
 
         expect(m.getPos()).eqls([42, 100]);
+    });
+
+    it('onMove() doesn\'t fail when there are no any arrows', function() {
+        expect(() => {
+            this.m.onMove();
+        }).to.not.throw();
     })
+
+    it('onMove() function updates source link arrows', function() {
+        assert.fail("TODO");
+    });
 };
