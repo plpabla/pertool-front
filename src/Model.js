@@ -94,6 +94,7 @@ class Model {
             this.milestones[m2id].addLinkWhereIAmDestination(linkId);
         }
 
+        console.log(this.links);
         return this.links.length - 1;
     }
 }

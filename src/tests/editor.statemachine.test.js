@@ -171,6 +171,7 @@ export default function suite() {
 
         const cases = [
             {descr: "numeric value", value: 42, createdLink: true, nextState: LinkFirstElState},
+            {descr: "zero", value: 0, createdLink: true, nextState: LinkFirstElState},
             {descr: "empty field", value: "", createdLink: false, nextState: LinkFirstElState},
             {descr: "non-numeric value", value: "kopytko", createdLink: false, nextState: LinkFirstElState}
         ];
