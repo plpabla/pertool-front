@@ -179,6 +179,8 @@ export default function suite() {
             it(`when passed ${testCase.descr}, link is ${testCase.createdLink ? "":"not "}created`, function() {
                 const m1 = new Milestone(10, 20, "0");
                 const m2 = new Milestone(10, 20, "1");
+                this.e.model.milestones.push(m1);
+                this.e.model.milestones.push(m2);
                 const fakeArrow = sinon.fake();
                 fakeArrow.destroy = sinon.fake();
                 this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
@@ -193,6 +195,8 @@ export default function suite() {
             it(`when passed ${testCase.descr}, we move to ${testCase.nextState.getName()} state`, function() {
                 const m1 = new Milestone(10, 20, "0");
                 const m2 = new Milestone(10, 20, "1");
+                this.e.model.milestones.push(m1);
+                this.e.model.milestones.push(m2);
                 const fakeArrow = sinon.fake();
                 fakeArrow.destroy = sinon.fake();
                 this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {

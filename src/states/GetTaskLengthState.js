@@ -12,9 +12,8 @@ class GetTaskLengthState extends State {
         const defaultValue = "0";
         new InputBox(context.modelLayer, "Task length:", posOnCanvas, (str) => {
             const value = Number.parseFloat(str);
-            console.log(`>>> Entered value: ${str}. Numeric: ${value}`);
             if(value) {
-                // context.addLink(m1, m2, value);
+                context.model.addLink(m1, m2, value);
             } else {
             }
             context.state = new LinkFirstElState(context);

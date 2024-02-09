@@ -72,16 +72,17 @@ class Model {
         if ((typeof id1)==='number') {
             const maxId = this.milestones.length;
             if(id1<0 || id1>=maxId || id2<0 || id2>=maxId || id1==id2) {
-                // console.log(`Warning: adding link ${id1}->${id2} failed (maxId=${maxId})`);
                 return;
             }
             m1id = id1;
             m2id = id2;
+        } else if (id1 instanceof(Milestone)) {
+            m1id = this.milestones.findIndex(e=>e===id1);
+            m2id = this.milestones.findIndex(e=>e===id2);
         } else {
             m1id = this.findMilestoneIDByName(id1);
             m2id = this.findMilestoneIDByName(id2);
             if(m1id<0 || m2id<0) {
-                // console.log(`Warning: adding link ${id1}->${id2} failed found ids(${m1id}, ${m2id})`);
                 return;
             }
         }
