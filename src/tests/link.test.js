@@ -6,7 +6,7 @@ import Link from '../Link.js';
 
 export default function suite() {
     before(function() {
-        this.l = new Link(0, 1);
+        this.l = new Link(0, 1, 0);
     })
 
     it('contains correct source milestone link ID', function() {
@@ -33,9 +33,21 @@ export default function suite() {
     })
 
     it('initial position is set to given value in constructor if passed', function() {
-        const l = new Link(0,1,[4,2,6,9]);
+        const l = new Link(0,1,0,[4,2,6,9]);
 
         expect(l.points).to.eqls([4,2,6,9]);
+    })
+
+    it('has default task length equal zero', function() {
+        const l = new Link(0,1);
+
+        expect(l.taskLenght).equal(0);
+    })
+
+    it('can set default task length', function() {
+        const l = new Link(0,1,4.2);
+
+        expect(l.taskLenght).equal(4.2);
     })
 
     it('can be moved', function() {
