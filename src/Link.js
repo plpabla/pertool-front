@@ -2,6 +2,7 @@ const Konva = require('konva');
 
 class Link {
     constructor(sourceId, destId, points) {
+        // TODO: create dashed link if length is zero
         this.sourceId = sourceId;
         this.destId = destId;
         this.points = points;
