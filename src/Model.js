@@ -67,7 +67,7 @@ class Model {
         return this.milestones[id];
     }
 
-    addLink(id1, id2) {
+    addLink(id1, id2, taskLength) {
         let m1id, m2id = undefined;
         if ((typeof id1)==='number') {
             const maxId = this.milestones.length;
@@ -88,7 +88,7 @@ class Model {
         }
 
         if((m1id != undefined) && (m2id != undefined)) {
-            this.links.push(new Link(m1id, m2id));
+            this.links.push(new Link(m1id, m2id, taskLength));
             const linkId = this.links.length - 1;
             this.milestones[m1id].addLinkWhereIAmSource(linkId);
             this.milestones[m2id].addLinkWhereIAmDestination(linkId);

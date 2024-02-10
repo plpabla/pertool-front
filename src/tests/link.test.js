@@ -41,13 +41,13 @@ export default function suite() {
     it('has default task length equal zero', function() {
         const l = new Link(0,1);
 
-        expect(l.taskLenght).equal(0);
+        expect(l.taskLength).equal(0);
     })
 
     it('can set default task length', function() {
         const l = new Link(0,1,4.2);
 
-        expect(l.taskLenght).equal(4.2);
+        expect(l.taskLength).equal(4.2);
     })
 
     it('can be moved', function() {
