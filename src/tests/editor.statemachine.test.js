@@ -232,13 +232,29 @@ export default function suite() {
             expect(createdLink.destId).equals(m2loc);
         })
 
+        it('Link position corresponds to milestone location', function() {
+            const m1 = new Milestone(10, 20, "m1");
+            const m2 = new Milestone(50, 60, "m2");
+            this.e.model.milestones.push(m1);
+            this.e.model.milestones.push(m2);
+            const fakeArrow = sinon.fake();
+            fakeArrow.destroy = sinon.fake();
+            
+            this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
+                callbackFn("5");
+            });
+            this.e.state = new GetTaskLengthState(this.e, m1, m2, fakeArrow);
+
+            const createdLink = this.e.model.links[0];
+            // TODO: Later I will include shifting so it will touch the border
+            expect(createdLink.points).to.eqls([10,20,50,60]);
+        })
+
         it('Link is created with given length, this length is stored', function() {
             const m1 = new Milestone(10, 20, "m1");
             const m2 = new Milestone(10, 20, "m2");
             this.e.model.milestones.push(m1);
             this.e.model.milestones.push(m2);
-            const m1loc = this.e.model.findMilestoneIDByName("m1");
-            const m2loc = this.e.model.findMilestoneIDByName("m2");
             const fakeArrow = sinon.fake();
             fakeArrow.destroy = sinon.fake();
             
