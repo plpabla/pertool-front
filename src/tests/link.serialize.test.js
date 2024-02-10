@@ -7,7 +7,7 @@ const Konva = require('konva');
 
 export default function suite() {
     beforeEach(function() {
-        this.l = new Link(1, 5);
+        this.l = new Link(1, 5, 4.2);
     });
 
     it('can be serialized', function() {
@@ -26,6 +26,14 @@ export default function suite() {
 
         expect(deserialized.getSourceMilestoneId()).to.equal(this.l.getSourceMilestoneId());
         expect(deserialized.getDestinationMilestoneId()).to.equal(this.l.getDestinationMilestoneId());
+    });
+
+    it('deserialized contains task length', function() {
+        const serialized = Link.serialize(this.l);
+
+        const deserialized = Link.deserialize(serialized);
+
+        expect(deserialized.taskLength).to.equal(4.2);
     });
 
     it('deserialized contains Konva.arrow', function() {
