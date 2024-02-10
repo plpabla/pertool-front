@@ -30,6 +30,12 @@ class Milestone {
     }
 
     onMove() {
+        this.sourceLinks.forEach(e=>this._updateArrow(e));
+        this.destinationLinks.forEach(e=>this._updateArrow(e));
+    }
+
+    _updateArrow(link) {
+        console.log("Updating: ", link);
         console.error(">>>> TODO");
     }
 

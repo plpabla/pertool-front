@@ -1,10 +1,14 @@
 const Konva = require('konva');
 
 class Link {
-    constructor(sourceId, destId) {
+    constructor(sourceId, destId, points) {
         this.sourceId = sourceId;
         this.destId = destId;
-        this.img = Link.createImg(sourceId, destId);
+        this.points = points;
+        if(points === undefined) {
+            this.points = [1,2,3,4];
+        }
+        this.img = Link.createImg(this.points);
     }
 
     getSourceMilestoneId() {
@@ -15,9 +19,17 @@ class Link {
         return this.destId;
     }
 
-    static createImg(args) {
+    setPosition(x1, y1, x2, y2) {
+        this.points = [x1, y1, x2, y2];
+        this.img.attrs.points[0] = x1;
+        this.img.attrs.points[1] = y1;
+        this.img.attrs.points[2] = x2;
+        this.img.attrs.points[3] = y2;
+    }
+
+    static createImg(points) {
         return new Konva.Arrow({
-            points: [1, 2, 3, 4],
+            points: points,
             stroke: "black"
         })
     }

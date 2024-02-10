@@ -42,4 +42,23 @@ export default function suite() {
 
         expect(m.getPos()).to.eqls([10, 20]);
     })
+
+    describe('Moving milestone', function() {
+        it('onMove() doesn\'t fail when there are no any arrows', function() {
+            expect(() => {
+                this.model.getRoot().onMove();
+            }).to.not.throw();
+        })
+
+        it('onMove() function updates source link arrows', function() {
+            // const m1 = new Milestone(42, 100, "m1");
+            // const m2 = new Milestone(69, 110, "m2");
+            // const l = new Link(0, 1);
+            // m1.addLinkWhereIAmSource(l);
+            // m2.addLinkWhereIAmDestination(l);
+
+            // m1.onMove();
+            assert.fail("TODO");
+        })
+    })
 }
