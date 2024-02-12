@@ -25,7 +25,8 @@ class Milestone {
     }
 
     getPos() {
-        const pos = this.img.absolutePosition();
+        // const pos = this.img.absolutePosition();
+        const pos = this.img.position();
         return [pos.x, pos.y];
     }
 

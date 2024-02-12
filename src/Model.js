@@ -90,19 +90,15 @@ class Model {
         }
 
         if((m1id != undefined) && (m2id != undefined)) {
-            console.log(">>>> adding link... HOW TO DRAW IT HERE?");
             const points = Model.calculateArrowPosition(this.getMilestoneById(m1id),this.getMilestoneById(m2id));
             const link = new Link(m1id, m2id, taskLength, points);
             this.links.push(link);
             this.canvasLayer.add(link.getImg());
-            console.log(">>>>", this.links);
             const linkId = this.links.length - 1;
             this.milestones[m1id].addLinkWhereIAmSource(linkId);
             this.milestones[m2id].addLinkWhereIAmDestination(linkId);
         }
 
-        // console.log(">>>>", this.links);
-        // console.log(">>>>", this.milestones);
         return this.links.length - 1;
     }
 
@@ -113,7 +109,6 @@ class Model {
             const l = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
             const cosA = (x2-x1) / l;
             const sinA = (y2-y1) / l;
-            // console.log(`Vector length: ${l}. cos(a)=${cosA}, sin(a)=${sinA}`)
             return [x1 + r1*cosA,
                     y1 + r1*sinA,
                     x2 - r2*cosA,
