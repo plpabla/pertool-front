@@ -2,9 +2,10 @@ import Milestone from './Milestone.js';
 import Link from './Link.js';
 
 class Model {
-    constructor() {
+    constructor(canvasLayer) {
         this.milestones = [new Milestone(200, 300, "0")];
         this.links = [];
+        this.canvasLayer = canvasLayer;
     }
 
     static serialize(obj) {
@@ -27,7 +28,7 @@ class Model {
         return str;
     }
 
-    static deserialize(str) {
+    static deserialize(str, canvasLayer) {
         // console.log('String to deserialize: ' + str)
         const deserialized_data = JSON.parse(str);
         const deserialized = Object.create(Model.prototype, Object.getOwnPropertyDescriptors(deserialized_data));
@@ -43,6 +44,7 @@ class Model {
 
         deserialized.milestones = milestones;
         deserialized.links = links;
+        deserialized.canvasLayer = canvasLayer;
         return deserialized;
     }
 
@@ -88,7 +90,12 @@ class Model {
         }
 
         if((m1id != undefined) && (m2id != undefined)) {
-            this.links.push(new Link(m1id, m2id, taskLength));
+            console.log(">>>> adding link... HOW TO DRAW IT HERE?");
+            const points = Model.calculateArrowPosition(this.getMilestoneById(m1id),this.getMilestoneById(m2id));
+            const link = new Link(m1id, m2id, taskLength, points);
+            this.links.push(link);
+            this.canvasLayer.add(link.getImg());
+            console.log(">>>>", this.links);
             const linkId = this.links.length - 1;
             this.milestones[m1id].addLinkWhereIAmSource(linkId);
             this.milestones[m2id].addLinkWhereIAmDestination(linkId);
@@ -98,6 +105,21 @@ class Model {
         // console.log(">>>>", this.milestones);
         return this.links.length - 1;
     }
+
+    static calculateArrowPosition(m1, m2, r=Milestone.radius) {
+        return calcPos(...m1.getPos(), r, ...m2.getPos(), r);
+
+        function calcPos(x1, y1, r1, x2, y2, r2) {
+            const l = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+            const cosA = (x2-x1) / l;
+            const sinA = (y2-y1) / l;
+            // console.log(`Vector length: ${l}. cos(a)=${cosA}, sin(a)=${sinA}`)
+            return [x1 + r1*cosA,
+                    y1 + r1*sinA,
+                    x2 - r2*cosA,
+                    y2 - r2*sinA];
+        }
+    } 
 }
 
 export default Model;

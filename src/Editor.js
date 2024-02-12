@@ -14,7 +14,7 @@ class Editor {
         this.toolboxLayer = new Konva.Layer();
         this.stage.add(this.toolboxLayer);
 
-        this.model = new Model();
+        this.model = new Model(this.modelLayer);
         this.render();
         
         this.toolbox = new Toolbox(this.toolboxLayer);
@@ -36,7 +36,7 @@ class Editor {
     }
 
     drawMilestone(m) {
-        this.toolboxLayer.add(m.img);
+        this.modelLayer.add(m.img);
     }
 
     addMilestone(x, y, name) {

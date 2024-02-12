@@ -39,11 +39,12 @@ class Milestone {
         console.error(">>>> TODO");
     }
 
+    static radius = 30;
     static createImg(x, y, name, instance) {
         const param = { "name": "milestone-element",
                         "mainColor": "black", 
                         "secondaryColor": "red",
-                        "radius": 30};
+                        "radius": Milestone.radius};
 
         const r = param.radius;
         const c = new Konva.Circle({

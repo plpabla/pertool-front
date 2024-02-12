@@ -5,7 +5,10 @@ import Model from '../Model.js';
 
 export default function suite() {
     beforeEach(function() {
-        this.model = new Model();
+        const layerMock = {
+            add: (x) => {}
+        }
+        this.model = new Model(layerMock);
     });
 
     it('can be serialized', function() {
@@ -86,12 +89,15 @@ export default function suite() {
         expect(deserialized.milestones[1].getPos()).to.eql([10, 42]);
     })
 
-    it('I can access work with deserialized object by adding links and milestones to it', function() {
+    it('I can work with deserialized object by adding links and milestones to it', function() {
         this.model.addMilestone(0, 0, "m2");
         this.model.addLink("0", "m2");
+        const layerMock = {
+            add: (x) => {}
+        }
         const serialized = Model.serialize(this.model);
 
-        const deserialized = Model.deserialize(serialized);
+        const deserialized = Model.deserialize(serialized, layerMock);
         deserialized.addMilestone(0, 0, "m3");
         deserialized.addLink("0", "m3");
 

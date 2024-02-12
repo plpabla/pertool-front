@@ -1,11 +1,15 @@
 const chai = require('chai');
 const assert = chai.assert;
 const expect = chai.expect;
+import Milestone from '../Milestone.js';
 import Model from '../Model.js';
 
 export default function suite() {
     beforeEach(function() {
-        this.model = new Model();
+        const layerMock = {
+            add: (x) => {}
+        }
+        this.model = new Model(layerMock);
     });
 
     it('can add link using id and I get link id = 0', function() {
@@ -81,4 +85,24 @@ export default function suite() {
 
         expect(this.model.links[linkId].getTaskLength()).equal(4.2);
     });
+
+    describe('calculation of arrow position', function() {
+        it('two milestones in the same y pos', function() {
+            const m1 = new Milestone(100, 200, "0");
+            const m2 = new Milestone(500, 200, "1");
+
+            const pos = Model.calculateArrowPosition(m1, m2);
+
+            expect(pos).to.eqls([100+Milestone.radius, 200, 500-Milestone.radius, 200]);
+        })
+
+        it('two milestones in the same x pos', function() {
+            const m1 = new Milestone(100, 200, "0");
+            const m2 = new Milestone(100, 900, "1");
+
+            const pos = Model.calculateArrowPosition(m1, m2);
+
+            expect(pos).to.eqls([100, 200+Milestone.radius, 100, 900-Milestone.radius]);
+        })
+    })
 }
