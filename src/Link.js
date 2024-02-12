@@ -21,6 +21,10 @@ class Link {
         return this.destId;
     }
 
+    getTaskLength() {
+        return this.taskLength;
+    }
+
     setPosition(x1, y1, x2, y2) {
         this.points = [x1, y1, x2, y2];
         this.img.attrs.points[0] = x1;

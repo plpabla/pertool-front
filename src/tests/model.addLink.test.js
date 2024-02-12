@@ -72,4 +72,13 @@ export default function suite() {
 
         expect(this.model.links).lengthOf(0);
     });
+
+    it('added link has stored task length', function() {
+        const id1 = 0; //root
+        const id2 = this.model.addMilestone(10, 0, "m2");
+
+        const linkId = this.model.addLink(id1, id2, 4.2);
+
+        expect(this.model.links[linkId].getTaskLength()).equal(4.2);
+    });
 }
