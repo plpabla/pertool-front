@@ -1,11 +1,13 @@
 const Konva = require('konva');
 
 class Milestone {
-    constructor(x,y,name) {
+    constructor(x,y,name, model) {
         this.name = name;
-        this.sourceLinks = [];
-        this.destinationLinks = [];
+        this.sourceLinks = new Array();
+        this.destinationLinks = new Array();
         this.img = Milestone.createImg(x,y,name,this);
+        this.parentModel = model;
+        this.img.on('dragmove', () => this.parentModel.onDrag(this));
     }
 
     addLinkWhereIAmDestination(l) {
@@ -28,16 +30,6 @@ class Milestone {
         // const pos = this.img.absolutePosition();
         const pos = this.img.position();
         return [pos.x, pos.y];
-    }
-
-    onMove() {
-        this.sourceLinks.forEach(e=>this._updateArrow(e));
-        this.destinationLinks.forEach(e=>this._updateArrow(e));
-    }
-
-    _updateArrow(link) {
-        console.log("Updating: ", link);
-        console.error(">>>> TODO");
     }
 
     static radius = 30;
@@ -106,7 +98,7 @@ class Milestone {
         return str;
     }
 
-    static deserialize(str) {
+    static deserialize(str, parentModel) {
         // console.log(`deserialization of: ${str}`);
         const deserialized_data = JSON.parse(str);
         const deserialized = Object.create(Milestone.prototype, Object.getOwnPropertyDescriptors(deserialized_data));
@@ -115,6 +107,7 @@ class Milestone {
         const pos = deserialized.pos;
         delete deserialized.pos;
         deserialized.img = Milestone.createImg(pos[0],pos[1],deserialized.name);
+        deserialized.parentModel = parentModel;
         return deserialized;
     }
 }

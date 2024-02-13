@@ -2,10 +2,15 @@ const chai = require('chai');
 const assert = chai.assert;
 const expect = chai.expect;
 import Model from '../Model.js';
+import Link from '../Link.js';
+import sinon from 'sinon';
 
 export default function suite() {
     beforeEach(function() {
-        this.model = new Model();
+        const layerMock = {
+            add: (x) => {}
+        }
+        this.model = new Model(layerMock);
     });
 
     it('can add', function() {
@@ -44,21 +49,30 @@ export default function suite() {
     })
 
     describe('Moving milestone', function() {
-        it('onMove() doesn\'t fail when there are no any arrows', function() {
-            expect(() => {
-                this.model.getRoot().onMove();
-            }).to.not.throw();
+        it('onDrag() function updates source link arrows', function() {
+            this.model.addMilestone(10, 10, "m");
+            this.model.addLink(0,1,10);
+            const m = this.model.getRoot();
+            const link = this.model.links[0];
+            const setPositionSpy = sinon.spy(link, "setPosition");
+
+            this.model.onDrag(m);
+            
+            expect(setPositionSpy.callCount).to.equal(1);
+            setPositionSpy.restore();
         })
 
-        it('onMove() function updates source link arrows', function() {
-            // const m1 = new Milestone(42, 100, "m1");
-            // const m2 = new Milestone(69, 110, "m2");
-            // const l = new Link(0, 1);
-            // m1.addLinkWhereIAmSource(l);
-            // m2.addLinkWhereIAmDestination(l);
+        it('onDrag() function updates source link arrows', function() {
+            this.model.addMilestone(10, 10, "m");
+            this.model.addLink(0,1,10);
+            const m = this.model.getMilestoneByName("m");
+            const link = this.model.links[0];
+            const setPositionSpy = sinon.spy(link, "setPosition");
 
-            // m1.onMove();
-            assert.fail("TODO");
+            this.model.onDrag(m);
+            
+            expect(setPositionSpy.callCount).to.equal(1);
+            setPositionSpy.restore();
         })
     })
 }

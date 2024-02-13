@@ -52,6 +52,8 @@ export default function suite() {
         // Don't compare images - new object is created after deserialization
         delete originalm2.img;
         delete m2.img;
+        delete originalm2.parentModel;
+        delete m2.parentModel;
 
         expect(m2).to.eqls(originalm2);
     })

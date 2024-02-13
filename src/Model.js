@@ -3,14 +3,12 @@ import Link from './Link.js';
 
 class Model {
     constructor(canvasLayer) {
-        this.milestones = [new Milestone(200, 300, "0")];
+        this.milestones = [new Milestone(200, 300, "0", this)];
         this.links = [];
         this.canvasLayer = canvasLayer;
     }
 
     static serialize(obj) {
-        // console.log('serialiation');
-        // console.log(obj);
         const milestones = obj.milestones;
         const links = obj.links;
 
@@ -20,7 +18,6 @@ class Model {
         links.forEach(l=>obj.links.push(Link.serialize(l)));
 
         const str = JSON.stringify(obj);
-        // console.log('Serialized: ' + str);
 
         // restore original elements
         obj.milestones = milestones;
@@ -36,7 +33,7 @@ class Model {
         const milestones = [];
         const links = [];
         deserialized.milestones.forEach(element => {
-            milestones.push(Milestone.deserialize(element));
+            milestones.push(Milestone.deserialize(element, this));
         });
         deserialized.links.forEach(element => {
             links.push(Link.deserialize(element));
@@ -48,12 +45,24 @@ class Model {
         return deserialized;
     }
 
+    onDrag(milestone) {
+        milestone.sourceLinks.forEach(e=>this._updateArrow(e));
+        milestone.destinationLinks.forEach(e=>this._updateArrow(e));
+    }
+
+    _updateArrow(linkId) {
+        const link = this.links[linkId];
+        link.setPosition(4,2,6,9);
+        console.error(">>>> TODO - correct position calc")
+    }
+
+
     getRoot() {
         return this.milestones[0];
     }
 
     addMilestone(x, y, name) {
-        this.milestones.push(new Milestone(x, y, name));
+        this.milestones.push(new Milestone(x, y, name, this));
         return this.milestones.length - 1;
     }
     
