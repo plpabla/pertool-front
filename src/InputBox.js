@@ -1,45 +1,46 @@
 class InputBox {
-    constructor(layer, prompt, pos, callbackFn, defaultValue) {
-        this.init(layer, prompt, pos, callbackFn, defaultValue);
+    constructor(layer, pos, items, callbackFn) {
+        this.init(layer, pos, items, callbackFn);
     }
 
-    init(layer, prompt, pos, callbackFn, defaultValue) {
+    init(layer, pos, items, callbackFn) {
         this.stageBox = layer.getStage().container().getBoundingClientRect();
         this.layer = layer;
-        this.prompt = prompt;
         this.pos = pos;
         this.callbackFn = callbackFn;
-        this.defaultValue = defaultValue;
 
-        this.draw();
+        this.draw(items);
     }
 
-    draw() {
+    draw(items) {
         const areaPos = {
             x: this.stageBox.left + this.pos.x,
             y: this.stageBox.top + this.pos.y
         };
 
-        const box = this.createForm(areaPos);
+        const box = this.createForm(areaPos, items);
     }
 
-    createForm(areaPos) {
+    createForm(areaPos, items) {
         const formDiv = document.createElement('div');
         formDiv.classList.add("input-box");
         formDiv.style.position = 'absolute';
         formDiv.style.top = areaPos.y + 'px';
         formDiv.style.left = areaPos.x + 'px';
         document.body.appendChild(formDiv);
-        
 
-        const txt = document.createElement('label');
-        txt.innerHTML = this.prompt;
-        formDiv.appendChild(txt);
-
-        const box = document.createElement('input');
-        box.type = 'text';
-        box.value = this.defaultValue ? this.defaultValue : "";
-        formDiv.appendChild(box);
+        let box = null;
+        items.forEach(el => {
+            // TODO: assign key
+            const txt = document.createElement('label');
+            txt.innerHTML = el.label;
+            formDiv.appendChild(txt);
+    
+            box = document.createElement('input');
+            box.type = 'text';
+            box.value = el.default ? el.default : "";
+            formDiv.appendChild(box);
+        });
         box.focus();
         box.select();
 

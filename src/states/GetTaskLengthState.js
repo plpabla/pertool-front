@@ -9,8 +9,13 @@ class GetTaskLengthState extends State {
         this.m2 = m2;
         this.arrow = arrow;
         const posOnCanvas = context.stage.getPointerPosition();
-        const defaultValue = "0";
-        new InputBox(context.modelLayer, "Task length:", posOnCanvas, (str) => {
+        const formItems = [{
+            label: "Task lenght",
+            key: "taskLen",
+            default: "0"
+        }];
+
+        new InputBox(context.modelLayer, posOnCanvas, formItems, (str) => {
             const value = Number.parseFloat(str);
             if(!isNaN(value)) {
                 context.model.addLink(m1, m2, value);
@@ -19,8 +24,7 @@ class GetTaskLengthState extends State {
             context.state = new LinkFirstElState(context);
             context.toolbox.select("link");
             arrow.destroy();
-        },
-        defaultValue);
+        });
     }
 
     onClick(args) {

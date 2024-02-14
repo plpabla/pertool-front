@@ -12,6 +12,7 @@ import toolboxCreateTest from './tests/toolbox.create.test.js';
 import editorCreateTest from './tests/editor.create.test.js';
 import editorRenderTest from './tests/editor.render.test.js';
 import editorSMTest from './tests/editor.statemachine.test.js';
+import inputBoxTest from './tests/inputbox.test.js';
 
 // describe('Framework', function(){
 //     this.slow(10);       // highlight all tasks slower than this limit
@@ -32,6 +33,9 @@ describe('Link object', function() {
     describe('serialization', linkSerializeTest.bind(this));
 });
 
+describe('InputBox', function() {
+    describe('', inputBoxTest.bind(this));
+})
 
 describe('Model', function() {
     describe('creation', modelCreateTest.bind(this));
