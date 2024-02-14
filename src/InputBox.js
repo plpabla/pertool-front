@@ -8,6 +8,7 @@ class InputBox {
         this.layer = layer;
         this.pos = pos;
         this.callbackFn = callbackFn;
+        this.form = null;
 
         this.draw(items);
     }
@@ -18,7 +19,7 @@ class InputBox {
             y: this.stageBox.top + this.pos.y
         };
 
-        const box = this.createForm(areaPos, items);
+        this.form = this.createForm(areaPos, items);
     }
 
     createForm(areaPos, items) {
@@ -31,14 +32,16 @@ class InputBox {
 
         let box = null;
         items.forEach(el => {
-            // TODO: assign key
             const txt = document.createElement('label');
             txt.innerHTML = el.label;
+            txt.setAttribute('for', el.key);
             formDiv.appendChild(txt);
     
             box = document.createElement('input');
             box.type = 'text';
             box.value = el.default ? el.default : "";
+            box.setAttribute('id', el.key);
+            box.setAttribute('name', el.key);
             formDiv.appendChild(box);
         });
         box.focus();
@@ -68,6 +71,8 @@ class InputBox {
             document.body.removeChild(formDiv);
             callbackFn(txt);
         })
+
+        return formDiv;
     }
 }
 
