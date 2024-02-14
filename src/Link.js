@@ -26,6 +26,7 @@ class Link {
     }
 
     setPosition(x1, y1, x2, y2) {
+        // console.log("Move to (" + x1 + ", " + y1, ") - (" + x2 + ", " + y2 + ")");
         this.points = [x1, y1, x2, y2];
         this.img.attrs.points[0] = x1;
         this.img.attrs.points[1] = y1;

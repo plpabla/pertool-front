@@ -88,7 +88,7 @@ export default function suite() {
             m1.img.position({x: 20, y: 10});
             this.model.onDrag(m1);
             
-            expect(link.img.attrs.points).to.eqls([10+Milestone.radius, 10, 100-Milestone.radius, 10]);
+            expect(link.img.attrs.points).to.eqls([20+Milestone.radius, 10, 100-Milestone.radius, 10]);
         })
     })
 }

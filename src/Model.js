@@ -52,8 +52,10 @@ class Model {
 
     _updateArrow(linkId) {
         const link = this.links[linkId];
-        link.setPosition(4,2,6,9);
-        console.error(">>>> TODO - correct position calc")
+        const m1 = this.getMilestoneById(link.sourceId);
+        const m2 = this.getMilestoneById(link.destId);
+        const pos = Model.calculateArrowPosition(m1, m2);
+        link.setPosition(...pos);
     }
 
 
