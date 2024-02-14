@@ -43,10 +43,16 @@ class Link {
         return new Konva.Arrow({
             points: points,
             stroke: "black",
+            strokeWidth: 2,
+            fill: "black",
+            pointerLength: 20,
+            pointerWidth: 15,
             dashEnabled: false,
             dash: [10, 5]
         })
     }
+
+
 
     getImg() {
         return this.img;
