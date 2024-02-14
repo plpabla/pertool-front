@@ -11,6 +11,7 @@ class Link {
             this.points = [1,2,3,4];
         }
         this.img = Link.createImg(this.points);
+        this.updateDash();
     }
 
     getSourceMilestoneId() {
@@ -25,8 +26,12 @@ class Link {
         return this.taskLength;
     }
 
+    setTaskLength(taskLength) {
+        this.taskLength = taskLength;
+        this.updateDash();
+    }
+
     setPosition(x1, y1, x2, y2) {
-        // console.log("Move to (" + x1 + ", " + y1, ") - (" + x2 + ", " + y2 + ")");
         this.points = [x1, y1, x2, y2];
         this.img.attrs.points[0] = x1;
         this.img.attrs.points[1] = y1;
@@ -37,12 +42,18 @@ class Link {
     static createImg(points) {
         return new Konva.Arrow({
             points: points,
-            stroke: "black"
+            stroke: "black",
+            dashEnabled: false,
+            dash: [10, 5]
         })
     }
 
     getImg() {
         return this.img;
+    }
+
+    updateDash() {
+        this.img.dashEnabled(this.taskLength === 0);
     }
 
     static serialize(obj) {
