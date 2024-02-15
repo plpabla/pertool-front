@@ -92,4 +92,40 @@ export default function suite() {
         const input = childNodes.find(e=>e.nodeName === "INPUT");
         expect(input.getAttribute('id')).equal(this.oneItem[0].key);
     })
+
+    it('input box has one OK button', function() {
+        const callback = function() {};
+
+        const box = new InputBox(this.layer, [20, 30], this.oneItem, callback);
+
+        const childNodes = Array.from(box.form.childNodes);
+        const btn = childNodes.filter(e=>e.nodeName === "BUTTON");
+        expect(btn.length).equal(1);
+    })
+
+    it('when OK button is pressed, callback function is called', function() {
+        const callback = sinon.stub();
+        const box = new InputBox(this.layer, [20, 30], this.oneItem, callback);
+        const childNodes = Array.from(box.form.childNodes);
+        const btn = childNodes.find(e=>e.nodeName === "BUTTON");
+
+        btn.click();
+
+        assert(callback.calledOnce);
+    })
+
+    it('callback for one item is called with correct data structure', function() {
+        const callback = sinon.stub();
+        const box = new InputBox(this.layer, [20, 30], this.oneItem, callback);
+        const childNodes = Array.from(box.form.childNodes);
+        const btn = childNodes.find(e=>e.nodeName === "BUTTON");
+        const input = childNodes.find(e=>e.nodeName === "INPUT");
+
+        input.value = "100";
+        btn.click();
+
+        const callArgs = callback.firstCall.args[0];
+        console.log(callArgs);
+        expect(callArgs).eqls({val: "100"});
+    })
 };

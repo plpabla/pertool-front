@@ -30,22 +30,23 @@ class InputBox {
         formDiv.style.left = areaPos.x + 'px';
         document.body.appendChild(formDiv);
 
-        let box = null;
+        let boxes = [];
         items.forEach(el => {
             const txt = document.createElement('label');
             txt.innerHTML = el.label;
             txt.setAttribute('for', el.key);
             formDiv.appendChild(txt);
     
-            box = document.createElement('input');
+            const box = document.createElement('input');
             box.type = 'text';
             box.value = el.default ? el.default : "";
             box.setAttribute('id', el.key);
             box.setAttribute('name', el.key);
             formDiv.appendChild(box);
+            boxes.push(box);
         });
-        box.focus();
-        box.select();
+        boxes[0].focus();
+        boxes[0].select();
 
         const ok = document.createElement('button');
         ok.classList.add('btn');
@@ -54,22 +55,27 @@ class InputBox {
         formDiv.appendChild(ok);
 
         const callbackFn = this.callbackFn;
-        box.addEventListener('keydown', function (e) {
-            if (e.key === "Enter") {
-                const txt = box.value;
-                document.body.removeChild(formDiv);
-                callbackFn(txt);
-            }
-            if (e.key === "Escape") {
-                document.body.removeChild(formDiv);
-                callbackFn("");
-            }
+        boxes.forEach(b=> {
+            b.addEventListener('keydown', function (e) {
+                // if (e.key === "Enter") {
+                //     const txt = box.value;
+                //     document.body.removeChild(formDiv);
+                //     callbackFn(txt);
+                // }
+                if (e.key === "Escape") {
+                    document.body.removeChild(formDiv);
+                    callbackFn("");
+                }
+            })
         });
 
         ok.addEventListener('click', function() {
-            const txt = box.value;
+            const data = {};
+            boxes.forEach(b => {
+                data[b.getAttribute('id')] = b.value;
+            });
             document.body.removeChild(formDiv);
-            callbackFn(txt);
+            callbackFn(data);
         })
 
         return formDiv;
