@@ -57,26 +57,26 @@ class InputBox {
         const callbackFn = this.callbackFn;
         boxes.forEach(b=> {
             b.addEventListener('keydown', function (e) {
-                // if (e.key === "Enter") {
-                //     const txt = box.value;
-                //     document.body.removeChild(formDiv);
-                //     callbackFn(txt);
-                // }
+                if (e.key === "Enter") {
+                    closeAndCall();
+                }
                 if (e.key === "Escape") {
                     document.body.removeChild(formDiv);
-                    callbackFn("");
+                    callbackFn({});
                 }
             })
         });
 
-        ok.addEventListener('click', function() {
+        ok.addEventListener('click', closeAndCall);
+
+        function closeAndCall() {
             const data = {};
             boxes.forEach(b => {
                 data[b.getAttribute('id')] = b.value;
             });
             document.body.removeChild(formDiv);
             callbackFn(data);
-        })
+        };
 
         return formDiv;
     }

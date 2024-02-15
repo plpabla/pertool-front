@@ -15,10 +15,10 @@ class GetTaskLengthState extends State {
             default: "0"
         }];
 
-        new InputBox(context.modelLayer, posOnCanvas, formItems, (str) => {
-            const value = Number.parseFloat(str);
-            if(!isNaN(value)) {
-                context.model.addLink(m1, m2, value);
+        new InputBox(context.modelLayer, posOnCanvas, formItems, (data) => {
+            const taskLen = parseFloat(data["taskLen"]);
+            if(!isNaN(taskLen)) {
+                context.model.addLink(m1, m2, taskLen);
             } else {
             }
             context.state = new LinkFirstElState(context);
