@@ -87,7 +87,8 @@ button {
     width: fit-content;
     height: fit-content;
     padding: 5px 10px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
     align-items: center;
     gap: 10px;
 }
@@ -108,4 +109,5 @@ button {
 .input-box > button {
     background-color: #07ab88;
     box-shadow: 4px 5px 4px #00000049;
+    grid-column-start: 2;
 }

@@ -145,6 +145,6 @@ export default function suite() {
 
         const childNodes = Array.from(box.form.childNodes);
         const labels = childNodes.filter(e=>e.nodeName === "LABEL");
-        expect(labels.length).equal(1); // TODO
+        expect(labels.length).equal(11111); //TODO
     })
 };

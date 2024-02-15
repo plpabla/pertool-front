@@ -45,8 +45,10 @@ class InputBox {
             formDiv.appendChild(box);
             boxes.push(box);
         });
-        boxes[0].focus();
-        boxes[0].select();
+
+        const focusItemIdx = findFocusIndex(items);
+        boxes[focusItemIdx].focus();
+        boxes[focusItemIdx].select();
 
         const ok = document.createElement('button');
         ok.classList.add('btn');
@@ -77,6 +79,11 @@ class InputBox {
             document.body.removeChild(formDiv);
             callbackFn(data);
         };
+
+        function findFocusIndex(items) {
+            const idx = items.findIndex(e => e["focus"] === true);
+            return Math.max(0,idx);
+        }
 
         return formDiv;
     }

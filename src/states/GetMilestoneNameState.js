@@ -13,6 +13,11 @@ class GetMilestoneNameState extends State {
             label: "Milestone ID",
             key: "name",
             default: defaultValue
+        }, {
+            label: "Description",
+            key: "text",
+            default: "",
+            focus: true
         }];
         new InputBox(context.modelLayer, posOnCanvas, formItems , (data) => {
             const name = data["name"];
