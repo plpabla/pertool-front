@@ -5,11 +5,11 @@ import Milestone from '../Milestone.js';
 
 export default function suite() {
     before(function() {
-        this.m = new Milestone(0, 0, "custom name");
+        this.m = new Milestone(0, 0, "custom id");
     });
 
     it('has correct initial name', function() {
-        expect(this.m.name).to.equal("custom name");
+        expect(this.m.name).to.equal("custom id");
     });
 
     it('has no links attached', function() {

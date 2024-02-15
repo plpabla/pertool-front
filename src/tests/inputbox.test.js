@@ -145,6 +145,33 @@ export default function suite() {
 
         const childNodes = Array.from(box.form.childNodes);
         const labels = childNodes.filter(e=>e.nodeName === "LABEL");
-        expect(labels.length).equal(11111); //TODO
+        expect(labels.length).equal(2);
+    })
+
+    it('For more than one field, default values are returned correctly', function() {
+        const callback = sinon.stub();
+        const box = new InputBox(this.layer, [20, 30], this.twoItems, callback);
+        const childNodes = Array.from(box.form.childNodes);
+        const btn = childNodes.find(e=>e.nodeName === "BUTTON");
+
+        btn.click();
+
+        const callArgs = callback.firstCall.args[0];
+        expect(callArgs).eqls({id: "42", name: ""});
+    })
+
+    it('For more than one field, I get an object with 2 fields', function() {
+        const callback = sinon.stub();
+        const box = new InputBox(this.layer, [20, 30], this.twoItems, callback);
+        const childNodes = Array.from(box.form.childNodes);
+        const btn = childNodes.find(e=>e.nodeName === "BUTTON");
+        const inputFields = childNodes.filter(e=>e.nodeName === "INPUT");
+
+        inputFields[0].value = "69";
+        inputFields[1].value = "my description";
+        btn.click();
+
+        const callArgs = callback.firstCall.args[0];
+        expect(callArgs).eqls({id: "69", name: "my description"});
     })
 };
