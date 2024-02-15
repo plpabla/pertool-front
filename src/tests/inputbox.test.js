@@ -25,6 +25,16 @@ export default function suite() {
             key: "val",
             default: "42"
         }];
+
+        this.twoItems = [{
+            label: "Milestone ID",
+            key: "id",
+            default: "42"
+        }, {
+            label: "Milestone name",
+            key: "name",
+            default: ""
+        }]
     })
 
     it('can create simple input box and assign my callback function', function() {
@@ -125,7 +135,16 @@ export default function suite() {
         btn.click();
 
         const callArgs = callback.firstCall.args[0];
-        console.log(callArgs);
         expect(callArgs).eqls({val: "100"});
+    })
+
+    it('I can create InputBox with more than one field', function() {
+        const callback = function() {};
+
+        const box = new InputBox(this.layer, [20, 30], this.twoItems, callback);
+
+        const childNodes = Array.from(box.form.childNodes);
+        const labels = childNodes.filter(e=>e.nodeName === "LABEL");
+        expect(labels.length).equal(1); // TODO
     })
 };

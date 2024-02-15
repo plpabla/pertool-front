@@ -26,7 +26,10 @@ export default function suite() {
 
         this.InputBoxStub = sinon.stub(InputBox.prototype, 'init');
         this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
-            callbackFn("name entered in the input box");
+            callbackFn({
+                name: "name entered in the input box",
+                taskLen: "10"
+            });
         });
     });
 
@@ -62,6 +65,11 @@ export default function suite() {
             }
     };
 
+    function createMilestone(editor, x, y, name) {
+        editor.addMilestone(x,y,name);
+        return editor.model.getMilestoneByName(name);
+    }
+
     it('starts with pointer state', function() {
         expect(this.e).to.have.property('state');
         expect(this.e.state).instanceOf(PointerState);
@@ -93,9 +101,12 @@ export default function suite() {
     states.forEach(function(testCase){
         it(`given in ${testCase.from.getName()} when clicked on ${testCase.clickOn} item, then ${testCase.to.getName()} is reached`, function() {
             const menu = this.e.toolbox.menuItems;
-            this.e.state = new testCase.from(this.e, new Milestone(10,10,"test"));
+            const m1 = createMilestone(this.e, 10, 20, "test");
+            const m2 = createMilestone(this.e, 30, 40, "test2");
+            
+            this.e.state = new testCase.from(this.e, m1);
 
-            this.e.state = this.e.state.onClick(createClickedObject(testCase.clickOn, new Milestone(20,20,"other")));
+            this.e.state = this.e.state.onClick(createClickedObject(testCase.clickOn, m2));
 
             expect(this.e.state).instanceOf(testCase.to);
         });
@@ -149,7 +160,7 @@ export default function suite() {
 
     describe('in LinkSecondElState', function() {
         it('When clicked on the same milestone, we remain in the same state', function() {
-            const milestone = new Milestone(10,10,"test");
+            const milestone = createMilestone(this.e, 10, 20, "test");
             this.e.state = new LinkSecondElState(this.e, milestone);
 
             this.e.state.onClick(createClickedObject("milestone-element", milestone));
@@ -160,8 +171,8 @@ export default function suite() {
 
         it('When clicked on a different milestone, input box object is created', function() {
             // Note - it can be complex form in the future
-            const milestone = new Milestone(10,10,"test");
-            const anotherMilestone = new Milestone(10, 10, "test as well");
+            const milestone  = createMilestone(this.e, 10, 20, "test");
+            const anotherMilestone  = createMilestone(this.e, 10, 20, "another");
             this.e.state = new LinkSecondElState(this.e, milestone);
 
             this.e.state.onClick(createClickedObject("milestone-element", anotherMilestone));
@@ -178,14 +189,13 @@ export default function suite() {
 
         cases.forEach(function(testCase) {
             it(`when passed ${testCase.descr}, link is ${testCase.createdLink ? "":"not "}created`, function() {
-                const m1 = new Milestone(10, 20, "0");
-                const m2 = new Milestone(10, 20, "1");
-                this.e.model.milestones.push(m1);
-                this.e.model.milestones.push(m2);
+                const m1 = createMilestone(this.e, 10, 20, "0");
+                const m2 = createMilestone(this.e, 10, 20, "1");
+
                 const fakeArrow = sinon.fake();
                 fakeArrow.destroy = sinon.fake();
                 this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
-                    callbackFn(testCase.value);
+                    callbackFn({taskLen: testCase.value});
                 });
 
                 const state = new GetTaskLengthState(this.e, m1, m2, fakeArrow);
@@ -194,10 +204,8 @@ export default function suite() {
             });
     
             it(`when passed ${testCase.descr}, we move to ${testCase.nextState.getName()} state`, function() {
-                const m1 = new Milestone(10, 20, "0");
-                const m2 = new Milestone(10, 20, "1");
-                this.e.model.milestones.push(m1);
-                this.e.model.milestones.push(m2);
+                const m1 = createMilestone(this.e, 10, 20, "0");
+                const m2 = createMilestone(this.e, 10, 20, "1");
                 const fakeArrow = sinon.fake();
                 fakeArrow.destroy = sinon.fake();
                 this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
@@ -213,17 +221,15 @@ export default function suite() {
 
     describe('in GetTaskLengthState', function() {
         it('link is created between given milestones', function() {
-            const m1 = new Milestone(10, 20, "m1");
-            const m2 = new Milestone(10, 20, "m2");
-            this.e.model.milestones.push(m1);
-            this.e.model.milestones.push(m2);
+            const m1 = createMilestone(this.e, 10, 20, "m1");
+            const m2 = createMilestone(this.e, 10, 20, "m2");
             const m1loc = this.e.model.findMilestoneIDByName("m1");
             const m2loc = this.e.model.findMilestoneIDByName("m2");
             const fakeArrow = sinon.fake();
             fakeArrow.destroy = sinon.fake();
             
             this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
-                callbackFn("5");
+                callbackFn({taskLen: "5"});
             });
             this.e.state = new GetTaskLengthState(this.e, m1, m2, fakeArrow);
 
@@ -233,15 +239,13 @@ export default function suite() {
         })
 
         it('Link position corresponds to milestone location', function() {
-            const m1 = new Milestone(10, 20, "m1");
-            const m2 = new Milestone(100, 20, "m2");
-            this.e.model.milestones.push(m1);
-            this.e.model.milestones.push(m2);
+            const m1 = createMilestone(this.e, 10, 20, "m1");
+            const m2 = createMilestone(this.e, 100, 20, "m2");
             const fakeArrow = sinon.fake();
             fakeArrow.destroy = sinon.fake();
             
             this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
-                callbackFn("5");
+                callbackFn({taskLen: "5"});
             });
             this.e.state = new GetTaskLengthState(this.e, m1, m2, fakeArrow);
 
@@ -250,15 +254,13 @@ export default function suite() {
         })
 
         it('Link is created with given length, this length is stored', function() {
-            const m1 = new Milestone(10, 20, "m1");
-            const m2 = new Milestone(10, 20, "m2");
-            this.e.model.milestones.push(m1);
-            this.e.model.milestones.push(m2);
+            const m1 = createMilestone(this.e, 10, 20, "m1");
+            const m2 = createMilestone(this.e, 100, 20, "m2");
             const fakeArrow = sinon.fake();
             fakeArrow.destroy = sinon.fake();
             
             this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
-                callbackFn("5");
+                callbackFn({taskLen: "5"});
             });
             this.e.state = new GetTaskLengthState(this.e, m1, m2, fakeArrow);
 
