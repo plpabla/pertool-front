@@ -27,6 +27,6 @@ export default function suite() {
     it('I can pass optional description', function() {
         const m = new Milestone(42, 100, "0", "description");
 
-        expect(m.txt).equal("description");
+        expect(m.getDescription()).equal("description");
     });
 };

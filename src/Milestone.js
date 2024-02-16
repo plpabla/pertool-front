@@ -87,6 +87,18 @@ class Milestone {
         img.add(l2);
         img.add(txt);
 
+        if(description) {
+            const txtDescr = new Konva.Text({
+                x: 0,
+                fontSize: 16,
+                y: 1.2*r,
+                text: description,
+            })
+            // Center
+            txtDescr.offsetX(txtDescr.width() / 2);
+            img.add(txtDescr);
+        }
+
         return img;
     }
 
@@ -111,7 +123,7 @@ class Milestone {
         // recreate image
         const pos = deserialized.pos;
         delete deserialized.pos;
-        deserialized.img = Milestone.createImg(pos[0],pos[1],deserialized.name);
+        deserialized.img = Milestone.createImg(pos[0],pos[1],deserialized.name,deserialized.description);
         deserialized.parentModel = parentModel;
         return deserialized;
     }

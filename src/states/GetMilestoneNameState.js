@@ -21,8 +21,9 @@ class GetMilestoneNameState extends State {
         }];
         new InputBox(context.modelLayer, posOnCanvas, formItems , (data) => {
             const name = data["name"];
+            const descr = data["text"] || "";
             if(name) {
-                context.addMilestone(posAbsolute.x, posAbsolute.y, name);
+                context.addMilestone(posAbsolute.x, posAbsolute.y, name, descr);
                 context.state = new MilestoneState(context);
             } else {
                 context.state = new PointerState(context);

@@ -39,8 +39,8 @@ class Editor {
         this.modelLayer.add(m.img);
     }
 
-    addMilestone(x, y, name) {
-        const id = this.model.addMilestone(x,y,name);
+    addMilestone(x, y, name, description="") {
+        const id = this.model.addMilestone(x,y,name,description);
         const m = this.model.getMilestoneById(id);
         this.modelLayer.add(m.img);
     }
