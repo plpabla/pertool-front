@@ -6,7 +6,7 @@ const Konva = require('konva');
 
 export default function suite() {
     before(function() {
-        this.m = new Milestone(0, 0, "custom name");
+        this.m = new Milestone(0, 0, "0", "custom name");
     });
 
     it('can get image object', function() {
@@ -19,8 +19,14 @@ export default function suite() {
     });
 
     it('is drawn at given postion', function() {
-        const m = new Milestone(42, 100, "test");
+        const m = new Milestone(42, 100, "0");
 
         expect(m.getPos()).eqls([42, 100]);
+    });
+
+    it('I can pass optional description', function() {
+        const m = new Milestone(42, 100, "0", "description");
+
+        expect(m.txt).equal("description");
     });
 };

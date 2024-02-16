@@ -1,11 +1,12 @@
 const Konva = require('konva');
 
 class Milestone {
-    constructor(x,y,name, model) {
+    constructor(x,y,name,description,model) {
         this.name = name;
+        this.description = description;
         this.sourceLinks = new Array();
         this.destinationLinks = new Array();
-        this.img = Milestone.createImg(x,y,name,this);
+        this.img = Milestone.createImg(x, y, name, description, this);
         this.parentModel = model;
         this.img.on('dragmove', () => this.parentModel.onDrag(this));
     }
@@ -18,6 +19,10 @@ class Milestone {
         this.sourceLinks.push(l);
     }
 
+    getDescription() {
+        return this.description;
+    }
+    
     getName() {
         return this.name;
     }
@@ -32,11 +37,11 @@ class Milestone {
         return [pos.x, pos.y];
     }
 
-    static radius = 30;
-    static createImg(x, y, name, instance) {
+    static radius = 27;
+    static createImg(x, y, name, description, instance) {
         const param = { "name": "milestone-element",
                         "mainColor": "black", 
-                        "secondaryColor": "red",
+                        "secondaryColor": "#D243F7",
                         "radius": Milestone.radius};
 
         const r = param.radius;

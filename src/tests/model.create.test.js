@@ -22,6 +22,10 @@ export default function suite() {
     });
 
     it('root milestone has name "0"', function() {
-        expect(this.model.getRoot().name).to.equal('0');
+        expect(this.model.getRoot().getName()).to.equal('0');
+        });
+
+    it('root milestone has empty description', function() {
+        expect(this.model.getRoot().getDescription()).to.equal('');
     });
 }

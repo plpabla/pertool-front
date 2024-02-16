@@ -3,7 +3,7 @@ import Link from './Link.js';
 
 class Model {
     constructor(canvasLayer) {
-        this.milestones = [new Milestone(200, 300, "0", this)];
+        this.milestones = [new Milestone(200, 300, "0", "", this)];
         this.links = [];
         this.canvasLayer = canvasLayer;
     }
@@ -63,13 +63,17 @@ class Model {
         return this.milestones[0];
     }
 
-    addMilestone(x, y, name) {
-        this.milestones.push(new Milestone(x, y, name, this));
+    addMilestone(x, y, name, description="") {
+        this.milestones.push(new Milestone(x, y, name, description, this));
         return this.milestones.length - 1;
     }
     
     findMilestoneIDByName(name) {
         return this.milestones.findIndex(m => m.getName() === name);
+    }
+
+    findMilestoneIDByPassedId(id) {
+        return this.milestones.findIndex(m => m.getId() === id);
     }
 
     getMilestoneByName(name) {
