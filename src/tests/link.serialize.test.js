@@ -7,7 +7,7 @@ const Konva = require('konva');
 
 export default function suite() {
     beforeEach(function() {
-        this.l = new Link(1, 5, 4.2);
+        this.l = new Link(1, 5, 4.2, [10, 20, 30, 40]);
     });
 
     it('can be serialized', function() {

@@ -6,7 +6,7 @@ import Link from '../Link.js';
 
 export default function suite() {
     before(function() {
-        this.l = new Link(0, 1, 0);
+        this.l = new Link(0, 1, 0, [10, 20, 100, 100]);
     })
 
     it('contains correct source milestone link ID', function() {
@@ -26,28 +26,16 @@ export default function suite() {
         expect(img).instanceOf(Konva.Group);
     })
 
-    it('initial position is set to default in constructor if not passed', function() {
-        const l = new Link(0,1);
-
-        expect(l.points).to.eqls([1,2,3,4]);
-    })
-
     it('initial position is set to given value in constructor if passed', function() {
         const l = new Link(0,1,0,[4,2,6,9]);
 
         expect(l.points).to.eqls([4,2,6,9]);
     })
 
-    it('has default task length equal zero', function() {
-        const l = new Link(0,1);
+    it('task length is set correctly', function() {
+        const l = new Link(0,1,4.2,[1,2,2,1]);
 
-        expect(l.taskLength).equal(0);
-    })
-
-    it('can set default task length', function() {
-        const l = new Link(0,1,4.2);
-
-        expect(l.taskLength).equal(4.2);
+        expect(l.getTaskLength()).equal(4.2);
     })
 
     it('can be moved', function() {
@@ -57,14 +45,14 @@ export default function suite() {
     })
 
     it('when task is zero length, line is solid', function() {
-        const l = new Link(0, 1, 0);
+        const l = new Link(0, 1, 0, [1,2,2,1]);
 
         expect(l.isDashEnabled()).to.be.true;
     })
 
 
     it('when task is non-zero length, line is solid', function() {
-        const l = new Link(0, 1, 42);
+        const l = new Link(0, 1, 42, [1,2,2,1]);
 
         expect(l.isDashEnabled()).to.be.false;
     })
