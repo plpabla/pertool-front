@@ -7,8 +7,7 @@ class Link {
         this.points = points;
         this.taskLength = taskLength ? parseFloat(taskLength) : 0;
         this._img = Link.createImg(this.points, this.taskLength);
-        this._getArrow();
-        this.updateDash();
+        this._updateDash();
     }
 
     getSourceMilestoneId() {
@@ -25,7 +24,7 @@ class Link {
 
     setTaskLength(taskLength) {
         this.taskLength = taskLength;
-        this.updateDash();
+        this._updateDash();
     }
 
     static _bgPaddingPx = 3;
@@ -158,7 +157,7 @@ class Link {
         return this._getArrow().dashEnabled();
     }
 
-    updateDash() {
+    _updateDash() {
         this._getArrow().dashEnabled(this.taskLength === 0);
     }
 
