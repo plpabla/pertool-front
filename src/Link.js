@@ -33,6 +33,7 @@ class Link {
             "name": "link-element",
             "mainColor": "black",
             "strokeWidth": 2,
+            "hitStrokeWidth": 20,            // when hit is detected
             "pointerLength": 20,
             "pointerWidth": 15,
             "dash": [10, 5],
@@ -47,6 +48,7 @@ class Link {
             points: points,
             stroke: param.mainColor,
             strokeWidth: param.strokeWidth,
+            hitStrokeWidth: param.hitStrokeWidth,
             fill: param.mainColor,
             pointerLength: param.pointerLength,
             pointerWidth: param.pointerWidth,
@@ -54,6 +56,7 @@ class Link {
             dash: param.dash,
             name: param.name,
         });
+        
 
         const taskLenStr = taskLength || "";
         const txtX = (points[2] + points[0])/2;

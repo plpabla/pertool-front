@@ -10,6 +10,7 @@ class PointerState extends State {
     onClick(args) {
         const target = args.target;
         const clickedItem = target.attrs.name;
+        console.log(">>>>>", clickedItem);
 
         if(clickedItem == undefined)
             return this;
