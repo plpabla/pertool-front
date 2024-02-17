@@ -28,7 +28,12 @@ class Link {
     }
 
     focus(enable) {
-        console.error("TODO");
+        const arrow = this._getArrow();
+        if (enable) {
+            arrow.strokeWidth(8);
+        } else {
+            arrow.strokeWidth(2);
+        }
     }
 
     static _bgPaddingPx = 3;
