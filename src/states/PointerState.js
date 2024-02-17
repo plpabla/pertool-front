@@ -12,8 +12,10 @@ class PointerState extends State {
         const target = args.target;
         const clickedItem = target.attrs.name;
 
-        if(clickedItem == undefined)
+        if(clickedItem == undefined) {
+            this._switchFocus();
             return this;
+        }
         if(clickedItem === "pointer")
             return this;
         if(clickedItem === "milestone")
@@ -31,12 +33,16 @@ class PointerState extends State {
         return this._focusedEl; 
     }
 
-    _switchFocus(clickedObj) {
+    _switchFocus(clickedObj=null) {
         if(this._focusedEl) {
             this._focusedEl.focus(false);
         }
-        this._focusedEl = clickedObj;
-        this._focusedEl.focus(true);
+        if(clickedObj) {
+            this._focusedEl = clickedObj;
+            this._focusedEl.focus(true);
+        } else {
+            this._focusedEl = null;
+        }
     }
 
 

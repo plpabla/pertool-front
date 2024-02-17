@@ -187,6 +187,18 @@ export default function suite() {
             expect(focusSpy.getCall(1).args[0]).equal(true);
             focusSpy.restore();
         })
+
+        it('when I click on milestone-element, and then on undefined, focus from milestone is removed', function() {
+            this.e.state = new PointerState(this.e);
+            const m = createMilestone(this.e, 10, 20, "test");
+            this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
+            const focusSpy = sinon.spy(m, "focus");
+
+            this.e.state = this.e.state.onClick(createClickedObject(undefined));
+
+            expect(focusSpy.getCall(0).args[0]).equal(false);
+            focusSpy.restore();
+        })
     })
 
     describe('in Milestone state', function() {
