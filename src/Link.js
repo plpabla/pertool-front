@@ -42,6 +42,7 @@ class Link {
         };
 
         const img = new Konva.Group();
+
         const arrow = new Konva.Arrow({
             points: points,
             stroke: param.mainColor,
@@ -109,30 +110,38 @@ class Link {
 
     _updateTaskLenStr() {
         const taskLenStr = this.taskLength || "";
-        const txt = this._getTxt();
-        txt.text(taskLenStr);
+        updateTxt(this._getTxt(), taskLenStr, this.points);
+        updateBoundingRect(this._getTxt(), this._getRect(), taskLenStr);
 
-        const pos = {
-            x: (this.points[2] + this.points[0])/2,
-            y: (this.points[3] + this.points[1])/2
+        function updateTxt(txt, taskLenStr, points) {
+            txt.text(taskLenStr);
+    
+            const pos = {
+                x: (points[2] + points[0])/2,
+                y: (points[3] + points[1])/2
+            }
+            txt.position(pos);
+            const shiftX = txt.width() / 2;
+            const shiftY = txt.height() / 2; 
+            txt.offsetX(shiftX);
+            txt.offsetY(shiftY);
         }
-        txt.position(pos);
-        const shiftX = txt.width() / 2;
-        const shiftY = txt.height() / 2; 
-        txt.offsetX(shiftX);
-        txt.offsetY(shiftY);
+        
+        function updateBoundingRect(txt, rect, taskLenStr) {
+            const pos = txt.position();
+            const shiftX = txt.width() / 2;
+            const shiftY = txt.height() / 2; 
+            const pos2 = {
+                x: pos.x - shiftX - Link._bgPaddingPx,
+                y: pos.y - shiftY - Link._bgPaddingPx
+            }
+            rect.position(pos2);
 
-        const pos2 = {
-            x: pos.x - shiftX - Link._bgPaddingPx,
-            y: pos.y - shiftY - Link._bgPaddingPx
-        }
-        const rect = this._getRect();
-        rect.position(pos2);
-
-        if(taskLenStr) {
-            rect.show();
-        } else {
-            rect.hide();
+            if(taskLenStr) {
+                rect.show();
+            } else {
+                rect.hide();
+            }
         }
     }
 
