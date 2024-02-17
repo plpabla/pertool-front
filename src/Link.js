@@ -11,6 +11,7 @@ class Link {
             this.points = [1,2,3,4];
         }
         this._img = Link.createImg(this.points);
+        this._getArrow();
         this.updateDash();
     }
 
@@ -31,32 +32,66 @@ class Link {
         this.updateDash();
     }
 
-    setPosition(x1, y1, x2, y2) {
-        this.points = [x1, y1, x2, y2];
-        this._img.attrs.points[0] = x1;
-        this._img.attrs.points[1] = y1;
-        this._img.attrs.points[2] = x2;
-        this._img.attrs.points[3] = y2;
-    }
-
     static createImg(points) {
-        const img = new Konva.Group();
+        const param = { 
+            "name": "link-element",
+            "mainColor": "black",
+            "strokeWidth": 2,
+            "pointerLength": 20,
+            "pointerWidth": 15,
+            "dash": [10, 5],
+            "fontSize": 16
+        };
 
+        const img = new Konva.Group();
         const arrow = new Konva.Arrow({
             points: points,
-            stroke: "black",
-            strokeWidth: 2,
-            fill: "black",
-            pointerLength: 20,
-            pointerWidth: 15,
+            stroke: param.mainColor,
+            strokeWidth: param.strokeWidth,
+            fill: param.mainColor,
+            pointerLength: param.pointerLength,
+            pointerWidth: param.pointerWidth,
             dashEnabled: false,
-            text: "42",
-            dash: [10, 5]
+            dash: param.dash,
+            name: param.name,
         });
 
-        img.add(arrow);
+        const txt = new Konva.Text({
+            x: 200,
+            y: 200,
+            fontSize: param.fontSize,
+            text: "TODO",
+            name: param.name,
+        })
+        // Center
+        txt.offsetX(txt.width() / 2);
 
-        return arrow;
+        img.add(txt);
+        img.add(arrow);
+        
+        return img;
+    }
+
+    _getElement(name) {
+        const el = this._img.getChildren(function(n) {
+            if (n.getClassName()===name) return n;
+        });
+        return el[0];
+    }
+    _getArrow() {
+        return this._getElement("Arrow");
+    }
+
+    _getTxt() {
+        return this._getElement("Text");
+    }
+
+    setPosition(x1, y1, x2, y2) {
+        this.points = [x1, y1, x2, y2];
+        this._getArrow().attrs.points[0] = x1;
+        this._getArrow().attrs.points[1] = y1;
+        this._getArrow().attrs.points[2] = x2;
+        this._getArrow().attrs.points[3] = y2;
     }
 
     getImg() {
@@ -64,23 +99,23 @@ class Link {
     }
 
     getPos() {
-        return this._img.attrs.points;
+        return this._getArrow().attrs.points;
     }
 
     isDashEnabled() {
-        return this._img.dashEnabled();
+        return this._getArrow().dashEnabled();
     }
 
     updateDash() {
-        this._img.dashEnabled(this.taskLength === 0);
+        this._getArrow().dashEnabled(this.taskLength === 0);
     }
 
     static serialize(obj) {
-        const img = obj.img;
-        delete obj.img;
+        const img = obj._img;
+        delete obj._img;
         const str = JSON.stringify(obj);
         // restore after serialization
-        obj.img = img;
+        obj._img = img;
         return str;
     }
 
@@ -88,7 +123,7 @@ class Link {
         const deserialized_data = JSON.parse(str);
         const deserialized = Object.create(Link.prototype, Object.getOwnPropertyDescriptors(deserialized_data));
 
-        deserialized.img = Link.createImg();
+        deserialized._img = Link.createImg();
         return deserialized;
     }
 }

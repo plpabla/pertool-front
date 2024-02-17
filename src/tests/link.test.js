@@ -23,7 +23,7 @@ export default function suite() {
         expect(() => {
             img = this.l.getImg();
         }).to.not.throw();
-        expect(img).instanceOf(Konva.Arrow);
+        expect(img).instanceOf(Konva.Group);
     })
 
     it('initial position is set to default in constructor if not passed', function() {
