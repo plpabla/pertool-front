@@ -6,9 +6,9 @@ class Milestone {
         this.description = description;
         this.sourceLinks = new Array();
         this.destinationLinks = new Array();
-        this.img = Milestone.createImg(x, y, name, description, this);
+        this._img = Milestone.createImg(x, y, name, description, this);
         this.parentModel = model;
-        this.img.on('dragmove', () => this.parentModel.onDrag(this));
+        this._img.on('dragmove', () => this.parentModel.onDrag(this));
     }
 
     addLinkWhereIAmDestination(l) {
@@ -28,12 +28,12 @@ class Milestone {
     }
 
     getImg() {
-        return this.img;
+        return this._img;
     }
 
     getPos() {
-        // const pos = this.img.absolutePosition();
-        const pos = this.img.position();
+        // const pos = this._img.absolutePosition();
+        const pos = this._img.position();
         return [pos.x, pos.y];
     }
 
@@ -109,13 +109,13 @@ class Milestone {
 
     static serialize(obj) {
         obj.pos = obj.getPos();
-        const img = obj.img;
-        delete obj.img;
+        const img = obj._img;
+        delete obj._img;
         const str = JSON.stringify(obj);
 
         // restore object state
         delete obj.pos;
-        obj.img = img;
+        obj._img = img;
         
         return str;
     }
@@ -128,7 +128,7 @@ class Milestone {
         // recreate image
         const pos = deserialized.pos;
         delete deserialized.pos;
-        deserialized.img = Milestone.createImg(pos[0],pos[1],deserialized.name,deserialized.description);
+        deserialized._img = Milestone.createImg(pos[0],pos[1],deserialized.name,deserialized.description);
         deserialized.parentModel = parentModel;
         return deserialized;
     }

@@ -50,7 +50,7 @@ class LinkSecondElState extends State {
     createArrowFollowingCursor() {
         const cursorPos = this.context.stage.getRelativePointerPosition();
         this.linkArrow = new Konva.Arrow({
-            points: [this.milestone1.img.attrs.x, this.milestone1.img.attrs.y, 
+            points: [this.milestone1.getImg().attrs.x, this.milestone1.getImg().attrs.y, 
                 cursorPos.x, cursorPos.y],
             stroke: "black"
         });
@@ -58,8 +58,8 @@ class LinkSecondElState extends State {
         this.context.stage.on('mousemove.arrowFollowingCursor touchmove.arrowFollowingCursor', (e) => {
             const cursorPos = this.context.stage.getRelativePointerPosition();
             const pos = [
-                this.milestone1.img.attrs.x, 
-                this.milestone1.img.attrs.y, 
+                this.milestone1.getImg().attrs.x, 
+                this.milestone1.getImg().attrs.y, 
                 cursorPos.x, 
                 cursorPos.y];
             this.linkArrow.points(pos);

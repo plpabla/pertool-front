@@ -36,13 +36,13 @@ class Editor {
     }
 
     drawMilestone(m) {
-        this.modelLayer.add(m.img);
+        this.modelLayer.add(m.getImg());
     }
 
     addMilestone(x, y, name, description="") {
         const id = this.model.addMilestone(x,y,name,description);
         const m = this.model.getMilestoneById(id);
-        this.modelLayer.add(m.img);
+        this.modelLayer.add(m.getImg());
     }
 }
 

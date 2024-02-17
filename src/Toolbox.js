@@ -157,7 +157,7 @@ class Toolbox {
 
     createImgMilestone() {
         const m = new Milestone(32,32,"","");
-        return changeLineColor(m.img, this.param.mainColor);
+        return changeLineColor(m.getImg(), this.param.mainColor);
         
         function changeLineColor(img, color) {
             img.children.forEach(e => {

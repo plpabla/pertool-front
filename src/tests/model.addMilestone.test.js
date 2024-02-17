@@ -85,7 +85,7 @@ export default function suite() {
             this.model.addLink(m1id,m2id,10);
             const link = this.model.links[0];
 
-            m1.img.position({x: 20, y: 10});
+            m1._img.position({x: 20, y: 10});
             this.model.onDrag(m1);
             
             expect(link.getPos()).to.eqls([20+Milestone.radius, 10, 100-Milestone.radius, 10]);
