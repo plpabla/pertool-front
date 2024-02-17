@@ -2,16 +2,12 @@ const Konva = require('konva');
 
 class Link {
     constructor(sourceId, destId, taskLength, points) {
-        // TODO: create dashed link if length is zero
         this.sourceId = sourceId;
         this.destId = destId;
         this.points = points;
         this.taskLength = taskLength ? parseFloat(taskLength) : 0;
-        if(points === undefined) {
-            this.points = [1,2,3,4];
-        }
-        this.img = Link.createImg(this.points);
-        this.updateDash();
+        this._img = Link.createImg(this.points, this.taskLength);
+        this._updateDash();
     }
 
     getSourceMilestoneId() {
@@ -28,46 +24,161 @@ class Link {
 
     setTaskLength(taskLength) {
         this.taskLength = taskLength;
-        this.updateDash();
+        this._updateDash();
+    }
+
+    static _bgPaddingPx = 3;
+    static createImg(points, taskLength="") {
+        const param = { 
+            "name": "link-element",
+            "mainColor": "black",
+            "strokeWidth": 2,
+            "hitStrokeWidth": 20,            // when hit is detected
+            "pointerLength": 20,
+            "pointerWidth": 15,
+            "dash": [10, 5],
+            "fontSize": 20,
+            "backgroundColor": "#fef9e6",
+            "backgroundPadding": Link._bgPaddingPx,
+        };
+
+        const img = new Konva.Group();
+
+        const arrow = new Konva.Arrow({
+            points: points,
+            stroke: param.mainColor,
+            strokeWidth: param.strokeWidth,
+            hitStrokeWidth: param.hitStrokeWidth,
+            fill: param.mainColor,
+            pointerLength: param.pointerLength,
+            pointerWidth: param.pointerWidth,
+            dashEnabled: false,
+            dash: param.dash,
+            name: param.name,
+        });
+        
+
+        const taskLenStr = taskLength || "";
+        const txtX = (points[2] + points[0])/2;
+        const txtY = (points[3] + points[1])/2;
+        const txt = new Konva.Text({
+            x: txtX,
+            y: txtY,
+            fontSize: param.fontSize,
+            text: taskLenStr,
+            name: param.name,
+        })
+        // Center
+        const shiftX = txt.width() / 2;
+        const shiftY = txt.height() / 2;
+        txt.offsetX(shiftX);
+        txt.offsetY(shiftY);
+
+        const bgRect = new Konva.Rect({
+            x: txtX-shiftX-param.backgroundPadding,
+            y: txtY-shiftY-param.backgroundPadding,
+            width: txt.width()+2*param.backgroundPadding,
+            height: txt.height()+2*param.backgroundPadding,
+            fill: param.backgroundColor,
+            name: param.name,
+          });
+        if(!taskLenStr) {
+            bgRect.hide();
+        }
+
+        img.add(arrow);
+        img.add(bgRect);
+        img.add(txt);
+        
+        return img;
+    }
+
+    _getElement(name) {
+        const el = this._img.getChildren(function(n) {
+            if (n.getClassName()===name) return n;
+        });
+        return el[0];
+    }
+    _getArrow() {
+        return this._getElement("Arrow");
+    }
+
+    _getTxt() {
+        return this._getElement("Text");
+    }
+
+    _getRect() {
+        return this._getElement("Rect");
+    }
+
+    _updateTaskLenStr() {
+        const taskLenStr = this.taskLength || "";
+        updateTxt(this._getTxt(), taskLenStr, this.points);
+        updateBoundingRect(this._getTxt(), this._getRect(), taskLenStr);
+
+        function updateTxt(txt, taskLenStr, points) {
+            txt.text(taskLenStr);
+    
+            const pos = {
+                x: (points[2] + points[0])/2,
+                y: (points[3] + points[1])/2
+            }
+            txt.position(pos);
+            const shiftX = txt.width() / 2;
+            const shiftY = txt.height() / 2; 
+            txt.offsetX(shiftX);
+            txt.offsetY(shiftY);
+        }
+        
+        function updateBoundingRect(txt, rect, taskLenStr) {
+            const pos = txt.position();
+            const shiftX = txt.width() / 2;
+            const shiftY = txt.height() / 2; 
+            const pos2 = {
+                x: pos.x - shiftX - Link._bgPaddingPx,
+                y: pos.y - shiftY - Link._bgPaddingPx
+            }
+            rect.position(pos2);
+
+            if(taskLenStr) {
+                rect.show();
+            } else {
+                rect.hide();
+            }
+        }
     }
 
     setPosition(x1, y1, x2, y2) {
         this.points = [x1, y1, x2, y2];
-        this.img.attrs.points[0] = x1;
-        this.img.attrs.points[1] = y1;
-        this.img.attrs.points[2] = x2;
-        this.img.attrs.points[3] = y2;
+        this._getArrow().attrs.points[0] = x1;
+        this._getArrow().attrs.points[1] = y1;
+        this._getArrow().attrs.points[2] = x2;
+        this._getArrow().attrs.points[3] = y2;
+        this._updateTaskLenStr();
     }
-
-    static createImg(points) {
-        return new Konva.Arrow({
-            points: points,
-            stroke: "black",
-            strokeWidth: 2,
-            fill: "black",
-            pointerLength: 20,
-            pointerWidth: 15,
-            dashEnabled: false,
-            dash: [10, 5]
-        })
-    }
-
-
 
     getImg() {
-        return this.img;
+        return this._img;
     }
 
-    updateDash() {
-        this.img.dashEnabled(this.taskLength === 0);
+    getPos() {
+        return this._getArrow().attrs.points;
+    }
+
+    isDashEnabled() {
+        return this._getArrow().dashEnabled();
+    }
+
+    _updateDash() {
+        this._getArrow().dashEnabled(this.taskLength === 0);
     }
 
     static serialize(obj) {
-        const img = obj.img;
-        delete obj.img;
+        const img = obj._img;
+        delete obj._img;
         const str = JSON.stringify(obj);
         // restore after serialization
-        obj.img = img;
+        obj._img = img;
         return str;
     }
 
@@ -75,7 +186,7 @@ class Link {
         const deserialized_data = JSON.parse(str);
         const deserialized = Object.create(Link.prototype, Object.getOwnPropertyDescriptors(deserialized_data));
 
-        deserialized.img = Link.createImg();
+        deserialized._img = Link.createImg(deserialized.points, deserialized.taskLength);
         return deserialized;
     }
 }

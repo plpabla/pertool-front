@@ -7,7 +7,7 @@ const Konva = require('konva');
 
 export default function suite() {
     beforeEach(function() {
-        this.l = new Link(1, 5, 4.2);
+        this.l = new Link(1, 5, 4.2, [10, 20, 30, 40]);
     });
 
     it('can be serialized', function() {
@@ -36,12 +36,12 @@ export default function suite() {
         expect(deserialized.taskLength).to.equal(4.2);
     });
 
-    it('deserialized contains Konva.arrow', function() {
+    it('deserialized contains Konva.Group', function() {
         const serialized = Link.serialize(this.l);
 
         const deserialized = Link.deserialize(serialized);
 
-        expect(deserialized.img).instanceOf(Konva.Arrow);
+        expect(deserialized.getImg()).instanceOf(Konva.Group);
     });
 
     it('deserialized contains the same graphical element properties', function() {
