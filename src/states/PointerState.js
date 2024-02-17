@@ -24,16 +24,19 @@ class PointerState extends State {
             const clickedObj = target.parent.attrs.objInstance;
             this._removeFocus();
             this._focusedEl = clickedObj;
+            this._focusedEl.focus(true);
         }
         return this;
     }
 
     getFocusedEl() {
-        return this._focusedEl;
+        return this._focusedEl; 
     }
 
     _removeFocus() {
-
+        if(this._focusedEl) {
+            this._focusedEl.focus(false);
+        }
     }
 
     static getName() {

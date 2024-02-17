@@ -37,6 +37,10 @@ class Milestone {
         return [pos.x, pos.y];
     }
 
+    focus(enable) {
+
+    }
+
     static radius = 27;
     static createImg(x, y, name, description, instance) {
         const param = { "name": "milestone-element",

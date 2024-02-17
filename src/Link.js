@@ -27,6 +27,10 @@ class Link {
         this._updateDash();
     }
 
+    focus(enable) {
+
+    }
+
     static _bgPaddingPx = 3;
     static createImg(points, taskLength, instance) {
         const param = {
