@@ -41,32 +41,33 @@ class Milestone {
         console.error("TODO");
     }
 
-    static radius = 27;
-    static createImg(x, y, name, description, instance) {
-        const param = { "name": "milestone-element",
-                        "mainColor": "black", 
-                        "secondaryColor": "#D243F7",
-                        "radius": Milestone.radius};
+    static radius = 27;   // as used outside the class
 
-        const r = param.radius;
+    static _param = { "name": "milestone-element",
+    "mainColor": "black", 
+    "secondaryColor": "#D243F7",
+    "radius": Milestone.radius};
+
+    static createImg(x, y, name, description, instance) {
+        const r = Milestone._param.radius;
         const c = new Konva.Circle({
             x: 0,
             y: 0,
             fill: "white",
-            stroke: param.mainColor,
+            stroke: Milestone._param.mainColor,
             radius: r,
-            name: param.name
+            name: Milestone._param.name
         })
     
         const l1 = new Konva.Line({
             points: [-Math.sin(Math.PI/4)*r, -Math.cos(Math.PI/4)*r, Math.sin(Math.PI/4)*r, Math.cos(Math.PI/4)*r],
-            stroke: param.secondaryColor,
-            name: param.name,
+            stroke: Milestone._param.secondaryColor,
+            name: Milestone._param.name,
         })
         const l2 = new Konva.Line({
             points: [Math.sin(Math.PI/4)*r, -Math.cos(Math.PI/4)*r, -Math.sin(Math.PI/4)*r, Math.cos(Math.PI/4)*r],
-            stroke: param.secondaryColor,
-            name: param.name,
+            stroke: Milestone._param.secondaryColor,
+            name: Milestone._param.name,
         })
     
         const txt = new Konva.Text({
@@ -74,7 +75,7 @@ class Milestone {
             fontSize: 16,
             y: -0.7*r,
             text: name,
-            name: param.name,
+            name: Milestone._param.name,
         })
         // Center
         txt.offsetX(txt.width() / 2);
