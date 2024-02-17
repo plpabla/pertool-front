@@ -32,6 +32,7 @@ class Link {
         this.updateDash();
     }
 
+    static _bgPaddingPx = 3;
     static createImg(points, taskLength="") {
         const param = { 
             "name": "link-element",
@@ -40,7 +41,9 @@ class Link {
             "pointerLength": 20,
             "pointerWidth": 15,
             "dash": [10, 5],
-            "fontSize": 16
+            "fontSize": 20,
+            "backgroundColor": "#fef9e6",
+            "backgroundPadding": Link._bgPaddingPx,
         };
 
         const img = new Konva.Group();
@@ -67,11 +70,26 @@ class Link {
             name: param.name,
         })
         // Center
-        txt.offsetX(txt.width() / 2);
-        txt.offsetY(txt.height() / 2);
+        const shiftX = txt.width() / 2;
+        const shiftY = txt.height() / 2;
+        txt.offsetX(shiftX);
+        txt.offsetY(shiftY);
 
-        img.add(txt);
+        const bgRect = new Konva.Rect({
+            x: txtX-shiftX-param.backgroundPadding,
+            y: txtY-shiftY-param.backgroundPadding,
+            width: txt.width()+2*param.backgroundPadding,
+            height: txt.height()+2*param.backgroundPadding,
+            fill: param.backgroundColor,
+            name: param.name,
+          });
+        if(!taskLenStr) {
+            bgRect.hide();
+        }
+
         img.add(arrow);
+        img.add(bgRect);
+        img.add(txt);
         
         return img;
     }
@@ -90,6 +108,10 @@ class Link {
         return this._getElement("Text");
     }
 
+    _getRect() {
+        return this._getElement("Rect");
+    }
+
     _updateTaskLenStr() {
         const taskLenStr = this.taskLength || "";
         const txt = this._getTxt();
@@ -100,8 +122,23 @@ class Link {
             y: (this.points[3] + this.points[1])/2
         }
         txt.position(pos);
-        txt.offsetX(txt.width() / 2);
-        txt.offsetY(txt.height() / 2);
+        const shiftX = txt.width() / 2;
+        const shiftY = txt.height() / 2; 
+        txt.offsetX(shiftX);
+        txt.offsetY(shiftY);
+
+        const pos2 = {
+            x: pos.x - shiftX - Link._bgPaddingPx,
+            y: pos.y - shiftY - Link._bgPaddingPx
+        }
+        const rect = this._getRect();
+        rect.position(pos2);
+
+        if(taskLenStr) {
+            rect.show();
+        } else {
+            rect.hide();
+        }
     }
 
     setPosition(x1, y1, x2, y2) {
