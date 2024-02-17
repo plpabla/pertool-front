@@ -12,6 +12,7 @@ import GetMilestoneNameState from '../states/GetMilestoneNameState';
 import GetTaskLengthState from '../states/GetTaskLengthState';
 import InputBox from '../InputBox';
 import Milestone from '../Milestone';
+import Link from '../Link';
 
 export default function suite() {
     beforeEach(function() {
@@ -79,6 +80,8 @@ export default function suite() {
                     {from: PointerState, clickOn:"milestone", to: MilestoneState},
                     {from: PointerState, clickOn:"link", to: LinkFirstElState},
                     {from: PointerState, clickOn: undefined, to: PointerState},
+                    {from: PointerState, clickOn: "milestone-element", to: PointerState},
+                    {from: PointerState, clickOn: "link-element", to: PointerState},
 
                     {from: MilestoneState, clickOn:"pointer", to: PointerState},
                     {from: MilestoneState, clickOn:"milestone", to: MilestoneState},
@@ -111,6 +114,56 @@ export default function suite() {
             expect(this.e.state).instanceOf(testCase.to);
         });
     });
+
+
+    describe('in Pointer state', function() {
+        it('when state is created, focus is pointing to null element', function() {
+
+            this.e.state = new PointerState(this.e);
+
+            expect(this.e.state.getFocusedEl()).equal(null);
+        })
+
+        it('when I click on milestone-element, focused element points to corresponding milestone', function() {
+            this.e.state = new PointerState(this.e);
+            const m = createMilestone(this.e, 10, 20, "test");
+
+            this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
+
+            expect(this.e.state.getFocusedEl()).instanceOf(Milestone);
+        })
+
+        it('when I click on milestone-element, Milestone.focus(true) is called', function() {
+            this.e.state = new PointerState(this.e);
+            const m = createMilestone(this.e, 10, 20, "test");
+            const focusSpy = sinon.spy(m, "focus");
+
+            this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
+
+            expect(focusSpy.getCall(0).args[0]).equal(true);
+            focusSpy.restore();
+        })
+
+        it('when I click on link-element, focused element points to corresponding milestone', function() {
+            this.e.state = new PointerState(this.e);
+            const l = new Link(1,2,0,[1,2,3,4]);
+
+            this.e.state = this.e.state.onClick(createClickedObject("link-element", l));
+
+            expect(this.e.state.getFocusedEl()).instanceOf(Link);
+        })
+
+        it('when I click on milestone-element, PointerState.removeFocus() is called', function() {
+            this.e.state = new PointerState(this.e);
+            const m = createMilestone(this.e, 10, 20, "test");
+            const removeFocusSpy = sinon.spy(this.e.state, "_removeFocus");
+
+            this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
+
+            expect(removeFocusSpy.callCount).to.equal(1);
+            removeFocusSpy.restore();
+        })
+    })
 
     describe('in Milestone state', function() {
         it('When clicked on the canvas, input box object is created', function() {

@@ -6,7 +6,7 @@ class Link {
         this.destId = destId;
         this.points = points;
         this.taskLength = taskLength ? parseFloat(taskLength) : 0;
-        this._img = Link.createImg(this.points, this.taskLength);
+        this._img = Link.createImg(this.points, this.taskLength, this);
         this._updateDash();
     }
 
@@ -28,8 +28,8 @@ class Link {
     }
 
     static _bgPaddingPx = 3;
-    static createImg(points, taskLength="") {
-        const param = { 
+    static createImg(points, taskLength, instance) {
+        const param = {
             "name": "link-element",
             "mainColor": "black",
             "strokeWidth": 2,
