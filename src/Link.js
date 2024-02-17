@@ -10,7 +10,7 @@ class Link {
         if(points === undefined) {
             this.points = [1,2,3,4];
         }
-        this.img = Link.createImg(this.points);
+        this._img = Link.createImg(this.points);
         this.updateDash();
     }
 
@@ -33,14 +33,16 @@ class Link {
 
     setPosition(x1, y1, x2, y2) {
         this.points = [x1, y1, x2, y2];
-        this.img.attrs.points[0] = x1;
-        this.img.attrs.points[1] = y1;
-        this.img.attrs.points[2] = x2;
-        this.img.attrs.points[3] = y2;
+        this._img.attrs.points[0] = x1;
+        this._img.attrs.points[1] = y1;
+        this._img.attrs.points[2] = x2;
+        this._img.attrs.points[3] = y2;
     }
 
     static createImg(points) {
-        return new Konva.Arrow({
+        const img = new Konva.Group();
+
+        const arrow = new Konva.Arrow({
             points: points,
             stroke: "black",
             strokeWidth: 2,
@@ -48,18 +50,29 @@ class Link {
             pointerLength: 20,
             pointerWidth: 15,
             dashEnabled: false,
+            text: "42",
             dash: [10, 5]
-        })
+        });
+
+        img.add(arrow);
+
+        return arrow;
     }
 
-
-
     getImg() {
-        return this.img;
+        return this._img;
+    }
+
+    getPos() {
+        return this._img.attrs.points;
+    }
+
+    isDashEnabled() {
+        return this._img.dashEnabled();
     }
 
     updateDash() {
-        this.img.dashEnabled(this.taskLength === 0);
+        this._img.dashEnabled(this.taskLength === 0);
     }
 
     static serialize(obj) {

@@ -53,19 +53,19 @@ export default function suite() {
     it('can be moved', function() {
         this.l.setPosition(4,2,6,9);
 
-        expect(this.l.img.attrs.points).to.eqls([4,2,6,9]);
+        expect(this.l.getPos()).to.eqls([4,2,6,9]);
     })
 
     it('when task is zero length, line is solid', function() {
         const l = new Link(0, 1, 0);
 
-        expect(l.img.dashEnabled()).to.be.true;
+        expect(l.isDashEnabled()).to.be.true;
     })
 
 
     it('when task is non-zero length, line is solid', function() {
         const l = new Link(0, 1, 42);
 
-        expect(l.img.dashEnabled()).to.be.false;
+        expect(l.isDashEnabled()).to.be.false;
     })
 };
