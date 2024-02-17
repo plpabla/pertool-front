@@ -10,7 +10,7 @@ class Link {
         if(points === undefined) {
             this.points = [1,2,3,4];
         }
-        this._img = Link.createImg(this.points);
+        this._img = Link.createImg(this.points, this.taskLength);
         this._getArrow();
         this.updateDash();
     }
@@ -32,7 +32,7 @@ class Link {
         this.updateDash();
     }
 
-    static createImg(points) {
+    static createImg(points, taskLength="") {
         const param = { 
             "name": "link-element",
             "mainColor": "black",
@@ -56,15 +56,19 @@ class Link {
             name: param.name,
         });
 
+        const taskLenStr = taskLength || "";
+        const txtX = (points[2] + points[0])/2;
+        const txtY = (points[3] + points[1])/2;
         const txt = new Konva.Text({
-            x: 200,
-            y: 200,
+            x: txtX,
+            y: txtY,
             fontSize: param.fontSize,
-            text: "TODO",
+            text: taskLenStr,
             name: param.name,
         })
         // Center
         txt.offsetX(txt.width() / 2);
+        txt.offsetY(txt.height() / 2);
 
         img.add(txt);
         img.add(arrow);
@@ -86,12 +90,27 @@ class Link {
         return this._getElement("Text");
     }
 
+    _updateTaskLenStr() {
+        const taskLenStr = this.taskLength || "";
+        const txt = this._getTxt();
+        txt.text(taskLenStr);
+
+        const pos = {
+            x: (this.points[2] + this.points[0])/2,
+            y: (this.points[3] + this.points[1])/2
+        }
+        txt.position(pos);
+        txt.offsetX(txt.width() / 2);
+        txt.offsetY(txt.height() / 2);
+    }
+
     setPosition(x1, y1, x2, y2) {
         this.points = [x1, y1, x2, y2];
         this._getArrow().attrs.points[0] = x1;
         this._getArrow().attrs.points[1] = y1;
         this._getArrow().attrs.points[2] = x2;
         this._getArrow().attrs.points[3] = y2;
+        this._updateTaskLenStr();
     }
 
     getImg() {
@@ -123,7 +142,7 @@ class Link {
         const deserialized_data = JSON.parse(str);
         const deserialized = Object.create(Link.prototype, Object.getOwnPropertyDescriptors(deserialized_data));
 
-        deserialized._img = Link.createImg();
+        deserialized._img = Link.createImg(deserialized.points, deserialized.taskLength);
         return deserialized;
     }
 }
