@@ -22,9 +22,7 @@ class PointerState extends State {
             return new LinkFirstElState(this.context);
         if(clickedItem === "milestone-element" || clickedItem === "link-element") {
             const clickedObj = target.parent.attrs.objInstance;
-            this._removeFocus();
-            this._focusedEl = clickedObj;
-            this._focusedEl.focus(true);
+            this._switchFocus(clickedObj);
         }
         return this;
     }
@@ -33,11 +31,14 @@ class PointerState extends State {
         return this._focusedEl; 
     }
 
-    _removeFocus() {
+    _switchFocus(clickedObj) {
         if(this._focusedEl) {
             this._focusedEl.focus(false);
         }
+        this._focusedEl = clickedObj;
+        this._focusedEl.focus(true);
     }
+
 
     static getName() {
         return "PointerState";

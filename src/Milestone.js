@@ -38,7 +38,7 @@ class Milestone {
     }
 
     focus(enable) {
-
+        console.error("TODO");
     }
 
     static radius = 27;

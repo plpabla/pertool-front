@@ -28,7 +28,7 @@ class Link {
     }
 
     focus(enable) {
-
+        console.error("TODO");
     }
 
     static _bgPaddingPx = 3;
@@ -46,7 +46,9 @@ class Link {
             "backgroundPadding": Link._bgPaddingPx,
         };
 
-        const img = new Konva.Group();
+        const img = new Konva.Group({
+            objInstance: instance
+        });
 
         const arrow = new Konva.Arrow({
             points: points,

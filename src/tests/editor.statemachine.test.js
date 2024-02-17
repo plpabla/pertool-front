@@ -142,15 +142,15 @@ export default function suite() {
             expect(this.e.state.getFocusedEl()).instanceOf(Link);
         })
 
-        it('when I click on milestone-element, PointerState.removeFocus() is called', function() {
+        it('when I click on milestone-element, PointerState._switchFocus() is called', function() {
             this.e.state = new PointerState(this.e);
             const m = createMilestone(this.e, 10, 20, "test");
-            const removeFocusSpy = sinon.spy(this.e.state, "_removeFocus");
+            const switchFocusSpy = sinon.spy(this.e.state, "_switchFocus");
 
             this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
 
-            expect(removeFocusSpy.callCount).to.equal(1);
-            removeFocusSpy.restore();
+            expect(switchFocusSpy.callCount).to.equal(1);
+            switchFocusSpy.restore();
         })
 
         it('when I click on milestone-element, Milestone.focus(true) is called', function() {
