@@ -40,7 +40,7 @@ class Link {
             "name": "link-element",
             "mainColor": "black",
             "strokeWidth": 2,
-            "hitStrokeWidth": 20,            // when hit is detected
+            "hitStrokeWidth": 8,            // when hit is detected
             "pointerLength": 20,
             "pointerWidth": 15,
             "dash": [10, 5],
