@@ -12,21 +12,26 @@ class PointerState extends State {
         const target = args.target;
         const clickedItem = target.attrs.name;
 
-        if(clickedItem == undefined) {
+        if(clickedItem == undefined || clickedItem === "pointer") {
             this._switchFocus();
             return this;
         }
-        if(clickedItem === "pointer")
-            return this;
-        if(clickedItem === "milestone")
+
+        if(clickedItem === "milestone") {
+            this._switchFocus();
             return new MilestoneState(this.context);
-        if(clickedItem === "link")
+        }
+
+        if(clickedItem === "link") {
+            this._switchFocus();
             return new LinkFirstElState(this.context);
+        }
+
         if(clickedItem === "milestone-element" || clickedItem === "link-element") {
             const clickedObj = target.parent.attrs.objInstance;
-            this._switchFocus(clickedObj);
+            return this._switchFocus(clickedObj);
         }
-        return this;
+        console.error("How did we get here??");
     }
 
     getFocusedEl() {
@@ -36,7 +41,7 @@ class PointerState extends State {
     _switchFocus(clickedObj=null) {
         if(this._focusedEl === clickedObj) {
             // Click on already focused element
-            return;
+            return this;
         }
         if(this._focusedEl) {
             this._focusedEl.focus(false);
@@ -47,6 +52,7 @@ class PointerState extends State {
         } else {
             this._focusedEl = null;
         }
+        return this;
     }
 
 
