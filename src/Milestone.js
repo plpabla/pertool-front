@@ -38,7 +38,15 @@ class Milestone {
     }
 
     focus(enable) {
-        console.error("TODO");
+        const c = this._getElement("Circle");
+        c.strokeWidth(enable ? Milestone._param.focusedWidth : Milestone._param.width);
+    }
+
+    _getElement(name) {
+        const el = this._img.getChildren(function(n) {
+            if (n.getClassName()===name) return n;
+        });
+        return el[0];
     }
 
     static radius = 27;   // as used outside the class
@@ -46,6 +54,8 @@ class Milestone {
     static _param = { "name": "milestone-element",
     "mainColor": "black", 
     "secondaryColor": "#D243F7",
+    "width": 2,
+    "focusedWidth": 5,
     "radius": Milestone.radius};
 
     static createImg(x, y, name, description, instance) {
