@@ -130,7 +130,7 @@ export default function suite() {
 
             this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
 
-            expect(this.e.state.getFocusedEl()).instanceOf(Milestone);
+            expect(this.e.state.getFocusedEl()).equal(m);
         })
 
         it('when I click on link-element, focused element points to corresponding milestone', function() {
@@ -139,7 +139,7 @@ export default function suite() {
 
             this.e.state = this.e.state.onClick(createClickedObject("link-element", l));
 
-            expect(this.e.state.getFocusedEl()).instanceOf(Link);
+            expect(this.e.state.getFocusedEl()).equal(l);
         })
 
         it('when I click on milestone-element, PointerState._switchFocus() is called', function() {
@@ -175,7 +175,22 @@ export default function suite() {
             focusSpy.restore();
         })
 
-        it('when I click on second milestone-element, Milestone.focus(false) and then (true) is called - switch focus', function() {
+        it('when I click on second milestone-element, focus(false) for first and focus(true) for second is called to switch focus', function() {
+            this.e.state = new PointerState(this.e);
+            const m = createMilestone(this.e, 10, 20, "test");
+            const m2 = createMilestone(this.e, 10, 20, "another one");
+            this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
+            const focusSpy = sinon.spy(m, "focus");
+            const focusSpy2 = sinon.spy(m2, "focus");
+
+            this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m2));
+
+            expect(focusSpy.getCall(0).args[0]).equal(false);
+            expect(focusSpy2.getCall(0).args[0]).equal(true);
+            focusSpy.restore();
+        })
+
+        it('when I click on the same milestone-element, Milestone.focus(false) and then (true) is not called, focus remains', function() {
             this.e.state = new PointerState(this.e);
             const m = createMilestone(this.e, 10, 20, "test");
             this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
@@ -183,8 +198,7 @@ export default function suite() {
 
             this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
 
-            expect(focusSpy.getCall(0).args[0]).equal(false);
-            expect(focusSpy.getCall(1).args[0]).equal(true);
+            expect(focusSpy.callCount).equal(0);
             focusSpy.restore();
         })
 

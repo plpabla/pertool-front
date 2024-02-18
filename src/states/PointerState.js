@@ -34,6 +34,10 @@ class PointerState extends State {
     }
 
     _switchFocus(clickedObj=null) {
+        if(this._focusedEl === clickedObj) {
+            // Click on already focused element
+            return;
+        }
         if(this._focusedEl) {
             this._focusedEl.focus(false);
         }
