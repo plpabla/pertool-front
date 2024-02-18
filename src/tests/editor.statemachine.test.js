@@ -10,6 +10,7 @@ import LinkFirstElState from '../states/LinkFirstElState';
 import LinkSecondElState from '../states/LinkSecondElState';
 import GetMilestoneNameState from '../states/GetMilestoneNameState';
 import GetTaskLengthState from '../states/GetTaskLengthState';
+import EditMilestoneState from '../states/EditMilestoneState';
 import InputBox from '../InputBox';
 import Milestone from '../Milestone';
 import Link from '../Link';
@@ -66,8 +67,8 @@ export default function suite() {
             }
     };
 
-    function createMilestone(editor, x, y, name) {
-        editor.addMilestone(x,y,name);
+    function createMilestone(editor, x, y, name, description) {
+        editor.addMilestone(x,y,name,description);
         return editor.model.getMilestoneByName(name);
     }
 
@@ -198,6 +199,7 @@ export default function suite() {
 
             this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
 
+            // This somehow doesn't work -------------------
             expect(focusSpy.callCount).equal(0);
             focusSpy.restore();
         })
@@ -212,6 +214,27 @@ export default function suite() {
 
             expect(focusSpy.getCall(0).args[0]).equal(false);
             focusSpy.restore();
+        })
+
+        it('when I click on the same milestone twice, EditMilestone state is achieved', function() {
+            this.e.state = new PointerState(this.e);
+            const m = createMilestone(this.e, 10, 20, "test");
+
+            this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
+            this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
+
+            expect(this.e.state).instanceOf(EditMilestoneState);
+        })
+    })
+
+    describe('in EditMilestone state', function() {
+        it('when I get into that state, input box contains data which was stored in clicked milestone', function () {
+            const m = createMilestone(this.e, 10, 20, "m0", "description");
+            this.e.state = new EditMilestoneState(this.e, m);
+
+            expect(this.InputBoxStub.called).to.be.true;
+            // TODO TODO TODO!!! // ----------------------------------------------
+            expect(false).to.be.true;
         })
     })
 
