@@ -30,9 +30,9 @@ class Link {
     focus(enable) {
         const arrow = this._getArrow();
         if (enable) {
-            arrow.strokeWidth(8);
+            arrow.strokeWidth(Link._param.focusedWidth);
         } else {
-            arrow.strokeWidth(2);
+            arrow.strokeWidth(Link._param.strokeWidth);
         }
     }
 
@@ -41,6 +41,7 @@ class Link {
             "mainColor": "black",
             "strokeWidth": 2,
             "hitStrokeWidth": 8,            // when hit is detected
+            "focusedWidth": 5,
             "pointerLength": 20,
             "pointerWidth": 15,
             "dash": [10, 5],
