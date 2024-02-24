@@ -337,6 +337,32 @@ export default function suite() {
         })
     })
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    describe('in EditLink state', function() {
+        it('when I get into that state, input box contains data which was stored in clicked link', function () {
+            this.skip("In the next step. First let's refactor some stuff")
+            const m1 = createMilestone(this.e, 10, 20, "m1");
+            const m2 = createMilestone(this.e, 20, 20, "m2");
+            const model = this.e.model;
+            const INITIAL_TASK_LENGTH = 5;
+            const linkId = model.addLink(m1, m2, INITIAL_TASK_LENGTH);
+            const link = model.links[linkId];
+            console.log(">>>", link);
+
+            let items;
+            this.InputBoxStub.callsFake(function(layer, pos, _items, callbackFn) {
+                items = _items;
+            });
+
+            this.e.state = new EditLinkState(this.e, link);
+
+            const taskLenEl = items.find(i => i['key'] === 'taskLen');
+            expect(taskLenEl['default']).equals(String(INITIAL_TASK_LENGTH));
+        })  
+    })
+
     describe('in Milestone state', function() {
         it('When clicked on the canvas, input box object is created', function() {
             this.e.state = new MilestoneState(this.e);
