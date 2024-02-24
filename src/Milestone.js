@@ -119,18 +119,21 @@ class Milestone {
         img.add(l2);
         img.add(txt);
 
-        if(description) {
-            const txtDescr = new Konva.Text({
-                x: 0,
-                fontSize: 16,
-                y: 1.2*r,
-                text: description,
-            })
-            // Center
-            txtDescr.offsetX(txtDescr.width() / 2);
-            txtDescr.addName("milestone-description-field");
-            img.add(txtDescr);
+        if(!description) 
+        {
+            description="";
         }
+
+        const txtDescr = new Konva.Text({
+            x: 0,
+            fontSize: 16,
+            y: 1.2*r,
+            text: description,
+        })
+        // Center
+        txtDescr.offsetX(txtDescr.width() / 2);
+        txtDescr.addName("milestone-description-field");
+        img.add(txtDescr);
 
         return img;
     }
