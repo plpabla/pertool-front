@@ -16,11 +16,11 @@ class MilestoneState extends State {
         if(clickedItem == undefined) {
             return new GetMilestoneNameState(this.context);
         }
-        if(clickedItem === "pointer")
+        if(State.containsName(clickedItem,  "pointer"))
             return new PointerState(this.context);
-        if(clickedItem === "milestone")
+        if(State.containsName(clickedItem,  "milestone"))
             return this;
-        if(clickedItem === "link")
+        if(State.containsName(clickedItem,  "link"))
             return new LinkFirstElState(this.context);
         return this;
     }

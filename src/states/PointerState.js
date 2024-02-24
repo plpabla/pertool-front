@@ -13,28 +13,29 @@ class PointerState extends State {
 
     onClick(args) {
         const target = args.target;
-        const clickedItem = target.attrs.name;
+        let clickedItem = target.attrs.name;
 
-        if(clickedItem == undefined || clickedItem === "pointer") {
+        if(clickedItem == undefined || State.containsName(clickedItem, "pointer")) {
             this._switchFocus();
             return this;
         }
 
-        if(clickedItem === "milestone") {
+        if(State.containsName(clickedItem, "milestone")) {
             this._switchFocus();
             return new MilestoneState(this.context);
         }
 
-        if(clickedItem === "link") {
+        if(State.containsName(clickedItem, "link")) {
             this._switchFocus();
             return new LinkFirstElState(this.context);
         }
 
-        if(clickedItem === "milestone-element" || clickedItem === "link-element") {
+        if(State.containsName(clickedItem, "milestone-element") || State.containsName(clickedItem, "link-element")) {
             const clickedObj = target.parent.attrs.objInstance;
             return this._switchFocus(clickedObj);
         }
         console.error("How did we get here??");
+        return this;
     }
 
     getFocusedEl() {

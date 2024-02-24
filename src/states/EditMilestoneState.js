@@ -6,6 +6,7 @@ import MilestoneState from "./MilestoneState";
 class EditMilestoneState extends State {
     constructor(context, milestone) {
         super(context);
+        this.context = context;
         this._milestone = milestone;
         const posOnCanvas = context.stage.getPointerPosition();
         const posAbsolute = context.stage.getRelativePointerPosition();
@@ -13,21 +14,21 @@ class EditMilestoneState extends State {
         const formItems = [{
             label: "Milestone ID",
             key: "name",
-            default: "TODDDDDOOOO"
+            default: this._milestone.getName()
         }, {
             label: "Description",
             key: "text",
-            default: "TODDDDDOOOO",
+            default: this._milestone.getDescription(),
             focus: true
         }];
-        new InputBox(context.modelLayer, posOnCanvas, formItems , (data) => {
+        new InputBox(this.context.modelLayer, posOnCanvas, formItems , (data) => {
             const name = data["name"];
             const descr = data["text"] || "";
             if(name) {
-                // TODO - EditMilestone
-                // context.addMilestone(posAbsolute.x, posAbsolute.y, name, descr);
+                this._milestone.setName(name);
+                this._milestone.setDescription(descr);
             }
-            context.state = new PointerState(context);
+            this.context.state = new PointerState(this.context);
             this._milestone.focus(false);
         });
     }

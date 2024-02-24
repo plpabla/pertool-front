@@ -22,9 +22,25 @@ class Milestone {
     getDescription() {
         return this.description;
     }
+
+    setDescription(descr) {
+        this.description = descr;
+        const txtElement = this._img.findOne(".milestone-description-field");
+        if(txtElement) {
+            txtElement.text(this.description);
+        }
+    }
     
     getName() {
         return this.name;
+    }
+
+    setName(name) {
+        this.name = name;
+        const txtElement = this._img.findOne(".milestone-name-field");
+        if(txtElement) {
+            txtElement.text(this.name);
+        }
     }
 
     getImg() {
@@ -87,6 +103,7 @@ class Milestone {
             text: name,
             name: Milestone._param.name,
         })
+        txt.addName("milestone-name-field");
         // Center
         txt.offsetX(txt.width() / 2);
     
@@ -111,6 +128,7 @@ class Milestone {
             })
             // Center
             txtDescr.offsetX(txtDescr.width() / 2);
+            txtDescr.addName("milestone-description-field");
             img.add(txtDescr);
         }
 
