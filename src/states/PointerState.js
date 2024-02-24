@@ -15,7 +15,9 @@ class PointerState extends State {
         const target = args.target;
         let clickedItem = target.attrs.name;
 
-        if(clickedItem == undefined || State.containsName(clickedItem, "pointer")) {
+        if(clickedItem == undefined 
+            || State.containsName(clickedItem, "pointer") 
+            || State.containsName(clickedItem, "milestone-description-field")) {
             this._switchFocus();
             return this;
         }

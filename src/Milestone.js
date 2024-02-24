@@ -131,7 +131,6 @@ class Milestone {
             fontSize: 16,
             y: 1.2*r,
             text: description,
-            name: Milestone._param.name
         })
         // Center
         txtDescr.offsetX(txtDescr.width() / 2);
