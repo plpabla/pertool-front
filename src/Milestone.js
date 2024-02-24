@@ -28,6 +28,7 @@ class Milestone {
         const txtElement = this._img.findOne(".milestone-description-field");
         if(txtElement) {
             txtElement.text(this.description);
+            txtElement.offsetX(txtElement.width() / 2);
         }
     }
     
@@ -40,6 +41,7 @@ class Milestone {
         const txtElement = this._img.findOne(".milestone-name-field");
         if(txtElement) {
             txtElement.text(this.name);
+            txtElement.offsetX(txtElement.width() / 2);
         }
     }
 

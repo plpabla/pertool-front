@@ -321,8 +321,19 @@ export default function suite() {
         });
 
         it('edited text is centered', function() {
-            //--------------------------------------     TO DO     --------------------------------------
-            expect(false).to.be.true;
+            const m = createMilestone(this.e, 10, 20, "m0", "");
+            this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
+                callbackFn({
+                    name: "42",
+                    text: "updated description"
+                });
+            });
+            const img = m.getImg();
+            const txtField = img.findOne(".milestone-description-field");
+
+            this.e.state = new EditMilestoneState(this.e, m);
+
+            expect(txtField.offsetX()).not.equals(0);
         })
     })
 
