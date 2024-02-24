@@ -24,6 +24,7 @@ class Link {
 
     setTaskLength(taskLength) {
         this.taskLength = taskLength;
+        this._updateTaskLenStr();
         this._updateDash();
     }
 

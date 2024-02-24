@@ -11,6 +11,7 @@ import LinkSecondElState from '../states/LinkSecondElState';
 import GetMilestoneNameState from '../states/GetMilestoneNameState';
 import GetTaskLengthState from '../states/GetTaskLengthState';
 import EditMilestoneState from '../states/EditMilestoneState';
+import EditLinkState from '../states/EditLinkState';
 import InputBox from '../InputBox';
 import Milestone from '../Milestone';
 import Link from '../Link';
@@ -341,8 +342,12 @@ export default function suite() {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     describe('in EditLink state', function() {
+        it('when I click, I reach back PointerState', function() {
+            this.skip('todo');
+            this.e.state = new EditLinkState(this.e, link);
+        })
+
         it('when I get into that state, input box contains data which was stored in clicked link', function () {
-            this.skip("In the next step. First let's refactor some stuff")
             const m1 = createMilestone(this.e, 10, 20, "m1");
             const m2 = createMilestone(this.e, 20, 20, "m2");
             const model = this.e.model;
@@ -359,7 +364,7 @@ export default function suite() {
             this.e.state = new EditLinkState(this.e, link);
 
             const taskLenEl = items.find(i => i['key'] === 'taskLen');
-            expect(taskLenEl['default']).equals(String(INITIAL_TASK_LENGTH));
+            expect(taskLenEl['default']).equals(INITIAL_TASK_LENGTH);
         })  
     })
 

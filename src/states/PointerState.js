@@ -47,7 +47,6 @@ class PointerState extends State {
     _switchFocus(clickedObj=null) {
         if(this._focusedEl === clickedObj) {
             // Click on already focused element
-            // TODO: add logic (as new state to edit this element)
             if(this._focusedEl instanceof Milestone) {
                 return new EditMilestoneState(this.context, this._focusedEl);
             }
