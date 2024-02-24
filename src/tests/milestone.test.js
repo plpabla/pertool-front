@@ -22,10 +22,10 @@ export default function suite() {
     });
 
     it('inherits img coordinates from parent class', function() {
-        expect(this.m).to.have.property('img');
+        expect(this.m).to.have.property('_img');
     });
 
     it('has image', function() {
-        expect(this.m.img).to.be.not.null;
+        expect(this.m.getImg()).to.be.not.null;
     });
 };

@@ -1,6 +1,7 @@
 import State from "./State";
 import InputBox from "../InputBox";
 import LinkFirstElState from "./LinkFirstElState";
+import Link from "../Link";
 
 class GetTaskLengthState extends State {
     constructor(context, m1, m2, arrow) {
@@ -9,11 +10,7 @@ class GetTaskLengthState extends State {
         this.m2 = m2;
         this.arrow = arrow;
         const posOnCanvas = context.stage.getPointerPosition();
-        const formItems = [{
-            label: "Task lenght",
-            key: "taskLen",
-            default: "0"
-        }];
+        const formItems = Link.formItems;
 
         new InputBox(context.modelLayer, posOnCanvas, formItems, (data) => {
             const taskLen = parseFloat(data["taskLen"]);

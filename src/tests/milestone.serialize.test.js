@@ -66,7 +66,7 @@ export default function suite() {
 
         let deseiralized = Milestone.deserialize(serialized);
 
-        const img = deseiralized.img;
+        const img = deseiralized.getImg();
         expect(img).instanceOf(Konva.Group);
     });
 

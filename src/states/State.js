@@ -14,6 +14,16 @@ class State {
     static getName() {
         return "<<abstract>> State";
     }
+
+    static containsName(str, name) {
+        let parts = [];
+        if (str) {
+            parts = str.split(" ");
+        } else {
+            return false;
+        }
+        return parts.includes(name);
+    }
 }
 
 export default State; 

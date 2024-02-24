@@ -6,9 +6,9 @@ class Milestone {
         this.description = description;
         this.sourceLinks = new Array();
         this.destinationLinks = new Array();
-        this.img = Milestone.createImg(x, y, name, description, this);
+        this._img = Milestone.createImg(x, y, name, description, this);
         this.parentModel = model;
-        this.img.on('dragmove', () => this.parentModel.onDrag(this));
+        this._img.on('dragmove', () => this.parentModel.onDrag(this));
     }
 
     addLinkWhereIAmDestination(l) {
@@ -22,47 +22,80 @@ class Milestone {
     getDescription() {
         return this.description;
     }
+
+    setDescription(descr) {
+        this.description = descr;
+        const txtElement = this._img.findOne(".milestone-description-field");
+        if(txtElement) {
+            txtElement.text(this.description);
+            txtElement.offsetX(txtElement.width() / 2);
+        }
+    }
     
     getName() {
         return this.name;
     }
 
+    setName(name) {
+        this.name = name;
+        const txtElement = this._img.findOne(".milestone-name-field");
+        if(txtElement) {
+            txtElement.text(this.name);
+            txtElement.offsetX(txtElement.width() / 2);
+        }
+    }
+
     getImg() {
-        return this.img;
+        return this._img;
     }
 
     getPos() {
-        // const pos = this.img.absolutePosition();
-        const pos = this.img.position();
+        // const pos = this._img.absolutePosition();
+        const pos = this._img.position();
         return [pos.x, pos.y];
     }
 
-    static radius = 27;
-    static createImg(x, y, name, description, instance) {
-        const param = { "name": "milestone-element",
-                        "mainColor": "black", 
-                        "secondaryColor": "#D243F7",
-                        "radius": Milestone.radius};
+    focus(enable) {
+        const c = this._getElement("Circle");
+        c.strokeWidth(enable ? Milestone._param.focusedWidth : Milestone._param.width);
+    }
 
-        const r = param.radius;
+    _getElement(name) {
+        const el = this._img.getChildren(function(n) {
+            if (n.getClassName()===name) return n;
+        });
+        return el[0];
+    }
+
+    static radius = 27;   // as used outside the class
+
+    static _param = { "name": "milestone-element",
+    "mainColor": "black", 
+    "secondaryColor": "#D243F7",
+    "width": 2,
+    "focusedWidth": 5,
+    "radius": Milestone.radius};
+
+    static createImg(x, y, name, description, instance) {
+        const r = Milestone._param.radius;
         const c = new Konva.Circle({
             x: 0,
             y: 0,
             fill: "white",
-            stroke: param.mainColor,
+            stroke: Milestone._param.mainColor,
             radius: r,
-            name: param.name
+            name: Milestone._param.name
         })
     
         const l1 = new Konva.Line({
             points: [-Math.sin(Math.PI/4)*r, -Math.cos(Math.PI/4)*r, Math.sin(Math.PI/4)*r, Math.cos(Math.PI/4)*r],
-            stroke: param.secondaryColor,
-            name: param.name,
+            stroke: Milestone._param.secondaryColor,
+            name: Milestone._param.name,
         })
         const l2 = new Konva.Line({
             points: [Math.sin(Math.PI/4)*r, -Math.cos(Math.PI/4)*r, -Math.sin(Math.PI/4)*r, Math.cos(Math.PI/4)*r],
-            stroke: param.secondaryColor,
-            name: param.name,
+            stroke: Milestone._param.secondaryColor,
+            name: Milestone._param.name,
         })
     
         const txt = new Konva.Text({
@@ -70,8 +103,9 @@ class Milestone {
             fontSize: 16,
             y: -0.7*r,
             text: name,
-            name: param.name,
+            name: Milestone._param.name,
         })
+        txt.addName("milestone-name-field");
         // Center
         txt.offsetX(txt.width() / 2);
     
@@ -87,30 +121,34 @@ class Milestone {
         img.add(l2);
         img.add(txt);
 
-        if(description) {
-            const txtDescr = new Konva.Text({
-                x: 0,
-                fontSize: 16,
-                y: 1.2*r,
-                text: description,
-            })
-            // Center
-            txtDescr.offsetX(txtDescr.width() / 2);
-            img.add(txtDescr);
+        if(!description) 
+        {
+            description="";
         }
+
+        const txtDescr = new Konva.Text({
+            x: 0,
+            fontSize: 16,
+            y: 1.2*r,
+            text: description,
+        })
+        // Center
+        txtDescr.offsetX(txtDescr.width() / 2);
+        txtDescr.addName("milestone-description-field");
+        img.add(txtDescr);
 
         return img;
     }
 
     static serialize(obj) {
         obj.pos = obj.getPos();
-        const img = obj.img;
-        delete obj.img;
+        const img = obj._img;
+        delete obj._img;
         const str = JSON.stringify(obj);
 
         // restore object state
         delete obj.pos;
-        obj.img = img;
+        obj._img = img;
         
         return str;
     }
@@ -123,10 +161,21 @@ class Milestone {
         // recreate image
         const pos = deserialized.pos;
         delete deserialized.pos;
-        deserialized.img = Milestone.createImg(pos[0],pos[1],deserialized.name,deserialized.description);
+        deserialized._img = Milestone.createImg(pos[0],pos[1],deserialized.name,deserialized.description);
         deserialized.parentModel = parentModel;
         return deserialized;
     }
+
+    static formItems = [{
+        label: "Milestone ID",
+        key: "name",
+        default: ""
+    }, {
+        label: "Description",
+        key: "text",
+        default: "",
+        focus: true
+    }];
 }
 
 export default Milestone;

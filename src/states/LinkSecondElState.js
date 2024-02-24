@@ -21,21 +21,21 @@ class LinkSecondElState extends State {
             return this;
         }
 
-        if(clickedItem === "pointer") {
+        if(State.containsName(clickedItem,  "pointer")) {
             this.cancel();
             return new PointerState(this.context);
         }
-        if(clickedItem === "milestone") {
+        if(State.containsName(clickedItem,  "milestone")) {
             this.cancel();
             this.context.toolbox.select("milestone");
             return new MilestoneState(this.context);
         }
-        if(clickedItem === "link") {
+        if(State.containsName(clickedItem,  "link")) {
             this.cancel();
             this.context.toolbox.select("link");
             return new LinkFirstElState(this.context);
         }
-        if(clickedItem === "milestone-element") {
+        if(State.containsName(clickedItem,  "milestone-element")) {
             const milestone2 = target.parent.attrs.objInstance;
             if ((this.milestone1 !== milestone2) && (milestone2 != this.context.model.getRoot())) {
                 this.pause();
@@ -50,7 +50,7 @@ class LinkSecondElState extends State {
     createArrowFollowingCursor() {
         const cursorPos = this.context.stage.getRelativePointerPosition();
         this.linkArrow = new Konva.Arrow({
-            points: [this.milestone1.img.attrs.x, this.milestone1.img.attrs.y, 
+            points: [this.milestone1.getImg().attrs.x, this.milestone1.getImg().attrs.y, 
                 cursorPos.x, cursorPos.y],
             stroke: "black"
         });
@@ -58,8 +58,8 @@ class LinkSecondElState extends State {
         this.context.stage.on('mousemove.arrowFollowingCursor touchmove.arrowFollowingCursor', (e) => {
             const cursorPos = this.context.stage.getRelativePointerPosition();
             const pos = [
-                this.milestone1.img.attrs.x, 
-                this.milestone1.img.attrs.y, 
+                this.milestone1.getImg().attrs.x, 
+                this.milestone1.getImg().attrs.y, 
                 cursorPos.x, 
                 cursorPos.y];
             this.linkArrow.points(pos);

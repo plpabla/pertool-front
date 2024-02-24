@@ -50,8 +50,8 @@ export default function suite() {
         const m2 = deserialized.getMilestoneByName("m2");
 
         // Don't compare images - new object is created after deserialization
-        delete originalm2.img;
-        delete m2.img;
+        delete originalm2._img;
+        delete m2._img;
         delete originalm2.parentModel;
         delete m2.parentModel;
 

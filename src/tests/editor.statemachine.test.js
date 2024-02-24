@@ -10,8 +10,10 @@ import LinkFirstElState from '../states/LinkFirstElState';
 import LinkSecondElState from '../states/LinkSecondElState';
 import GetMilestoneNameState from '../states/GetMilestoneNameState';
 import GetTaskLengthState from '../states/GetTaskLengthState';
+import EditMilestoneState from '../states/EditMilestoneState';
 import InputBox from '../InputBox';
 import Milestone from '../Milestone';
+import Link from '../Link';
 
 export default function suite() {
     beforeEach(function() {
@@ -25,7 +27,7 @@ export default function suite() {
         });
 
         this.InputBoxStub = sinon.stub(InputBox.prototype, 'init');
-        this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
+        this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
             callbackFn({
                 name: "name entered in the input box",
                 taskLen: "10"
@@ -65,8 +67,8 @@ export default function suite() {
             }
     };
 
-    function createMilestone(editor, x, y, name) {
-        editor.addMilestone(x,y,name);
+    function createMilestone(editor, x, y, name, description) {
+        editor.addMilestone(x,y,name,description);
         return editor.model.getMilestoneByName(name);
     }
 
@@ -79,6 +81,8 @@ export default function suite() {
                     {from: PointerState, clickOn:"milestone", to: MilestoneState},
                     {from: PointerState, clickOn:"link", to: LinkFirstElState},
                     {from: PointerState, clickOn: undefined, to: PointerState},
+                    {from: PointerState, clickOn: "milestone-element", to: PointerState},
+                    {from: PointerState, clickOn: "link-element", to: PointerState},
 
                     {from: MilestoneState, clickOn:"pointer", to: PointerState},
                     {from: MilestoneState, clickOn:"milestone", to: MilestoneState},
@@ -112,6 +116,253 @@ export default function suite() {
         });
     });
 
+
+    describe('in Pointer state', function() {
+        it('when state is created, focus is pointing to null element', function() {
+
+            this.e.state = new PointerState(this.e);
+
+            expect(this.e.state.getFocusedEl()).equal(null);
+        })
+
+        it('when I click on milestone-element, focused element points to corresponding milestone', function() {
+            this.e.state = new PointerState(this.e);
+            const m = createMilestone(this.e, 10, 20, "test");
+
+            this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
+
+            expect(this.e.state.getFocusedEl()).equal(m);
+        })
+
+        it('when I click on link-element, focused element points to corresponding milestone', function() {
+            this.e.state = new PointerState(this.e);
+            const l = new Link(1,2,0,[1,2,3,4]);
+
+            this.e.state = this.e.state.onClick(createClickedObject("link-element", l));
+
+            expect(this.e.state.getFocusedEl()).equal(l);
+        })
+
+        it('when I click on milestone-element, PointerState._switchFocus() is called', function() {
+            this.e.state = new PointerState(this.e);
+            const m = createMilestone(this.e, 10, 20, "test");
+            const switchFocusSpy = sinon.spy(this.e.state, "_switchFocus");
+
+            this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
+
+            expect(switchFocusSpy.callCount).to.equal(1);
+            switchFocusSpy.restore();
+        })
+
+        it('when I click on milestone-element, Milestone.focus(true) is called', function() {
+            this.e.state = new PointerState(this.e);
+            const m = createMilestone(this.e, 10, 20, "test");
+            const focusSpy = sinon.spy(m, "focus");
+
+            this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
+
+            expect(focusSpy.getCall(0).args[0]).equal(true);
+            focusSpy.restore();
+        })
+
+        it('when I click on link-element, Link.focus(true) is called', function() {
+            this.e.state = new PointerState(this.e);
+            const l = new Link(1,2,0,[1,2,3,4]);
+            const focusSpy = sinon.spy(l, "focus");
+
+            this.e.state = this.e.state.onClick(createClickedObject("link-element", l));
+
+            expect(focusSpy.getCall(0).args[0]).equal(true);
+            focusSpy.restore();
+        })
+
+        it('when I click on second milestone-element, focus(false) for first and focus(true) for second is called to switch focus', function() {
+            this.e.state = new PointerState(this.e);
+            const m = createMilestone(this.e, 10, 20, "test");
+            const m2 = createMilestone(this.e, 10, 20, "another one");
+            this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
+            const focusSpy = sinon.spy(m, "focus");
+            const focusSpy2 = sinon.spy(m2, "focus");
+
+            this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m2));
+
+            expect(focusSpy.getCall(0).args[0]).equal(false);
+            expect(focusSpy2.getCall(0).args[0]).equal(true);
+            focusSpy.restore();
+        })
+
+        it('when I click on the same milestone-element, Milestone.focus(false) and then (true) is not called, focus remains', function() {
+            this.skip("It doesn't work as I'm using lambda fn and it is executed for a test");
+            this.e.state = new PointerState(this.e);
+            const m = createMilestone(this.e, 10, 20, "test");
+            const obj = createClickedObject("milestone-element", m);
+            this.e.state = this.e.state.onClick(obj);
+            const focusSpy = sinon.spy(m, "focus");
+
+            this.e.state = this.e.state.onClick(obj);
+
+            expect(focusSpy.callCount).equal(0);
+            focusSpy.restore();
+        })
+
+        it('when I click on milestone-element, and then on undefined, focus from milestone is removed', function() {
+            this.e.state = new PointerState(this.e);
+            const m = createMilestone(this.e, 10, 20, "test");
+            this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
+            const focusSpy = sinon.spy(m, "focus");
+
+            this.e.state = this.e.state.onClick(createClickedObject(undefined));
+
+            expect(focusSpy.getCall(0).args[0]).equal(false);
+            focusSpy.restore();
+        })
+
+        it('when I click on the same milestone twice, EditMilestone state is achieved', function() {
+            this.e.state = new PointerState(this.e);
+            const m = createMilestone(this.e, 10, 20, "test");
+
+            this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
+            this.e.state = this.e.state.onClick(createClickedObject("milestone-element", m));
+
+            expect(this.e.state).instanceOf(EditMilestoneState);
+        })
+    })
+
+    describe('in EditMilestone state', function() {
+        it('when I get into that state, input box contains data which was stored in clicked milestone', function () {
+            const m = createMilestone(this.e, 10, 20, "m0", "description");
+            let items;
+            this.InputBoxStub.callsFake(function(layer, pos, _items, callbackFn) {
+                items = _items;
+            });
+
+            this.e.state = new EditMilestoneState(this.e, m);
+
+            const nameEl = items.find(i => i['key'] === 'name');
+            const valEl = items.find(i => i['key'] === 'text');
+            expect(nameEl['default']).equals("m0");
+            expect(valEl['default']).equals("description");
+        })
+
+        it('when I edit milestone name, it is changed in milestone', function() {
+            const m = createMilestone(this.e, 10, 20, "m0", "description");
+            this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
+                callbackFn({
+                    name: "42",
+                    text: "updated description"
+                });
+            });
+
+            this.e.state = new EditMilestoneState(this.e, m);
+
+            expect(m.getName()).equals("42");
+        })
+
+        it('when I edit milestone description, it is changed in milestone', function() {
+            const m = createMilestone(this.e, 10, 20, "m0", "description");
+            this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
+                callbackFn({
+                    name: "42",
+                    text: "updated description"
+                });
+            });
+
+            this.e.state = new EditMilestoneState(this.e, m);
+
+            expect(m.getDescription()).equals("updated description");
+        })
+
+        it('when I edit milestone name, it is changed in milestone image text field', function() {
+            const m = createMilestone(this.e, 10, 20, "m0", "description");
+            this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
+                callbackFn({
+                    name: "42",
+                    text: "updated description"
+                });
+            });
+            const img = m.getImg();
+            const txtField = img.findOne(".milestone-name-field");
+
+            this.e.state = new EditMilestoneState(this.e, m);
+
+            expect(txtField.text()).equals("42");
+        })
+
+        it('when I edit description, it is changed in milestone image text field', function() {
+            const m = createMilestone(this.e, 10, 20, "m0", "description");
+            this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
+                callbackFn({
+                    name: "42",
+                    text: "updated description"
+                });
+            });
+            const img = m.getImg();
+            const txtField = img.findOne(".milestone-description-field");
+
+            this.e.state = new EditMilestoneState(this.e, m);
+
+            expect(txtField.text()).equals("updated description");
+        })
+
+        it('I can add description and it is displayed even if it was not present earlier', function() {
+            const m = createMilestone(this.e, 10, 20, "m0", "");
+            this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
+                callbackFn({
+                    name: "42",
+                    text: "updated description"
+                });
+            });
+            const img = m.getImg();
+            const txtField = img.findOne(".milestone-description-field");
+
+            this.e.state = new EditMilestoneState(this.e, m);
+
+            expect(txtField.text()).equals("updated description");
+        });
+
+        it('edited text is centered', function() {
+            const m = createMilestone(this.e, 10, 20, "m0", "");
+            this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
+                callbackFn({
+                    name: "42",
+                    text: "updated description"
+                });
+            });
+            const img = m.getImg();
+            const txtField = img.findOne(".milestone-description-field");
+
+            this.e.state = new EditMilestoneState(this.e, m);
+
+            expect(txtField.offsetX()).not.equals(0);
+        })
+    })
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    describe('in EditLink state', function() {
+        it('when I get into that state, input box contains data which was stored in clicked link', function () {
+            this.skip("In the next step. First let's refactor some stuff")
+            const m1 = createMilestone(this.e, 10, 20, "m1");
+            const m2 = createMilestone(this.e, 20, 20, "m2");
+            const model = this.e.model;
+            const INITIAL_TASK_LENGTH = 5;
+            const linkId = model.addLink(m1, m2, INITIAL_TASK_LENGTH);
+            const link = model.links[linkId];
+            console.log(">>>", link);
+
+            let items;
+            this.InputBoxStub.callsFake(function(layer, pos, _items, callbackFn) {
+                items = _items;
+            });
+
+            this.e.state = new EditLinkState(this.e, link);
+
+            const taskLenEl = items.find(i => i['key'] === 'taskLen');
+            expect(taskLenEl['default']).equals(String(INITIAL_TASK_LENGTH));
+        })  
+    })
+
     describe('in Milestone state', function() {
         it('When clicked on the canvas, input box object is created', function() {
             this.e.state = new MilestoneState(this.e);
@@ -131,7 +382,7 @@ export default function suite() {
 
         it('When clicked on the canvas and passed an empty string, a pointer state is reached', function() {
             this.e.state = new MilestoneState(this.e);
-            this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
+            this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
                 callbackFn("");
             });
         
@@ -194,7 +445,7 @@ export default function suite() {
 
                 const fakeArrow = sinon.fake();
                 fakeArrow.destroy = sinon.fake();
-                this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
+                this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
                     callbackFn({taskLen: testCase.value});
                 });
 
@@ -208,7 +459,7 @@ export default function suite() {
                 const m2 = createMilestone(this.e, 10, 20, "1");
                 const fakeArrow = sinon.fake();
                 fakeArrow.destroy = sinon.fake();
-                this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
+                this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
                     callbackFn(testCase.value);
                 })
 
@@ -228,7 +479,7 @@ export default function suite() {
             const fakeArrow = sinon.fake();
             fakeArrow.destroy = sinon.fake();
             
-            this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
+            this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
                 callbackFn({taskLen: "5"});
             });
             this.e.state = new GetTaskLengthState(this.e, m1, m2, fakeArrow);
@@ -244,7 +495,7 @@ export default function suite() {
             const fakeArrow = sinon.fake();
             fakeArrow.destroy = sinon.fake();
             
-            this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
+            this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
                 callbackFn({taskLen: "5"});
             });
             this.e.state = new GetTaskLengthState(this.e, m1, m2, fakeArrow);
@@ -259,7 +510,7 @@ export default function suite() {
             const fakeArrow = sinon.fake();
             fakeArrow.destroy = sinon.fake();
             
-            this.InputBoxStub.callsFake(function(layer, prompt, pos, callbackFn) {
+            this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
                 callbackFn({taskLen: "5"});
             });
             this.e.state = new GetTaskLengthState(this.e, m1, m2, fakeArrow);

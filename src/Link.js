@@ -6,7 +6,7 @@ class Link {
         this.destId = destId;
         this.points = points;
         this.taskLength = taskLength ? parseFloat(taskLength) : 0;
-        this._img = Link.createImg(this.points, this.taskLength);
+        this._img = Link.createImg(this.points, this.taskLength, this);
         this._updateDash();
     }
 
@@ -27,34 +27,46 @@ class Link {
         this._updateDash();
     }
 
-    static _bgPaddingPx = 3;
-    static createImg(points, taskLength="") {
-        const param = { 
+    focus(enable) {
+        const arrow = this._getArrow();
+        if (enable) {
+            arrow.strokeWidth(Link._param.focusedWidth);
+        } else {
+            arrow.strokeWidth(Link._param.strokeWidth);
+        }
+    }
+
+    static _param = {
             "name": "link-element",
             "mainColor": "black",
             "strokeWidth": 2,
-            "hitStrokeWidth": 20,            // when hit is detected
+            "hitStrokeWidth": 8,            // when hit is detected
+            "focusedWidth": 5,
             "pointerLength": 20,
             "pointerWidth": 15,
             "dash": [10, 5],
             "fontSize": 20,
             "backgroundColor": "#fef9e6",
-            "backgroundPadding": Link._bgPaddingPx,
+            "backgroundPadding": "3"
         };
 
-        const img = new Konva.Group();
+    static createImg(points, taskLength, instance) {
+        
+        const img = new Konva.Group({
+            objInstance: instance
+        });
 
         const arrow = new Konva.Arrow({
             points: points,
-            stroke: param.mainColor,
-            strokeWidth: param.strokeWidth,
-            hitStrokeWidth: param.hitStrokeWidth,
-            fill: param.mainColor,
-            pointerLength: param.pointerLength,
-            pointerWidth: param.pointerWidth,
+            stroke: Link._param.mainColor,
+            strokeWidth: Link._param.strokeWidth,
+            hitStrokeWidth: Link._param.hitStrokeWidth,
+            fill: Link._param.mainColor,
+            pointerLength: Link._param.pointerLength,
+            pointerWidth: Link._param.pointerWidth,
             dashEnabled: false,
-            dash: param.dash,
-            name: param.name,
+            dash: Link._param.dash,
+            name: Link._param.name,
         });
         
 
@@ -64,9 +76,9 @@ class Link {
         const txt = new Konva.Text({
             x: txtX,
             y: txtY,
-            fontSize: param.fontSize,
+            fontSize: Link._param.fontSize,
             text: taskLenStr,
-            name: param.name,
+            name: Link._param.name,
         })
         // Center
         const shiftX = txt.width() / 2;
@@ -75,12 +87,12 @@ class Link {
         txt.offsetY(shiftY);
 
         const bgRect = new Konva.Rect({
-            x: txtX-shiftX-param.backgroundPadding,
-            y: txtY-shiftY-param.backgroundPadding,
-            width: txt.width()+2*param.backgroundPadding,
-            height: txt.height()+2*param.backgroundPadding,
-            fill: param.backgroundColor,
-            name: param.name,
+            x: txtX-shiftX-Link._param.backgroundPadding,
+            y: txtY-shiftY-Link._param.backgroundPadding,
+            width: txt.width()+2*Link._param.backgroundPadding,
+            height: txt.height()+2*Link._param.backgroundPadding,
+            fill: Link._param.backgroundColor,
+            name: Link._param.name,
           });
         if(!taskLenStr) {
             bgRect.hide();
@@ -92,6 +104,12 @@ class Link {
         
         return img;
     }
+
+    static formItems = [{
+        label: "Task lenght",
+        key: "taskLen",
+        default: "0"
+    }];
 
     _getElement(name) {
         const el = this._img.getChildren(function(n) {
@@ -135,8 +153,8 @@ class Link {
             const shiftX = txt.width() / 2;
             const shiftY = txt.height() / 2; 
             const pos2 = {
-                x: pos.x - shiftX - Link._bgPaddingPx,
-                y: pos.y - shiftY - Link._bgPaddingPx
+                x: pos.x - shiftX - Link._param.backgroundPadding,
+                y: pos.y - shiftY - Link._param.backgroundPadding
             }
             rect.position(pos2);
 

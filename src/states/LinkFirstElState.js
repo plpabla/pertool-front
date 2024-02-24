@@ -14,17 +14,17 @@ class LinkFirstElState extends State {
 
         if(clickedItem == undefined) {
             return this;
-        }
-        if(clickedItem === "pointer") {
+        } 
+        if(State.containsName(clickedItem,  "pointer")) {
             return new PointerState(this.context);
         }
-        if(clickedItem === "milestone") {
+        if(State.containsName(clickedItem,  "milestone")) {
             return new MilestoneState(this.context);
         }
-        if(clickedItem === "link") {
+        if(State.containsName(clickedItem,  "link")) {
             return this;
         }
-        if(clickedItem === "milestone-element") {
+        if(State.containsName(clickedItem,  "milestone-element")) {
             return new LinkSecondElState(this.context, target.parent.attrs.objInstance);
         }
         return this;
