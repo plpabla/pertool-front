@@ -34,7 +34,7 @@ class PointerState extends State {
             const clickedObj = target.parent.attrs.objInstance;
             return this._switchFocus(clickedObj);
         }
-        console.error("How did we get here??");
+        console.error("How did we get here??", clickedItem);
         return this;
     }
 
