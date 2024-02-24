@@ -1,7 +1,7 @@
 import State from "./State";
 import InputBox from "../InputBox";
 import PointerState from "./PointerState";
-import MilestoneState from "./MilestoneState";
+import Milestone from "../Milestone";
 
 class EditMilestoneState extends State {
     constructor(context, milestone) {
@@ -11,16 +11,10 @@ class EditMilestoneState extends State {
         const posOnCanvas = context.stage.getPointerPosition();
         const posAbsolute = context.stage.getRelativePointerPosition();
 
-        const formItems = [{
-            label: "Milestone ID",
-            key: "name",
-            default: this._milestone.getName()
-        }, {
-            label: "Description",
-            key: "text",
-            default: this._milestone.getDescription(),
-            focus: true
-        }];
+        const formItems = Milestone.formItems;
+        formItems.find(e=>e.key==="name")["default"] = this._milestone.getName();
+        formItems.find(e=>e.key==="text")["default"] = this._milestone.getDescription();
+
         new InputBox(this.context.modelLayer, posOnCanvas, formItems , (data) => {
             const name = data["name"];
             const descr = data["text"] || "";

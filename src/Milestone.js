@@ -165,6 +165,17 @@ class Milestone {
         deserialized.parentModel = parentModel;
         return deserialized;
     }
+
+    static formItems = [{
+        label: "Milestone ID",
+        key: "name",
+        default: ""
+    }, {
+        label: "Description",
+        key: "text",
+        default: "",
+        focus: true
+    }];
 }
 
 export default Milestone;
