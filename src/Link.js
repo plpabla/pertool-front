@@ -104,6 +104,12 @@ class Link {
         return img;
     }
 
+    static formItems = [{
+        label: "Task lenght",
+        key: "taskLen",
+        default: "0"
+    }];
+
     _getElement(name) {
         const el = this._img.getChildren(function(n) {
             if (n.getClassName()===name) return n;
