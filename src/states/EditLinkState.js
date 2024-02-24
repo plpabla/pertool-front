@@ -14,7 +14,7 @@ class EditLinkState extends State {
         const formItems = Link.formItems;
         formItems.find(e=>e.key==="taskLen")["default"] = this._link.getTaskLength();
 
-        new InputBox(this.context.modelLayer, posOnCanvas, formItems , (data) => {
+        this.inputBox = new InputBox(this.context.modelLayer, posOnCanvas, formItems , (data) => {
             const taskLen = data["taskLen"];
             this._link.setTaskLength(String(taskLen));
 

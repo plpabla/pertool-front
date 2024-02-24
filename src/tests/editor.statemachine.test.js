@@ -73,6 +73,11 @@ export default function suite() {
         return editor.model.getMilestoneByName(name);
     }
 
+    function createLink(editor, m1, m2, taskLen) {
+        const id = editor.model.addLink(m1, m2, taskLen);
+        return editor.model.links[id];
+    }
+
     it('starts with pointer state', function() {
         expect(this.e).to.have.property('state');
         expect(this.e.state).instanceOf(PointerState);
@@ -227,6 +232,20 @@ export default function suite() {
 
             expect(this.e.state).instanceOf(EditMilestoneState);
         })
+
+        it('when I click on the same link twice, EditLink state is achieved', function() {
+            this.e.state = new PointerState(this.e);
+            const link = createLink(
+                this.e,
+                createMilestone(this.e, 10, 20, "test"), 
+                createMilestone(this.e, 10, 20, "test"),
+                5);
+
+            this.e.state = this.e.state.onClick(createClickedObject("link-element", link));
+            this.e.state = this.e.state.onClick(createClickedObject("link-element", link));
+
+            expect(this.e.state).instanceOf(EditLinkState);
+        })
     })
 
     describe('in EditMilestone state', function() {
@@ -343,8 +362,16 @@ export default function suite() {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     describe('in EditLink state', function() {
         it('when I click, I reach back PointerState', function() {
-            this.skip('todo');
+            this.skip("I don't know how to trigger it as I'm using InputBox stub here");
+            const link = sinon.fake();
+            link.getTaskLength = sinon.fake(()=>42);
+            link.setTaskLength = sinon.fake(n=>0);
+            link.focus = sinon.fake();
             this.e.state = new EditLinkState(this.e, link);
+
+            // ??????
+
+            expect(this.e.state).instanceOf(PointerState);
         })
 
         it('when I get into that state, input box contains data which was stored in clicked link', function () {
@@ -354,7 +381,6 @@ export default function suite() {
             const INITIAL_TASK_LENGTH = 5;
             const linkId = model.addLink(m1, m2, INITIAL_TASK_LENGTH);
             const link = model.links[linkId];
-            console.log(">>>", link);
 
             let items;
             this.InputBoxStub.callsFake(function(layer, pos, _items, callbackFn) {
