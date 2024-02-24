@@ -23,7 +23,7 @@ class Link {
     }
 
     setTaskLength(taskLength) {
-        this.taskLength = taskLength;
+        this.taskLength = taskLength ? parseFloat(taskLength) : 0;
         this._updateTaskLenStr();
         this._updateDash();
     }
@@ -158,6 +158,8 @@ class Link {
                 y: pos.y - shiftY - Link._param.backgroundPadding
             }
             rect.position(pos2);
+            rect.width(txt.width()+2*Link._param.backgroundPadding);
+            rect.height(txt.height()+2*Link._param.backgroundPadding);
 
             if(taskLenStr) {
                 rect.show();
