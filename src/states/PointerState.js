@@ -4,6 +4,7 @@ import State from "./State";
 import Milestone from "../Milestone";
 import Link from "../Link";
 import EditMilestoneState from "./EditMilestoneState";
+import EditLinkState from "./EditLinkState";
 
 class PointerState extends State {
     constructor(context) {
@@ -47,12 +48,11 @@ class PointerState extends State {
     _switchFocus(clickedObj=null) {
         if(this._focusedEl === clickedObj) {
             // Click on already focused element
-            // TODO: add logic (as new state to edit this element)
             if(this._focusedEl instanceof Milestone) {
                 return new EditMilestoneState(this.context, this._focusedEl);
             }
             if(this._focusedEl instanceof Link) {
-                console.log("double click on Link with length " + this._focusedEl.getTaskLength() + " TODO!!!!!!");
+                return new EditLinkState(this.context, this._focusedEl);
             }
             return this;
         }
