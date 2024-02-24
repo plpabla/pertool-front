@@ -11,7 +11,7 @@ class EditMilestoneState extends State {
         const posOnCanvas = context.stage.getPointerPosition();
         const posAbsolute = context.stage.getRelativePointerPosition();
 
-        const formItems = Milestone.formItems;
+        const formItems = Milestone.getFormItems();
         formItems.find(e=>e.key==="name")["default"] = this._milestone.getName();
         formItems.find(e=>e.key==="text")["default"] = this._milestone.getDescription();
 

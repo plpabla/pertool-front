@@ -10,7 +10,7 @@ class GetTaskLengthState extends State {
         this.m2 = m2;
         this.arrow = arrow;
         const posOnCanvas = context.stage.getPointerPosition();
-        const formItems = Link.formItems;
+        const formItems = Link.getFormItems();
 
         new InputBox(context.modelLayer, posOnCanvas, formItems, (data) => {
             const taskLen = parseFloat(data["taskLen"]);

@@ -166,16 +166,18 @@ class Milestone {
         return deserialized;
     }
 
-    static formItems = [{
-        label: "Milestone ID",
-        key: "name",
-        default: ""
-    }, {
-        label: "Description",
-        key: "text",
-        default: "",
-        focus: true
-    }];
+    static getFormItems() {
+        return [{
+            label: "Milestone ID",
+            key: "name",
+            default: ""
+        }, {
+            label: "Description",
+            key: "text",
+            default: "",
+            focus: true
+        }];
+    }
 }
 
 export default Milestone;

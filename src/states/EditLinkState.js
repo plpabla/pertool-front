@@ -11,7 +11,7 @@ class EditLinkState extends State {
         const posOnCanvas = context.stage.getPointerPosition();
         const posAbsolute = context.stage.getRelativePointerPosition();
 
-        const formItems = Link.formItems;
+        const formItems = Link.getFormItems();
         formItems.find(e=>e.key==="taskLen")["default"] = this._link.getTaskLength();
 
         this.inputBox = new InputBox(this.context.modelLayer, posOnCanvas, formItems , (data) => {

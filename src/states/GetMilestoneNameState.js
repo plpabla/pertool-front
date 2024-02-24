@@ -10,7 +10,7 @@ class GetMilestoneNameState extends State {
         const posOnCanvas = context.stage.getPointerPosition();
         const posAbsolute = context.stage.getRelativePointerPosition();
         const defaultValue = context.model.milestones.length;
-        const formItems = Milestone.formItems;
+        const formItems = Milestone.getFormItems();
         formItems.find(e=>e.key==="name")["default"] = defaultValue;
 
         new InputBox(context.modelLayer, posOnCanvas, formItems , (data) => {
