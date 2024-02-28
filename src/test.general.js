@@ -5,6 +5,7 @@ import linkTest from './tests/link.test.js';
 import linkSerializeTest from './tests/link.serialize.test.js';
 import modelCreateTest from './tests/model.create.test.js';
 import modelAddMilestoneTest from './tests/model.addMilestone.test.js';
+import modelRemoveMilestoneTest from './tests/model.removeMilestone.test.js';
 import modelAddLinkTest from './tests/model.addLink.test.js';
 import modelRemoveLinkTest from './tests/model.removeLink.test.js';
 import modelSerializeTest from './tests/model.serialize.test.js';
@@ -33,6 +34,7 @@ describe('InputBox', function() {
 describe('Model', function() {
     describe('creation', modelCreateTest.bind(this));
     describe('adding milestone', modelAddMilestoneTest.bind(this));
+    describe('removing milestone', modelRemoveMilestoneTest.bind(this));
     describe('adding link', modelAddLinkTest.bind(this));
     describe('removing link', modelRemoveLinkTest.bind(this));
     describe('serialization', modelSerializeTest.bind(this));

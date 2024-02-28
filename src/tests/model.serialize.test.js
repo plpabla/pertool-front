@@ -29,6 +29,7 @@ export default function suite() {
 
         expect(deserialized).instanceOf(Model);
     })
+    
 
     it('I can access root object in deserialized object', function() {
         const serialized = Model.serialize(this.model);
@@ -109,5 +110,29 @@ export default function suite() {
         expect(deserialized.milestones[1].getName()).to.equal("m2");
         expect(deserialized.milestones[2].getName()).to.equal("m3");
         expect(deserialized.findMilestoneIDByName("m2")).to.equal(1);
+    })
+
+    it('Model deserialized with removed links is the same', function() {
+        this.model.addMilestone(0, 0, "m2");
+        this.model.addMilestone(10,20, "m3");
+        this.model.addLink("0", "m2");
+        this.model.addLink("m2", "m3");
+        this.model.removeLink(this.model.links[0]);
+        const originalLinksAray = this.model.links;
+        const layerMock = {
+            add: (x) => {}
+        }
+        const serialized = Model.serialize(this.model);
+
+        const deserialized = Model.deserialize(serialized, layerMock);
+
+        expect(deserialized.links).lengthOf(originalLinksAray.length);
+        for(const idx in originalLinksAray) {
+            if (originalLinksAray[idx] === null) {
+                expect(deserialized.links[idx]).to.be.null;
+            } else {
+                expect(deserialized.links[idx].getSourceMilestoneId()).equal(originalLinksAray[idx].getSourceMilestoneId());
+            }
+        }
     })
 };

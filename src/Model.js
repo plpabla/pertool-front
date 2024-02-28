@@ -14,8 +14,20 @@ class Model {
 
         obj.milestones = [];
         obj.links = [];
-        milestones.forEach(m=>obj.milestones.push(Milestone.serialize(m)));
-        links.forEach(l=>obj.links.push(Link.serialize(l)));
+        milestones.forEach(m=>{
+            if(m !== null) {
+                obj.milestones.push(Milestone.serialize(m))
+            } else {
+                obj.milestones.push(null);
+            }
+        });
+        links.forEach(l=>{
+            if(l !== null) {
+                obj.links.push(Link.serialize(l))
+            } else {
+                obj.links.push(null);
+            }
+        });
 
         const str = JSON.stringify(obj);
 
@@ -33,10 +45,20 @@ class Model {
         const milestones = [];
         const links = [];
         deserialized.milestones.forEach(element => {
-            milestones.push(Milestone.deserialize(element, this));
+            if(element !== null) {
+                milestones.push(Milestone.deserialize(element, this));
+            } else {
+                milestones.push(null);
+            }
+
         });
         deserialized.links.forEach(element => {
-            links.push(Link.deserialize(element));
+            if(element != null) {
+                links.push(Link.deserialize(element));
+            } else {
+                links.push(null);
+            }
+
         });
 
         deserialized.milestones = milestones;
@@ -128,6 +150,14 @@ class Model {
             removed.destroy();
             this.links[idx] = null;
         }
+    }
+
+    removeMilestone(m) {
+        const idx = this.milestones.indexOf(m);
+        if(idx>=0) {
+            // TODO
+        }
+        console.log(">>>>TODO",m,idx);
     }
 
     static calculateArrowPosition(m1, m2, r=Milestone.radius) {
