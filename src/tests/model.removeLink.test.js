@@ -17,13 +17,13 @@ export default function suite() {
         this.model.addLink(m1id,m3id,0);
     });
 
-    it('I can remove a link when I pass it as an object', function() {
+    it('I can remove a link when I pass it as an object and it is replaced with null in links', function() {
         const LINKS_COUNT = this.model.links.length;
         const link = this.model.links[1];
         
         this.model.removeLink(link);
 
-        expect(this.model.links.length).to.equal(LINKS_COUNT-1);
+        expect(this.model.links[1]).to.be.null;
     });
 
     it('correct link is removed', function() {

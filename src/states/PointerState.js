@@ -58,8 +58,11 @@ class PointerState extends State {
             this._switchFocus();
         }
         if(e.key==="Delete") {
-            console.log(this.getFocusedEl());
+            const focusedEl = this.getFocusedEl();
             this._switchFocus();
+            if(focusedEl instanceof Link) {
+                this.context.model.removeLink(focusedEl);
+            }
         }
     }
 

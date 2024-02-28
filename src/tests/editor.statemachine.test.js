@@ -190,7 +190,7 @@ export default function suite() {
 
             this.e.state.onKeyPress({key:"Delete"});
 
-            expect(this.e.model.links.length).equal(0);
+            expect(this.e.model.links).not.contains(l);
         })
 
         it('when I click on milestone-element, focused element points to corresponding milestone', function() {

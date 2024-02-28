@@ -120,7 +120,9 @@ class Model {
     removeLink(link) {
         const idx = this.links.indexOf(link);
         if(idx>=0) {
-            this.links.splice(idx, 1);
+            const removed = this.links[idx];
+            removed.destroy();
+            this.links[idx] = null;
         }
     }
 
