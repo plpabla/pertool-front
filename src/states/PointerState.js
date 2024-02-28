@@ -10,6 +10,8 @@ class PointerState extends State {
     constructor(context) {
         super(context);
         this._focusedEl = null;
+        this.onKeyPressBinded = this.onKeyPress.bind(this);
+        this.createOnKeyPressListener(this.onKeyPressBinded);
     }
 
     onClick(args) {
@@ -25,11 +27,13 @@ class PointerState extends State {
 
         if(State.containsName(clickedItem, "milestone")) {
             this._switchFocus();
+            this.leaveState();
             return new MilestoneState(this.context);
         }
 
         if(State.containsName(clickedItem, "link")) {
             this._switchFocus();
+            this.leaveState();
             return new LinkFirstElState(this.context);
         }
 
@@ -41,6 +45,23 @@ class PointerState extends State {
         return this;
     }
 
+    createOnKeyPressListener(callback) {
+        document.addEventListener("keydown", callback);
+    }
+
+    leaveState() {
+        document.removeEventListener("keydown", this.onKeyPressBinded);
+    }
+
+    onKeyPress(e) {
+        if(e.key==="Escape") {
+            console.log('esc');
+        }
+        if(e.key==="Delete") {
+            console.log('del');
+        }
+    }
+
     getFocusedEl() {
         return this._focusedEl; 
     }
@@ -49,9 +70,11 @@ class PointerState extends State {
         if(this._focusedEl === clickedObj) {
             // Click on already focused element
             if(this._focusedEl instanceof Milestone) {
+                this.leaveState();
                 return new EditMilestoneState(this.context, this._focusedEl);
             }
             if(this._focusedEl instanceof Link) {
+                this.leaveState();
                 return new EditLinkState(this.context, this._focusedEl);
             }
             return this;
