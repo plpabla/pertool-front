@@ -117,6 +117,13 @@ class Model {
         return this.links.length - 1;
     }
 
+    removeLink(link) {
+        const idx = this.links.indexOf(link);
+        if(idx>=0) {
+            this.links.splice(idx, 1);
+        }
+    }
+
     static calculateArrowPosition(m1, m2, r=Milestone.radius) {
         return calcPos(...m1.getPos(), r, ...m2.getPos(), r);
 

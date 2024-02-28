@@ -179,6 +179,20 @@ export default function suite() {
             expect(this.e.state.getFocusedEl()).is.null;
         })
 
+        it('given link focused, when I press del, link is removed from a model', function() {
+            const l = createLink(
+                this.e,
+                createMilestone(this.e, 10, 10, "m1"),
+                createMilestone(this.e, 20, 20, "m2"),
+                15);
+            this.e.state = new PointerState(this.e);
+            this.e.state._switchFocus(l);
+
+            this.e.state.onKeyPress({key:"Delete"});
+
+            expect(this.e.model.links.length).equal(0);
+        })
+
         it('when I click on milestone-element, focused element points to corresponding milestone', function() {
             this.e.state = new PointerState(this.e);
             const m = createMilestone(this.e, 10, 20, "test");
