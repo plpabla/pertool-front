@@ -169,6 +169,16 @@ export default function suite() {
             expect(this.e.state.getFocusedEl()).is.null;
         })
 
+        it('given any component focused, when I press del, focus is removed', function() {
+            const m = createMilestone(this.e, 10, 20, "test");
+            this.e.state = new PointerState(this.e);
+            this.e.state._switchFocus(m);
+
+            this.e.state.onKeyPress({key:"Delete"});
+
+            expect(this.e.state.getFocusedEl()).is.null;
+        })
+
         it('when I click on milestone-element, focused element points to corresponding milestone', function() {
             this.e.state = new PointerState(this.e);
             const m = createMilestone(this.e, 10, 20, "test");

@@ -58,7 +58,8 @@ class PointerState extends State {
             this._switchFocus();
         }
         if(e.key==="Delete") {
-            console.log('del');
+            console.log(this.getFocusedEl());
+            this._switchFocus();
         }
     }
 
