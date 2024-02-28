@@ -55,7 +55,7 @@ class PointerState extends State {
 
     onKeyPress(e) {
         if(e.key==="Escape") {
-            console.log('esc');
+            this._switchFocus();
         }
         if(e.key==="Delete") {
             console.log('del');
