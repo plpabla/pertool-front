@@ -33,4 +33,24 @@ export default function suite() {
 
         expect(this.model.links).not.contains(linkToRemove);
     });
+
+    [0,1].forEach(function(LINK_ID){
+        it(`when link ${LINK_ID} is removed, it is also removed from source milestone links list`, function() {
+            const linkToRemove = this.model.links[LINK_ID];
+            const sourceMilestoneId = linkToRemove.getSourceMilestoneId();
+            
+            this.model.removeLink(linkToRemove);
+
+            expect(this.model.getMilestoneById(sourceMilestoneId).sourceLinks).not.contains(LINK_ID);
+        });
+
+        it(`when link ${LINK_ID} is removed, it is also removed from destination milestone links list`, function() {
+            const linkToRemove = this.model.links[LINK_ID];
+            const destMilestoneId = linkToRemove.getDestinationMilestoneId();
+            
+            this.model.removeLink(linkToRemove);
+
+            expect(this.model.getMilestoneById(destMilestoneId).destinationLinks).not.contains(LINK_ID);
+        })
+    });
 }

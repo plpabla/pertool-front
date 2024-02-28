@@ -121,6 +121,10 @@ class Model {
         const idx = this.links.indexOf(link);
         if(idx>=0) {
             const removed = this.links[idx];
+            const srcMilestone = removed.getSourceMilestoneId();
+            const dstMilestone = removed.getDestinationMilestoneId();
+            this.milestones[srcMilestone].removeLink(idx);
+            this.milestones[dstMilestone].removeLink(idx);
             removed.destroy();
             this.links[idx] = null;
         }

@@ -19,6 +19,17 @@ class Milestone {
         this.sourceLinks.push(l);
     }
 
+    removeLink(l) {
+        let idx = this.destinationLinks.indexOf(l);
+        if(idx>=0) {
+            this.destinationLinks.splice(idx, 1);
+        }
+        idx = this.sourceLinks.indexOf(l);
+        if(idx>=0) {
+            this.sourceLinks.splice(idx, 1);
+        }
+    }
+
     getDescription() {
         return this.description;
     }
