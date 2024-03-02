@@ -15,6 +15,7 @@ import EditLinkState from '../states/EditLinkState';
 import InputBox from '../InputBox';
 import Milestone from '../Milestone';
 import Link from '../Link';
+import * as $ from 'jquery';
 
 export default function suite() {
     beforeEach(function() {
@@ -129,6 +130,77 @@ export default function suite() {
             this.e.state = new PointerState(this.e);
 
             expect(this.e.state.getFocusedEl()).equal(null);
+        })
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        it('when state is created, keypress listener is assgined to it', function() {
+            this.skip("To do - I have no energy to do it now ;(");
+            this.e.state = new PointerState(this.e);
+            // const CODE_ESC=27;
+            // const CODE_DEL=127;
+            const onKeyPressSpy = sinon.spy(this.e.state, "onKeyPress");
+            const e = $.Event( 'keydown', { which: $.ui.keyCode.ESCAPE } );
+
+            $('document').trigger(e);
+
+            expect(onKeyPressSpy.callCount).to.equal(1);
+            onKeyPressSpy.restore();
+        })
+
+        it('given no compoment is focused, when I press esc, focus remains unset', function() {
+            this.e.state = new PointerState(this.e);
+
+            this.e.state.onKeyPress({key:"Escape"});
+
+            expect(this.e.state.getFocusedEl()).is.null;
+        })
+
+        it('given any component is focused, when I press esc, focus is removed', function() {
+            const m = createMilestone(this.e, 10, 20, "test");
+            this.e.state = new PointerState(this.e);
+            this.e.state._switchFocus(m);
+
+            this.e.state.onKeyPress({key:"Escape"});
+
+            expect(this.e.state.getFocusedEl()).is.null;
+        })
+
+        it('given any component focused, when I press del, focus is removed', function() {
+            const m = createMilestone(this.e, 10, 20, "test");
+            this.e.state = new PointerState(this.e);
+            this.e.state._switchFocus(m);
+
+            this.e.state.onKeyPress({key:"Delete"});
+
+            expect(this.e.state.getFocusedEl()).is.null;
+        })
+
+        it('given link focused, when I press del, link is removed from a model', function() {
+            const l = createLink(
+                this.e,
+                createMilestone(this.e, 10, 10, "m1"),
+                createMilestone(this.e, 20, 20, "m2"),
+                15);
+            this.e.state = new PointerState(this.e);
+            this.e.state._switchFocus(l);
+
+            this.e.state.onKeyPress({key:"Delete"});
+
+            expect(this.e.model.links).not.contains(l);
+        })
+
+        it('given milestone focused, when I press del, milestone is removed from a model', function() {
+            const m1 = createMilestone(this.e, 10, 10, "m1");
+            this.e.state = new PointerState(this.e);
+            this.e.state._switchFocus(m1);
+
+            this.e.state.onKeyPress({key:"Delete"});
+
+            expect(this.e.model.milestones).not.contains(m1);
         })
 
         it('when I click on milestone-element, focused element points to corresponding milestone', function() {
@@ -357,9 +429,6 @@ export default function suite() {
         })
     })
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     describe('in EditLink state', function() {
         it('when I click, I reach back PointerState', function() {
             this.skip("I don't know how to trigger it as I'm using InputBox stub here");

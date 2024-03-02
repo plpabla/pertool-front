@@ -37,6 +37,10 @@ class Link {
         }
     }
 
+    destroy() {
+        this._img.destroy();
+    }
+
     static _param = {
             "name": "link-element",
             "mainColor": "black",
