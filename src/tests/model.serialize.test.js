@@ -111,8 +111,8 @@ export default function suite() {
             add: (x) => {}
         }
         const serialized = Model.serialize(this.model);
-
         const deserialized = Model.deserialize(serialized, layerMock);
+
         deserialized.addMilestone(0, 0, "m3");
         deserialized.addLink("0", "m3");
 
@@ -140,11 +140,7 @@ export default function suite() {
 
         expect(deserialized.links).lengthOf(originalLinksAray.length);
         for(const idx in originalLinksAray) {
-            if (originalLinksAray[idx] === null) {
-                expect(deserialized.links[idx]).to.be.null;
-            } else {
-                expect(deserialized.links[idx].getSourceMilestoneId()).equal(originalLinksAray[idx].getSourceMilestoneId());
-            }
+            expect(deserialized.links[idx].getSourceMilestoneId()).equal(originalLinksAray[idx].getSourceMilestoneId());
         }
     })
 };

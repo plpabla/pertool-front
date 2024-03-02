@@ -24,11 +24,7 @@ class Model {
             }
         });
         links.forEach(l=>{
-            if(l !== null) {
-                obj.links.push(Link.serialize(l))
-            } else {
-                obj.links.push(null);
-            }
+            obj.links.push(Link.serialize(l))
         });
 
         const str = JSON.stringify(obj);
@@ -54,11 +50,7 @@ class Model {
             }
         });
         deserialized.links.forEach(element => {
-            if(element != null) {
-                links.push(Link.deserialize(element));
-            } else {
-                links.push(null);
-            }
+            links.push(Link.deserialize(element));
         });
 
         deserialized.milestones = milestones;
