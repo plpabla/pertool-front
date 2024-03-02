@@ -140,7 +140,16 @@ class Model {
     }
 
     removeLink(link) {
-        const idx = this.links.indexOf(link);
+        let idx = null;
+        if((typeof link) === "number") {
+            idx = link;
+        } else if (link instanceof Link) {
+            idx = this.links.indexOf(link);
+        } else {
+            console.error("Unsupported argument passed to Model.removeLink()");
+            return;
+        }
+        
         if(idx>=0) {
             const removed = this.links[idx];
             const srcMilestone = removed.getSourceMilestoneId();
@@ -155,9 +164,14 @@ class Model {
     removeMilestone(m) {
         const idx = this.milestones.indexOf(m);
         if(idx>=0) {
-            // TODO
+            const m = this.milestones[idx];
+            const links = [...m.sourceLinks, ...m.destinationLinks];
+            for(let id of links) {
+                this.removeLink(id);
+            }
+            this.milestones[idx] = null;
         }
-        console.log(">>>>TODO",m,idx);
+        m.destroy();
     }
 
     static calculateArrowPosition(m1, m2, r=Milestone.radius) {

@@ -30,6 +30,10 @@ class Milestone {
         }
     }
 
+    destroy() {
+        this._img.destroy();
+    }
+
     getDescription() {
         return this.description;
     }
