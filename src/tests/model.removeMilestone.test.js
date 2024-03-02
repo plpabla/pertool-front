@@ -41,7 +41,7 @@ export default function suite() {
         this.model.removeMilestone(m1);
 
         allLinks.forEach(id=>{
-            expect(this.model.links[id]).to.be.null;
+            expect(this.model.getLinkWithId(id)).to.be.null;
         })
     });
 }

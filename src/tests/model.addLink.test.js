@@ -12,23 +12,23 @@ export default function suite() {
         this.model = new Model(layerMock);
     });
 
-    it('can add link using id and I get link id = 0', function() {
+    it('can add link using id and I get link id >= 0', function() {
         const id1 = 0;
         const id2 = this.model.addMilestone(10, 0, "m2");
         const linkid = this.model.addLink(id1, id2);
 
         expect(this.model.links).lengthOf(1);
-        expect(linkid).to.equal(0);
+        expect(linkid).to.greaterThanOrEqual(0);
     });
 
-    it('can add 2 links using id and second gets link id = 1', function() {
+    it('can add 2 links using id and second gets link id = n+1', function() {
         const id1 = 0;
         const id2 = this.model.addMilestone(10, 0, "m2");
-        this.model.addLink(id1, id2);
+        const linkid0 = this.model.addLink(id1, id2);
         const linkid = this.model.addLink(id1, id2);
 
         expect(this.model.links).lengthOf(2);
-        expect(linkid).to.equal(1);
+        expect(linkid).to.equal(linkid0+1);
     });
 
     it('cannot add link to itself', function() {
@@ -83,7 +83,7 @@ export default function suite() {
 
         const linkId = this.model.addLink(id1, id2, 4.2);
 
-        expect(this.model.links[linkId].getTaskLength()).equal(4.2);
+        expect(this.model.getLinkWithId(linkId).getTaskLength()).equal(4.2);
     });
 
     describe('calculation of arrow position', function() {

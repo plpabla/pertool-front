@@ -75,7 +75,7 @@ class Model {
     }
 
     _updateArrow(linkId) {
-        const link = this.links[linkId];
+        const link = this.getLinkWithId(linkId);
         const m1 = this.getMilestoneById(link.sourceId);
         const m2 = this.getMilestoneById(link.destId);
         const pos = Model.calculateArrowPosition(m1, m2);
@@ -108,6 +108,10 @@ class Model {
         return this.milestones[id];
     }
 
+    getLinkWithId(id) {
+        return this.links.find(l => l.getId() === id) || null;
+    }
+
     addLink(id1, id2, taskLength) {
         let m1id, m2id = undefined;
         if ((typeof id1)==='number') {
@@ -128,38 +132,39 @@ class Model {
             }
         }
 
+        let linkId = null;
         if((m1id != undefined) && (m2id != undefined)) {
             const points = Model.calculateArrowPosition(this.getMilestoneById(m1id),this.getMilestoneById(m2id));
             const link = new Link(m1id, m2id, taskLength, points);
             this.links.push(link);
             this.canvasLayer.add(link.getImg());
-            const linkId = this.links.length - 1;
+            linkId = link.getId();
             this.milestones[m1id].addLinkWhereIAmSource(linkId);
             this.milestones[m2id].addLinkWhereIAmDestination(linkId);
         }
 
-        return this.links.length - 1;
+        return linkId;
     }
 
     removeLink(link) {
-        let idx = null;
+        let linkObj = null;
         if((typeof link) === "number") {
-            idx = link;
+            linkObj = this.getLinkWithId(link);
         } else if (link instanceof Link) {
-            idx = this.links.indexOf(link);
+            linkObj = link;
         } else {
             console.error("Unsupported argument passed to Model.removeLink()");
             return;
         }
         
-        if(idx>=0) {
-            const removed = this.links[idx];
-            const srcMilestone = removed.getSourceMilestoneId();
-            const dstMilestone = removed.getDestinationMilestoneId();
-            this.milestones[srcMilestone].removeLink(idx);
-            this.milestones[dstMilestone].removeLink(idx);
-            removed.destroy();
-            this.links[idx] = null;
+        if(linkObj !== null) {
+            const srcMilestone = linkObj.getSourceMilestoneId();
+            const dstMilestone = linkObj.getDestinationMilestoneId();
+            this.milestones[srcMilestone].removeLink(linkObj.getId());
+            this.milestones[dstMilestone].removeLink(linkObj.getId());
+            linkObj.destroy();
+            const idx = this.links.indexOf(linkObj);
+            this.links.splice(idx, 1);
         }
     }
 

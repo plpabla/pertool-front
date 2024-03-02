@@ -76,7 +76,7 @@ export default function suite() {
 
     function createLink(editor, m1, m2, taskLen) {
         const id = editor.model.addLink(m1, m2, taskLen);
-        return editor.model.links[id];
+        return editor.model.getLinkWithId(id);
     }
 
     it('starts with pointer state', function() {
@@ -449,7 +449,7 @@ export default function suite() {
             const model = this.e.model;
             const INITIAL_TASK_LENGTH = 5;
             const linkId = model.addLink(m1, m2, INITIAL_TASK_LENGTH);
-            const link = model.links[linkId];
+            const link = model.getLinkWithId(linkId);
 
             let items;
             this.InputBoxStub.callsFake(function(layer, pos, _items, callbackFn) {
