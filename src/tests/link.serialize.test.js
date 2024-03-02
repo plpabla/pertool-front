@@ -36,6 +36,15 @@ export default function suite() {
         expect(deserialized.taskLength).to.equal(4.2);
     });
 
+    it('deserialized contains link id', function() {
+        const serialized = Link.serialize(this.l);
+        const linkId = this.l.getId();
+
+        const deserialized = Link.deserialize(serialized);
+
+        expect(deserialized.getId()).to.equal(linkId);
+    });
+
     it('deserialized contains Konva.Group', function() {
         const serialized = Link.serialize(this.l);
 

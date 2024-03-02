@@ -2,6 +2,7 @@ const chai = require('chai');
 const assert = chai.assert;
 const expect = chai.expect;
 import Model from '../Model.js';
+import Link from '../Link.js';
 
 export default function suite() {
     beforeEach(function() {
@@ -90,6 +91,17 @@ export default function suite() {
         const deserialized = Model.deserialize(serialized);
 
         expect(deserialized.milestones[1].getPos()).to.eql([10, 42]);
+    })
+
+    it('Link id counter is updated after serialization', function() {
+        this.model.addMilestone(10, 42, "m2");
+        this.model.addLink("0", "m2");
+        const serialized = Model.serialize(this.model);
+        const linkIdDuringSerialization = Link._id;
+
+        const deserialized = Model.deserialize(serialized);
+
+        expect(Link._id).to.equal(linkIdDuringSerialization);
     })
 
     it('I can work with deserialized object by adding links and milestones to it', function() {

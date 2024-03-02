@@ -11,7 +11,9 @@ class Model {
     static serialize(obj) {
         const milestones = obj.milestones;
         const links = obj.links;
-
+        const state = {"Link._id": Link._id};
+        obj.state = state;
+        
         obj.milestones = [];
         obj.links = [];
         milestones.forEach(m=>{
@@ -50,7 +52,6 @@ class Model {
             } else {
                 milestones.push(null);
             }
-
         });
         deserialized.links.forEach(element => {
             if(element != null) {
@@ -58,12 +59,13 @@ class Model {
             } else {
                 links.push(null);
             }
-
         });
 
         deserialized.milestones = milestones;
         deserialized.links = links;
         deserialized.canvasLayer = canvasLayer;
+
+        Link._id = deserialized.state["Link._id"];
         return deserialized;
     }
 
