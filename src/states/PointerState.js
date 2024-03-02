@@ -63,6 +63,9 @@ class PointerState extends State {
             if(focusedEl instanceof Link) {
                 this.context.model.removeLink(focusedEl);
             }
+            if(focusedEl instanceof Milestone) {
+                this.context.model.removeMilestone(focusedEl);
+            }
         }
     }
 
