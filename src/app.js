@@ -1,10 +1,10 @@
 "use strict"
 import Konva from 'konva';
 import Editor from './Editor';
+import Model from './Model';
 
 let sceneWidth = 1000;
 let sceneHeight = 700;
-
 const stage = new Konva.Stage({
     height: sceneHeight,
     width: sceneWidth,
@@ -26,6 +26,17 @@ layer.add(new Konva.Rect({
 
 const editor = new Editor(stage);
 
+
+window.onload = function() {
+    fitStageIntoParentContainer();
+    // adapt the stage on any window resize
+    window.addEventListener('resize', fitStageIntoParentContainer);
+
+    document.getElementById("btn-export").addEventListener("click", exportModel);
+    document.getElementById("btn-import").addEventListener("click", importModel);
+};
+
+
 function fitStageIntoParentContainer() {
     var container = document.querySelector('#canvas-parent');
 
@@ -39,9 +50,14 @@ function fitStageIntoParentContainer() {
     stage.width(sceneWidth * scale);
     stage.height(sceneHeight * scale);
     stage.scale({ x: scale, y: scale });
-  }
+}
 
-  fitStageIntoParentContainer();
-  // adapt the stage on any window resize
-  window.addEventListener('resize', fitStageIntoParentContainer);
+function exportModel(e) {
+    const serialized = Model.serialize(editor.model);
+    console.log(serialized);
+}
+
+function importModel(e) {
+    console.log("!!eew"); 
+}
 
