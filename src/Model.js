@@ -19,9 +19,11 @@ class Model {
         obj.milestones = [];
         obj.links = [];
         milestones.forEach(m=>{
+            console.log(">>> Milestone ", Milestone.serialize(m))
             obj.milestones.push(Milestone.serialize(m))
         });
         links.forEach(l=>{
+            console.log(">>> Link ", Link.serialize(l))
             obj.links.push(Link.serialize(l))
         });
 
