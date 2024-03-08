@@ -66,10 +66,10 @@ export default function suite() {
 
         const deserialized = Model.deserialize(serialized);
 
-        const originalm2 = this.model.findMilestoneIDByName("m2");
-        const m2 = deserialized.findMilestoneIDByName("m2");
+        const originalm2 = this.model.getMilestoneByName("m2");
+        const m2 = deserialized.getMilestoneByName("m2");
 
-        expect(deserialized.milestones[m2].getName()).to.equal(this.model.milestones[originalm2].getName());
+        expect(m2.getName()).to.equal(originalm2.getName());
     })
 
     it('I can access link in deserialized object', function() {
@@ -118,10 +118,7 @@ export default function suite() {
 
         expect(deserialized.milestones).lengthOf(3);
         expect(deserialized.links).lengthOf(2);
-        expect(deserialized.milestones[0].getName()).to.equal("0");
-        expect(deserialized.milestones[1].getName()).to.equal("m2");
-        expect(deserialized.milestones[2].getName()).to.equal("m3");
-        expect(deserialized.findMilestoneIDByName("m2")).to.equal(1);
+        expect(deserialized.findMilestoneIDByName("m2")).to.equal(this.model.findMilestoneIDByName("m2"));
     })
 
     it('Model deserialized with removed links is the same', function() {

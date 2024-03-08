@@ -3,7 +3,9 @@ import Link from './Link.js';
 
 class Model {
     constructor(canvasLayer) {
-        this.milestones = [new Milestone(200, 300, "0", "", this)];
+        const root = new Milestone(200, 300, "0", "", this);
+        this.milestones = [root];
+        this.rootId = root.getId();
         this.links = [];
         this.canvasLayer = canvasLayer;
     }
@@ -36,7 +38,6 @@ class Model {
     }
 
     static deserialize(str, canvasLayer) {
-        // console.log('String to deserialize: ' + str)
         const deserialized_data = JSON.parse(str);
         const deserialized = Object.create(Model.prototype, Object.getOwnPropertyDescriptors(deserialized_data));
 
@@ -76,28 +77,42 @@ class Model {
 
 
     getRoot() {
-        return this.milestones[0];
+        return this.milestones.find(m=>m.getId()===this.rootId);
     }
 
     addMilestone(x, y, name, description="") {
-        this.milestones.push(new Milestone(x, y, name, description, this));
-        return this.milestones.length - 1;
+        const m = new Milestone(x, y, name, description, this);
+        this.milestones.push(m);
+        return m.getId();
     }
     
     findMilestoneIDByName(name) {
-        return this.milestones.findIndex(m => m.getName() === name);
-    }
-
-    findMilestoneIDByPassedId(id) {
-        return this.milestones.findIndex(m => m.getId() === id);
+        const m = this.milestones.find(m => m.getName() === name);
+        if(m) {
+            return m.getId();
+        } else {
+            return null;
+        }
     }
 
     getMilestoneByName(name) {
-        return this.milestones[this.findMilestoneIDByName(name)];
+        return this.milestones.find(m=>m.getName()===name) || null;
     }
 
     getMilestoneById(id) {
-        return this.milestones[id];
+        return this.milestones.find(m=>m.getId()===id) || null;
+    }
+
+    checkIfMilestoneWithGivenIdExists(id) {
+        // TODO - refactor here!!!
+        let res = null;
+        this.milestones.forEach(m=>{
+            if(m.getId()===id) {
+                res = id;
+                return;
+            }
+        });
+        return res;
     }
 
     getLinkWithId(id) {
@@ -105,34 +120,30 @@ class Model {
     }
 
     addLink(id1, id2, taskLength) {
-        let m1id, m2id = undefined;
+        let m1id, m2id = null;
         if ((typeof id1)==='number') {
-            const maxId = this.milestones.length;
-            if(id1<0 || id1>=maxId || id2<0 || id2>=maxId || id1==id2) {
-                return;
-            }
-            m1id = id1;
-            m2id = id2;
+            m1id = this.checkIfMilestoneWithGivenIdExists(id1);
+            m2id = this.checkIfMilestoneWithGivenIdExists(id2);
         } else if (id1 instanceof(Milestone)) {
-            m1id = this.milestones.findIndex(e=>e===id1);
-            m2id = this.milestones.findIndex(e=>e===id2);
+            m1id = id1.getId();
+            m2id = id2.getId();
         } else {
             m1id = this.findMilestoneIDByName(id1);
             m2id = this.findMilestoneIDByName(id2);
-            if(m1id<0 || m2id<0) {
+            if(m1id===null || m2id===null) {
                 return;
             }
         }
 
         let linkId = null;
-        if((m1id != undefined) && (m2id != undefined)) {
+        if((m1id != null) && (m2id != null) && (m1id !== m2id)) {
             const points = Model.calculateArrowPosition(this.getMilestoneById(m1id),this.getMilestoneById(m2id));
             const link = new Link(m1id, m2id, taskLength, points);
             this.links.push(link);
             this.canvasLayer.add(link.getImg());
             linkId = link.getId();
-            this.milestones[m1id].addLinkWhereIAmSource(linkId);
-            this.milestones[m2id].addLinkWhereIAmDestination(linkId);
+            this.getMilestoneById(m1id).addLinkWhereIAmSource(linkId);
+            this.getMilestoneById(m2id).addLinkWhereIAmDestination(linkId);
         }
 
         return linkId;
@@ -152,8 +163,8 @@ class Model {
         if(linkObj !== null) {
             const srcMilestone = linkObj.getSourceMilestoneId();
             const dstMilestone = linkObj.getDestinationMilestoneId();
-            this.milestones[srcMilestone].removeLink(linkObj.getId());
-            this.milestones[dstMilestone].removeLink(linkObj.getId());
+            this.getMilestoneById(srcMilestone).removeLink(linkObj.getId());
+            this.getMilestoneById(dstMilestone).removeLink(linkObj.getId());
             linkObj.destroy();
             const idx = this.links.indexOf(linkObj);
             this.links.splice(idx, 1);
@@ -168,7 +179,7 @@ class Model {
             for(let id of links) {
                 this.removeLink(id);
             }
-            this.milestones[idx] = null;
+            this.milestones.splice(idx,1);
         }
         m.destroy();
     }

@@ -1,7 +1,10 @@
 const Konva = require('konva');
 
 class Milestone {
+    static _id = 0;
+
     constructor(x,y,name,description,model) {
+        this.id = Milestone._id++;
         this.name = name;
         this.description = description;
         this.sourceLinks = new Array();
@@ -58,6 +61,10 @@ class Milestone {
             txtElement.text(this.name);
             txtElement.offsetX(txtElement.width() / 2);
         }
+    }
+
+    getId() {
+        return this.id;
     }
 
     getImg() {

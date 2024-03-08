@@ -11,6 +11,7 @@ export default function suite() {
         const layerMock = {
             add: (x) => {}
         }
+        Milestone._id = 0;
         this.model = new Model(layerMock);
     });
 
@@ -52,7 +53,7 @@ export default function suite() {
     describe('Moving milestone', function() {
         it('onDrag() function updates source link arrows', function() {
             this.model.addMilestone(10, 10, "m");
-            this.model.addLink(0,1,10);
+            this.model.addLink(this.model.rootId,this.model.findMilestoneIDByName("m"),10);
             const m = this.model.getRoot();
             const link = this.model.links[0];
             const setPositionSpy = sinon.spy(link, "setPosition");

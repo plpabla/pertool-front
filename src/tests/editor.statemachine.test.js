@@ -132,11 +132,6 @@ export default function suite() {
             expect(this.e.state.getFocusedEl()).equal(null);
         })
 
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         it('when state is created, keypress listener is assgined to it', function() {
             this.skip("To do - I have no energy to do it now ;(");
             this.e.state = new PointerState(this.e);
@@ -309,8 +304,8 @@ export default function suite() {
             this.e.state = new PointerState(this.e);
             const link = createLink(
                 this.e,
-                createMilestone(this.e, 10, 20, "test"), 
-                createMilestone(this.e, 10, 20, "test"),
+                createMilestone(this.e, 10, 20, "test1"), 
+                createMilestone(this.e, 10, 20, "test2"),
                 5);
 
             this.e.state = this.e.state.onClick(createClickedObject("link-element", link));
