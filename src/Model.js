@@ -19,11 +19,7 @@ class Model {
         obj.milestones = [];
         obj.links = [];
         milestones.forEach(m=>{
-            if(m !== null) {
-                obj.milestones.push(Milestone.serialize(m))
-            } else {
-                obj.milestones.push(null);
-            }
+            obj.milestones.push(Milestone.serialize(m))
         });
         links.forEach(l=>{
             obj.links.push(Link.serialize(l))
@@ -44,11 +40,7 @@ class Model {
         const milestones = [];
         const links = [];
         deserialized.milestones.forEach(element => {
-            if(element !== null) {
-                milestones.push(Milestone.deserialize(element, this));
-            } else {
-                milestones.push(null);
-            }
+            milestones.push(Milestone.deserialize(element, this));
         });
         deserialized.links.forEach(element => {
             links.push(Link.deserialize(element));
