@@ -166,17 +166,19 @@ class Milestone {
         obj.pos = obj.getPos();
         const img = obj._img;
         delete obj._img;
+        const parentModel = obj.parentModel;
+        delete obj.parentModel;
         const str = JSON.stringify(obj);
 
         // restore object state
         delete obj.pos;
         obj._img = img;
+        obj.parentModel = parentModel;
         
         return str;
     }
 
     static deserialize(str, parentModel) {
-        // console.log(`deserialization of: ${str}`);
         const deserialized_data = JSON.parse(str);
         const deserialized = Object.create(Milestone.prototype, Object.getOwnPropertyDescriptors(deserialized_data));
 

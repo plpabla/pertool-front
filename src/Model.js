@@ -13,16 +13,19 @@ class Model {
     static serialize(obj) {
         const milestones = obj.milestones;
         const links = obj.links;
-        const state = {"Link._id": Link._id};
+        const canvasLayer = obj.canvasLayer;
+        delete obj.canvasLayer;
+
+        const state = {"Link._id": Link._id, "Milestone._id": Milestone._id};
         obj.state = state;
         
         obj.milestones = [];
         obj.links = [];
         milestones.forEach(m=>{
-            obj.milestones.push(Milestone.serialize(m))
+            obj.milestones.push(Milestone.serialize(m));
         });
         links.forEach(l=>{
-            obj.links.push(Link.serialize(l))
+            obj.links.push(Link.serialize(l));
         });
 
         const str = JSON.stringify(obj);
@@ -30,6 +33,7 @@ class Model {
         // restore original elements
         obj.milestones = milestones;
         obj.links = links;
+        obj.canvasLayer = canvasLayer;
         return str;
     }
 
@@ -51,6 +55,7 @@ class Model {
         deserialized.canvasLayer = canvasLayer;
 
         Link._id = deserialized.state["Link._id"];
+        Milestone._id = deserialized.state["Milestone._id"];
         return deserialized;
     }
 
