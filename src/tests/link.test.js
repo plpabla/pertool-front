@@ -5,7 +5,8 @@ import Milestone from '../Milestone.js';
 import Link from '../Link.js';
 
 export default function suite() {
-    before(function() {
+    beforeEach(function() {
+        Link._id = 0;
         this.l = new Link(0, 1, 0, [10, 20, 100, 100]);
     })
 
@@ -15,6 +16,16 @@ export default function suite() {
 
     it('contains correct destination milestone link ID', function() {
         expect(this.l.getDestinationMilestoneId()).to.equal(1);
+    })
+
+    it('first created link has id=0', function() {
+        expect(this.l.getId()).to.equal(0);
+    })
+
+    it('second created link has id=1', function() {
+        const l2 = new Link(0, 1, 0, [10, 20, 100, 100]);
+
+        expect(l2.getId()).to.equal(1);
     })
 
     it('can get image object', function() {

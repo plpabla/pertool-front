@@ -1,7 +1,9 @@
 const Konva = require('konva');
 
 class Link {
+    static _id = 0;
     constructor(sourceId, destId, taskLength, points) {
+        this.id = Link._id++;
         this.sourceId = sourceId;
         this.destId = destId;
         this.points = points;
@@ -16,6 +18,10 @@ class Link {
 
     getDestinationMilestoneId() {
         return this.destId;
+    }
+
+    getId() {
+        return this.id;
     }
 
     getTaskLength() {

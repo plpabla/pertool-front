@@ -4,7 +4,8 @@ const expect = chai.expect;
 import Milestone from '../Milestone.js';
 
 export default function suite() {
-    before(function() {
+    beforeEach(function() {
+        Milestone._id = 0;
         this.m = new Milestone(0, 0, "custom id", "custom descr");
     });
 
@@ -28,4 +29,14 @@ export default function suite() {
     it('has image', function() {
         expect(this.m.getImg()).to.be.not.null;
     });
+
+    it('has id', function() {
+        expect(this.m.getId()).to.equal(0);
+    })
+
+    it('second created milestone has bigger id', function() {
+        const m2 = new Milestone(0, 0, "custom id", "custom descr");
+
+        expect(m2.getId()).greaterThan(this.m.getId());
+    })
 };
