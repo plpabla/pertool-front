@@ -32,6 +32,8 @@ window.onload = function() {
     // adapt the stage on any window resize
     window.addEventListener('resize', fitStageIntoParentContainer);
 
+    document.getElementById("btn-save").addEventListener("click", saveModel);
+    document.getElementById("btn-load").addEventListener("click", loadModel);
     document.getElementById("btn-export").addEventListener("click", exportModel);
     document.getElementById("btn-import").addEventListener("click", importModel);
 };
@@ -61,3 +63,10 @@ function importModel(e) {
     console.log("!!eew"); 
 }
 
+function saveModel(e) {
+    // TODO
+}
+
+function loadModel(e) {
+    // TODO
+}
