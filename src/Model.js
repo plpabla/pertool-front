@@ -3,11 +3,15 @@ import Link from './Link.js';
 
 class Model {
     constructor(canvasLayer) {
+        this.createRoot();
+        this.links = [];
+        this.canvasLayer = canvasLayer;
+    }
+
+    createRoot() {
         const root = new Milestone(200, 300, "0", "", this);
         this.milestones = [root];
         this.rootId = root.getId();
-        this.links = [];
-        this.canvasLayer = canvasLayer;
     }
 
     static serialize(obj) {

@@ -1,3 +1,5 @@
+import Milestone from './Milestone';
+import Link from './Link';
 import Model from './Model';
 import Toolbox from './Toolbox';
 import PointerState from './states/PointerState';
@@ -49,6 +51,16 @@ class Editor {
         const pointer = {target: {attrs: {name: "pointer"}}};
         this.state = this.state.onClick(pointer);
         this.toolbox.select("pointer");
+
+        const milestones = [...this.model.milestones];
+        for(const m of milestones) {
+            this.model.removeMilestone(m);
+        }
+
+        Milestone._id = 1;
+        Link._id = 0;
+        this.model.createRoot();
+        this.render();
     }
 }
 
