@@ -44,6 +44,12 @@ class Editor {
         const m = this.model.getMilestoneById(id);
         this.modelLayer.add(m.getImg());
     }
+
+    clear() {
+        const pointer = {target: {attrs: {name: "pointer"}}};
+        this.state = this.state.onClick(pointer);
+        this.toolbox.select("pointer");
+    }
 }
 
 export default Editor;

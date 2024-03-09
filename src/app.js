@@ -36,6 +36,7 @@ window.onload = function() {
     document.getElementById("btn-load").addEventListener("click", loadModel);
     document.getElementById("btn-export").addEventListener("click", exportModel);
     document.getElementById("btn-import").addEventListener("click", importModel);
+    document.getElementById("btn-clear").addEventListener("click", clearModel);
 };
 
 
@@ -54,6 +55,10 @@ function fitStageIntoParentContainer() {
     stage.scale({ x: scale, y: scale });
 }
 
+function clearModel(e) {
+    editor.clear();
+}
+
 function exportModel(e) {
     const serialized = Model.serialize(editor.model);
     console.log(serialized);
@@ -64,7 +69,8 @@ function importModel(e) {
 }
 
 function saveModel(e) {
-    // TODO
+    const serialized = Model.serialize(editor.model);
+    localStorage.setItem("model", serialized);
 }
 
 function loadModel(e) {
