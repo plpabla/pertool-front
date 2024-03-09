@@ -74,5 +74,7 @@ function saveModel(e) {
 }
 
 function loadModel(e) {
-    // TODO
+    editor.clear();
+    const serialized = localStorage.getItem("model");
+    console.log(Model.deserialize(serialized));
 }
