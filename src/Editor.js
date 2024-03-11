@@ -32,13 +32,12 @@ class Editor {
     }
 
     render() {
-        // Note: Right now it is used only to draw intitial milestone
-        // later we will use it to render full diagram after loading it
-        this.model.milestones.forEach(m => this.drawMilestone(m));
+        this.model.milestones.forEach(m => this._draw(m));
+        this.model.links.forEach(l => this._draw(l));
     }
 
-    drawMilestone(m) {
-        this.modelLayer.add(m.getImg());
+    _draw(el) {
+        this.modelLayer.add(el.getImg());
     }
 
     addMilestone(x, y, name, description="") {
@@ -47,7 +46,7 @@ class Editor {
         this.modelLayer.add(m.getImg());
     }
 
-    clear() {
+    clear(createRoot=true) {
         const pointer = {target: {attrs: {name: "pointer"}}};
         this.state = this.state.onClick(pointer);
         this.toolbox.select("pointer");
@@ -57,9 +56,18 @@ class Editor {
             this.model.removeMilestone(m);
         }
 
-        Milestone._id = 1;
+        Milestone._id = 0;
         Link._id = 0;
-        this.model.createRoot();
+        if(createRoot) {
+            this.model.createRoot();
+        }
+        this.render();
+    }
+
+    load(model) {
+        console.log(model);
+        this.model = model;
+        this.model.canvasLayer = this.modelLayer;
         this.render();
     }
 }

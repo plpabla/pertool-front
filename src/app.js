@@ -69,12 +69,13 @@ function importModel(e) {
 }
 
 function saveModel(e) {
+    console.log(editor.model);
     const serialized = Model.serialize(editor.model);
     localStorage.setItem("model", serialized);
 }
 
 function loadModel(e) {
-    editor.clear();
+    editor.clear(false);
     const serialized = localStorage.getItem("model");
-    console.log(Model.deserialize(serialized));
+    editor.load(Model.deserialize(serialized));
 }
