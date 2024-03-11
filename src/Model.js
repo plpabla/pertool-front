@@ -48,7 +48,7 @@ class Model {
         const milestones = [];
         const links = [];
         deserialized.milestones.forEach(element => {
-            milestones.push(Milestone.deserialize(element, this));
+            milestones.push(Milestone.deserialize(element, deserialized));
         });
         deserialized.links.forEach(element => {
             links.push(Link.deserialize(element));

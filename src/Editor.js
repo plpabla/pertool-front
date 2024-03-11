@@ -64,10 +64,12 @@ class Editor {
         this.render();
     }
 
-    load(model) {
-        console.log(model);
-        this.model = model;
+    load(modelSerialized) {
+        // this.model = new Model(this.modelLayer);
+        this.model = Model.deserialize(modelSerialized, this.modelLayer);
+        console.log(this.modelLayer);
         this.model.canvasLayer = this.modelLayer;
+        console.log(this.model);
         this.render();
     }
 }

@@ -77,5 +77,5 @@ function saveModel(e) {
 function loadModel(e) {
     editor.clear(false);
     const serialized = localStorage.getItem("model");
-    editor.load(Model.deserialize(serialized));
+    editor.load(serialized);
 }
