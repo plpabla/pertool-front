@@ -26,3 +26,11 @@ jobs:
       run: |
         npm install
         npx webpack
+
+    - name: Save
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist js
+        path: |
+          dist/**/*.js
+
