@@ -69,7 +69,6 @@ function importModel(e) {
 }
 
 function saveModel(e) {
-    console.log(">>> Save model", editor.model);
     const serialized = Model.serialize(editor.model);
     localStorage.setItem("model", serialized);
 }
