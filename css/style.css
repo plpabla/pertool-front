@@ -15,6 +15,12 @@ body {
     border-color: #03483a;
 }
 
+.disabled {
+    background-color: #777b7a !important;
+    border-color: #000000 !important;
+    box-shadow: none;
+}
+
 .btn-primary:hover {
     background-color: #07ab88;
     transition-duration: 0.4s;
