@@ -13,6 +13,7 @@ import toolboxCreateTest from './tests/toolbox.create.test.js';
 import editorCreateTest from './tests/editor.create.test.js';
 import editorRenderTest from './tests/editor.render.test.js';
 import editorSMTest from './tests/editor.statemachine.test.js';
+import editorClearTest from './tests/editor.clear.test.js';
 import inputBoxTest from './tests/inputbox.test.js';
 
 describe('Milestone object', function(){
@@ -49,4 +50,5 @@ describe('Editor', function() {
     describe('creation', editorCreateTest.bind(this));
     describe('renderintg', editorRenderTest.bind(this));
     describe('state machine', editorSMTest.bind(this));
+    describe('clearing model', editorClearTest.bind(this));
 })

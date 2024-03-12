@@ -3,11 +3,15 @@ import Link from './Link.js';
 
 class Model {
     constructor(canvasLayer) {
+        this.createRoot();
+        this.links = [];
+        this.canvasLayer = canvasLayer;
+    }
+
+    createRoot() {
         const root = new Milestone(200, 300, "0", "", this);
         this.milestones = [root];
         this.rootId = root.getId();
-        this.links = [];
-        this.canvasLayer = canvasLayer;
     }
 
     static serialize(obj) {
@@ -44,7 +48,7 @@ class Model {
         const milestones = [];
         const links = [];
         deserialized.milestones.forEach(element => {
-            milestones.push(Milestone.deserialize(element, this));
+            milestones.push(Milestone.deserialize(element, deserialized));
         });
         deserialized.links.forEach(element => {
             links.push(Link.deserialize(element));

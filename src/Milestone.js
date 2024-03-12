@@ -11,7 +11,13 @@ class Milestone {
         this.destinationLinks = new Array();
         this._img = Milestone.createImg(x, y, name, description, this);
         this.parentModel = model;
-        this._img.on('dragmove', () => this.parentModel.onDrag(this));
+        this._createCallbackOnMove();
+    }
+
+    _createCallbackOnMove() {
+        this._img.on('dragmove', () => {
+            this.parentModel.onDrag(this);
+        });
     }
 
     addLinkWhereIAmDestination(l) {
@@ -179,15 +185,18 @@ class Milestone {
     }
 
     static deserialize(str, parentModel) {
-        const deserialized_data = JSON.parse(str);
-        const deserialized = Object.create(Milestone.prototype, Object.getOwnPropertyDescriptors(deserialized_data));
+        const deserialized = JSON.parse(str);
 
-        // recreate image
+        // Create a new milestone
         const pos = deserialized.pos;
-        delete deserialized.pos;
-        deserialized._img = Milestone.createImg(pos[0],pos[1],deserialized.name,deserialized.description);
-        deserialized.parentModel = parentModel;
-        return deserialized;
+        const m = new Milestone(pos[0], pos[1],deserialized.name, deserialized.description, parentModel);
+        m.id = deserialized.id;
+        m.sourceLinks = [...deserialized.sourceLinks];
+        m.destinationLinks = [...deserialized.destinationLinks];
+        m._img = Milestone.createImg(pos[0],pos[1],deserialized.name,deserialized.description, m);
+        m._createCallbackOnMove();
+
+        return m;
     }
 
     static getFormItems() {

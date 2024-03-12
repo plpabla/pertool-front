@@ -32,8 +32,11 @@ window.onload = function() {
     // adapt the stage on any window resize
     window.addEventListener('resize', fitStageIntoParentContainer);
 
+    document.getElementById("btn-save").addEventListener("click", saveModel);
+    document.getElementById("btn-load").addEventListener("click", loadModel);
     document.getElementById("btn-export").addEventListener("click", exportModel);
     document.getElementById("btn-import").addEventListener("click", importModel);
+    document.getElementById("btn-clear").addEventListener("click", clearModel);
 };
 
 
@@ -52,6 +55,10 @@ function fitStageIntoParentContainer() {
     stage.scale({ x: scale, y: scale });
 }
 
+function clearModel(e) {
+    editor.clear();
+}
+
 function exportModel(e) {
     const serialized = Model.serialize(editor.model);
     console.log(serialized);
@@ -61,3 +68,13 @@ function importModel(e) {
     console.log("!!eew"); 
 }
 
+function saveModel(e) {
+    const serialized = Model.serialize(editor.model);
+    localStorage.setItem("model", serialized);
+}
+
+function loadModel(e) {
+    editor.clear(false);
+    const serialized = localStorage.getItem("model");
+    editor.load(serialized);
+}
