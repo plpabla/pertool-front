@@ -194,6 +194,7 @@ class Milestone {
         m.sourceLinks = [...deserialized.sourceLinks];
         m.destinationLinks = [...deserialized.destinationLinks];
         m._img = Milestone.createImg(pos[0],pos[1],deserialized.name,deserialized.description, m);
+        m._createCallbackOnMove();
 
         return m;
     }
