@@ -219,7 +219,7 @@ class Link {
         const deserialized_data = JSON.parse(str);
         const deserialized = Object.create(Link.prototype, Object.getOwnPropertyDescriptors(deserialized_data));
 
-        deserialized._img = Link.createImg(deserialized.points, deserialized.taskLength);
+        deserialized._img = Link.createImg(deserialized.points, deserialized.taskLength, deserialized);
         deserialized._updateDash();
         return deserialized;
     }

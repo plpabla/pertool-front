@@ -65,11 +65,9 @@ class Editor {
     }
 
     load(modelSerialized) {
-        // this.model = new Model(this.modelLayer);
         this.model = Model.deserialize(modelSerialized, this.modelLayer);
-        console.log(this.modelLayer);
+        console.log(">>> Load", this.model);
         this.model.canvasLayer = this.modelLayer;
-        console.log(this.model);
         this.render();
     }
 }

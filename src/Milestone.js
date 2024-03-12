@@ -185,18 +185,18 @@ class Milestone {
     }
 
     static deserialize(str, parentModel) {
-        const deserialized_data = JSON.parse(str);
-        const deserialized = Object.create(Milestone.prototype, Object.getOwnPropertyDescriptors(deserialized_data));
+        const deserialized = JSON.parse(str);
 
-        // recreate image
+        // Create a new milestone
         const pos = deserialized.pos;
-        delete deserialized.pos;
-        deserialized._img = Milestone.createImg(pos[0],pos[1],deserialized.name,deserialized.description);
-        deserialized.parentModel = parentModel;
-        deserialized._createCallbackOnMove();
-        return deserialized;
-    }
+        const m = new Milestone(pos[0], pos[1],deserialized.name, deserialized.description, parentModel);
+        m.id = deserialized.id;
+        m.sourceLinks = [...deserialized.sourceLinks];
+        m.destinationLinks = [...deserialized.destinationLinks];
+        m._img = Milestone.createImg(pos[0],pos[1],deserialized.name,deserialized.description, m);
 
+        return m;
+    }
 
     static getFormItems() {
         return [{
