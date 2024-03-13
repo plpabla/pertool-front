@@ -169,31 +169,39 @@ class Milestone {
     }
 
     static serialize(obj) {
-        obj.pos = obj.getPos();
-        const img = obj._img;
-        delete obj._img;
-        const parentModel = obj.parentModel;
-        delete obj.parentModel;
-        const str = JSON.stringify(obj);
+        const serializeObj = {
+            position: obj.getPos(),
+            id: obj.id,
+            name: obj.name,
+            description: obj.description,
+            sourceLinks: obj.sourceLinks,
+            destinationLinks: obj.destinationLinks
+        }
 
-        // restore object state
-        delete obj.pos;
-        obj._img = img;
-        obj.parentModel = parentModel;
+        const str = JSON.stringify(serializeObj);
         
         return str;
     }
 
     static deserialize(str, parentModel) {
-        const deserialized = JSON.parse(str);
+        const deserialized_data = JSON.parse(str);
 
         // Create a new milestone
-        const pos = deserialized.pos;
-        const m = new Milestone(pos[0], pos[1],deserialized.name, deserialized.description, parentModel);
-        m.id = deserialized.id;
-        m.sourceLinks = [...deserialized.sourceLinks];
-        m.destinationLinks = [...deserialized.destinationLinks];
-        m._img = Milestone.createImg(pos[0],pos[1],deserialized.name,deserialized.description, m);
+        const m = new Milestone(
+            deserialized_data.position[0], 
+            deserialized_data.position[1],
+            deserialized_data.name, 
+            deserialized_data.description, 
+            parentModel);
+        m.id = deserialized_data.id;
+        m.sourceLinks = [...deserialized_data.sourceLinks];
+        m.destinationLinks = [...deserialized_data.destinationLinks];
+        m._img = Milestone.createImg(
+            deserialized_data.position[0], 
+            deserialized_data.position[1],
+            deserialized_data.name, 
+            deserialized_data.description, 
+            m);
         m._createCallbackOnMove();
 
         return m;

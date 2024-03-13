@@ -207,18 +207,26 @@ class Link {
     }
 
     static serialize(obj) {
-        const img = obj._img;
-        delete obj._img;
-        const str = JSON.stringify(obj);
-        // restore after serialization
-        obj._img = img;
+        const serializeObj = {
+            id: obj.id,
+            sourceId: obj.sourceId,
+            destId: obj.destId,
+            points: obj.points,
+            taskLength: obj.taskLength
+        }
+        const str = JSON.stringify(serializeObj);
+
         return str;
     }
 
     static deserialize(str) {
         const deserialized_data = JSON.parse(str);
-        const deserialized = Object.create(Link.prototype, Object.getOwnPropertyDescriptors(deserialized_data));
-
+        const deserialized = new Link(
+            deserialized_data.sourceId, 
+            deserialized_data.destId, 
+            deserialized_data.taskLength, 
+            deserialized_data.points);
+        deserialized.id = deserialized_data.id;
         deserialized._img = Link.createImg(deserialized.points, deserialized.taskLength, deserialized);
         deserialized._updateDash();
         return deserialized;
