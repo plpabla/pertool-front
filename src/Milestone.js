@@ -15,27 +15,8 @@ class Milestone {
     }
 
     _createCallbackOnMove() {
-        this._img.on('mousedown', (evt) => {
-            // Get the stage using the getStage() method
-            const stage = this._img.getStage();
-          
-            // Ensure that the stage is available
-            if (stage) { 
-              const pos = stage.getPointerPosition(); 
-              this.currentDraggedChild = this._img.getAllIntersections(pos)[0];
-            }
-          });
-
-        this._img.on('dragmove', (evt) => {
-            const txtElement = this._img.findOne(".milestone-description-field");
-
-            if(this.currentDraggedChild === txtElement) {
-                this._img.draggable(false);
-                console.log(">>> nie ciągaj txt!");
-                this._img.draggable(true);
-            } else {
-                this.parentModel.onDrag(this);
-            }
+        this._img.on('dragmove', (e) => {
+            this.parentModel.onDrag(this);
         });
     }
 
@@ -182,6 +163,7 @@ class Milestone {
         // Center
         txtDescr.offsetX(txtDescr.width() / 2);
         txtDescr.addName("milestone-description-field");
+        txtDescr.draggable(true);
         img.add(txtDescr);
 
         return img;
