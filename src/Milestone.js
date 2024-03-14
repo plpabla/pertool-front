@@ -15,7 +15,7 @@ class Milestone {
     }
 
     _createCallbackOnMove() {
-        this._img.on('dragmove', () => {
+        this._img.on('dragmove', (e) => {
             this.parentModel.onDrag(this);
         });
     }
@@ -81,6 +81,18 @@ class Milestone {
         // const pos = this._img.absolutePosition();
         const pos = this._img.position();
         return [pos.x, pos.y];
+    }
+
+    getDescriptionPosition() {
+        const txtElement = this._img.findOne(".milestone-description-field");
+        const pos = txtElement.position();
+        return [pos.x, pos.y];
+    }
+
+    setDescriptionPosition(pos) {
+        const txtElement = this._img.findOne(".milestone-description-field");
+        txtElement.x(pos[0]);
+        txtElement.y(pos[1]);
     }
 
     focus(enable) {
@@ -163,6 +175,7 @@ class Milestone {
         // Center
         txtDescr.offsetX(txtDescr.width() / 2);
         txtDescr.addName("milestone-description-field");
+        txtDescr.draggable(true);
         img.add(txtDescr);
 
         return img;
@@ -171,6 +184,7 @@ class Milestone {
     static serialize(obj) {
         const serializeObj = {
             position: obj.getPos(),
+            descriptionPos: obj.getDescriptionPosition(),
             id: obj.id,
             name: obj.name,
             description: obj.description,
@@ -202,6 +216,7 @@ class Milestone {
             deserialized_data.name, 
             deserialized_data.description, 
             m);
+        m.setDescriptionPosition(deserialized_data.descriptionPos);
         m._createCallbackOnMove();
 
         return m;
