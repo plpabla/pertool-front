@@ -83,6 +83,18 @@ class Milestone {
         return [pos.x, pos.y];
     }
 
+    getDescriptionPosition() {
+        const txtElement = this._img.findOne(".milestone-description-field");
+        const pos = txtElement.position();
+        return [pos.x, pos.y];
+    }
+
+    setDescriptionPosition(pos) {
+        const txtElement = this._img.findOne(".milestone-description-field");
+        txtElement.x(pos[0]);
+        txtElement.y(pos[1]);
+    }
+
     focus(enable) {
         const c = this._getElement("Circle");
         c.strokeWidth(enable ? Milestone._param.focusedWidth : Milestone._param.width);
@@ -172,6 +184,7 @@ class Milestone {
     static serialize(obj) {
         const serializeObj = {
             position: obj.getPos(),
+            descriptionPos: obj.getDescriptionPosition(),
             id: obj.id,
             name: obj.name,
             description: obj.description,
@@ -203,6 +216,7 @@ class Milestone {
             deserialized_data.name, 
             deserialized_data.description, 
             m);
+        m.setDescriptionPosition(deserialized_data.descriptionPos);
         m._createCallbackOnMove();
 
         return m;
