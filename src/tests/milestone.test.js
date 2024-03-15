@@ -34,6 +34,57 @@ export default function suite() {
         expect(this.m.getId()).to.equal(0);
     })
 
+    it('has not set tmin when created', function() {
+        expect(this.m.getTmin()).to.equal(null);
+    });
+
+    it('I can set tmin', function() {
+        this.m.setTmin(0);
+
+        expect(this.m.getTmin()).to.equal(0);
+    });
+
+    it('I can set tmin passed as a string', function() {
+        this.m.setTmin("5.2");
+
+        expect(this.m.getTmin()).to.equal(5.2);
+    });
+
+    it('Setting tmin updates graphical element', function() {
+        this.m.setTmin("5.2");
+
+        const el = this.m._getGraphicalElement("milestone-tmin-field");
+        expect(el.text()).to.equal("5.2");
+    });
+
+    it('I cannot set non-numeric tmin', function() {
+        this.m.setTmin("halo");
+
+        expect(this.m.getTmin()).to.equal(null);
+    });
+
+    it('Setting tmax updates graphical element', function() {
+        this.m.setTmax("1.2");
+
+        const el = this.m._getGraphicalElement("milestone-tmax-field");
+        expect(el.text()).to.equal("1.2");
+    });
+
+    it('Setting tbuff updates graphical element', function() {
+        this.m.setTbuffer("0.5");
+
+        const el = this.m._getGraphicalElement("milestone-tbuff-field");
+        expect(el.text()).to.equal("0.5");
+    });
+
+    it('has not set tmax when created', function() {
+        expect(this.m.getTmax()).to.equal(null);
+    });
+
+    it('has not set tbuffer when created', function() {
+        expect(this.m.getTbuffer()).to.equal(null);
+    });
+
     it('second created milestone has bigger id', function() {
         const m2 = new Milestone(0, 0, "custom id", "custom descr");
 
