@@ -118,6 +118,18 @@ class Milestone {
         }
     }
 
+    clearTimes() {
+        this.#tmax = null;
+        this.#tmin = null;
+        this.#tbuffer = null;
+        const tmaxTxt = this._getGraphicalElement("milestone-tmin-field");
+        tmaxTxt.text("");
+        const tminTxt = this._getGraphicalElement("milestone-tmax-field");
+        tminTxt.text("");
+        const tbuffTxt = this._getGraphicalElement("milestone-tbuff-field");
+        tbuffTxt.text("");
+    }
+
     getImg() {
         return this._img;
     }

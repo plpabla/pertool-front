@@ -70,6 +70,33 @@ export default function suite() {
         expect(el.text()).to.equal("1.2");
     });
 
+    it('clear clears all timers', function() {
+        this.m.setTmin("1.2");
+        this.m.setTmax("1.2");
+        this.m.setTbuffer("1.2");
+
+        this.m.clearTimes();
+
+        expect(this.m.getTmin()).to.equal(null);
+        expect(this.m.getTmax()).to.equal(null);
+        expect(this.m.getTbuffer()).to.equal(null);
+    });
+
+    it('clear clears all timer graphical elements', function() {
+        this.m.setTmin("1.2");
+        this.m.setTmax("1.2");
+        this.m.setTbuffer("1.2");
+
+        this.m.clearTimes();
+
+        const tmax = this.m._getGraphicalElement("milestone-tmax-field");
+        expect(tmax.text()).to.equal("");
+        const tmin = this.m._getGraphicalElement("milestone-tmin-field");
+        expect(tmin.text()).to.equal("");
+        const tb = this.m._getGraphicalElement("milestone-tbuff-field");
+        expect(tb.text()).to.equal("");
+    });
+
     it('Setting tbuff updates graphical element', function() {
         this.m.setTbuffer("0.5");
 
