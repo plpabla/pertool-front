@@ -148,6 +148,39 @@ class Milestone {
         txt.addName("milestone-name-field");
         // Center
         txt.offsetX(txt.width() / 2);
+
+        const tminTxt = new Konva.Text({
+            x: -0.9*r,
+            fontSize: 14,
+            y: 0,
+            text: "50",
+            name: Milestone._param.name,
+        })
+        tminTxt.addName("milestone-tmin-field");
+        tminTxt.offsetY(tminTxt.height() / 2);
+        tminTxt.text("");
+
+        const tmaxTxt = new Konva.Text({
+            x: 0.3*r,
+            fontSize: 14,
+            y: 0,
+            text: "50",
+            name: Milestone._param.name,
+        })
+        tmaxTxt.addName("milestone-tmax-field");
+        tmaxTxt.offsetY(tmaxTxt.height() / 2);
+        tmaxTxt.text("");
+
+        const tbuffTxt = new Konva.Text({
+            x: 0,
+            fontSize: 14,
+            y: 0.4*r,
+            text: "50",
+            name: Milestone._param.name,
+        })
+        tbuffTxt.addName("milestone-tbuff-field");
+        tbuffTxt.offsetX(tbuffTxt.width() / 2);
+        tbuffTxt.text("");
     
         const img = new Konva.Group({
             x: x,
@@ -160,6 +193,9 @@ class Milestone {
         img.add(l1);
         img.add(l2);
         img.add(txt);
+        img.add(tminTxt);
+        img.add(tmaxTxt);
+        img.add(tbuffTxt);
 
         if(!description) 
         {
