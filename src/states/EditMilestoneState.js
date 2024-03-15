@@ -12,13 +12,12 @@ class EditMilestoneState extends State {
         const posAbsolute = context.stage.getRelativePointerPosition();
 
         const formItems = Milestone.getFormItems();
-        formItems.find(e=>e.key==="name")["default"] = this._milestone.getName();
         formItems.find(e=>e.key==="text")["default"] = this._milestone.getDescription();
 
         new InputBox(this.context.modelLayer, posOnCanvas, formItems , (data) => {
-            const name = data["name"];
+            const name = milestone.getName();
             const descr = data["text"] || "";
-            if(name) {
+            if(descr) {
                 this._milestone.setName(name);
                 this._milestone.setDescription(descr);
             }

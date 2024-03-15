@@ -223,11 +223,7 @@ class Milestone {
     }
 
     static getFormItems() {
-        return [{
-            label: "Milestone ID",
-            key: "name",
-            default: ""
-        }, {
+        return [ {
             label: "Description",
             key: "text",
             default: "",
