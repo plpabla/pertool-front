@@ -47,6 +47,7 @@ export default function suite() {
         if (objInstance === undefined) {
             objInstance = {
                 getName: function() {return "test"; },
+                getDescription: function() {return "test42"; },
                 img: {
                     attrs: {
                         x: 0,
@@ -325,13 +326,12 @@ export default function suite() {
 
             this.e.state = new EditMilestoneState(this.e, m);
 
-            const nameEl = items.find(i => i['key'] === 'name');
             const valEl = items.find(i => i['key'] === 'text');
-            expect(nameEl['default']).equals("m0");
             expect(valEl['default']).equals("description");
         })
 
         it('when I edit milestone name, it is changed in milestone', function() {
+            this.skip("Not possible anymore");
             const m = createMilestone(this.e, 10, 20, "m0", "description");
             this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
                 callbackFn({
@@ -360,6 +360,7 @@ export default function suite() {
         })
 
         it('when I edit milestone name, it is changed in milestone image text field', function() {
+            this.skip("Not possible anymore");
             const m = createMilestone(this.e, 10, 20, "m0", "description");
             this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
                 callbackFn({
@@ -469,6 +470,9 @@ export default function suite() {
 
         it('When clicked on the canvas and passed a string, a milestone state is reached', function() {
             this.e.state = new MilestoneState(this.e);
+            this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
+                callbackFn({"text": "non-empty description"});
+            });
         
             this.e.state.onClick(createClickedObject(undefined));
 
@@ -497,6 +501,9 @@ export default function suite() {
 
         it('When clicked on the canvas and passed a string, a milestone is added', function() {
             this.e.state = new MilestoneState(this.e);
+            this.InputBoxStub.callsFake(function(layer, pos, items, callbackFn) {
+                callbackFn({"text": "non-empty description"});
+            });
 
             this.e.state.onClick(createClickedObject(undefined));
 
