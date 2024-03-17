@@ -10,6 +10,10 @@ class Model {
 
     createRoot() {
         const root = new Milestone(200, 300, "0", "", this);
+        root.setTmin(0);
+        root.setTmax(0);
+        // root.setTbuffer(100);
+        // root.clearTimes();
         this.milestones = [root];
         this.rootId = root.getId();
     }

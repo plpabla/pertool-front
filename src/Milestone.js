@@ -2,6 +2,9 @@ const Konva = require('konva');
 
 class Milestone {
     static _id = 0;
+    #tmin = null;
+    #tmax = null;
+    #tbuffer = null;
 
     constructor(x,y,name,description,model) {
         this.id = Milestone._id++;
@@ -73,6 +76,60 @@ class Milestone {
         return this.id;
     }
 
+    getTmin() {
+        return this.#tmin;
+    }
+
+    setTmin(t) {
+        const tnum = Number(t);
+        if(Number.isFinite(tnum)) {
+            this.#tmin = tnum;
+            const tminTxt = this._getGraphicalElement("milestone-tmin-field");
+            tminTxt.text(this.#tmin);
+            tminTxt.align();
+        }
+    }
+
+    getTmax() {
+        return this.#tmax;
+    }
+
+    setTmax(t) {
+        const tnum = Number(t);
+        if(Number.isFinite(tnum)) {
+            this.#tmax = tnum;
+            const tmaxTxt = this._getGraphicalElement("milestone-tmax-field");
+            tmaxTxt.text(this.#tmax);
+            tmaxTxt.align();
+        }
+    }
+
+    getTbuffer() {
+        return this.#tbuffer;
+    }
+
+    setTbuffer(t) {
+        const tnum = Number(t);
+        if(Number.isFinite(tnum)) {
+            this.#tbuffer = tnum;
+            const tbuffTxt = this._getGraphicalElement("milestone-tbuff-field");
+            tbuffTxt.text(this.#tbuffer);
+            tbuffTxt.align();
+        }
+    }
+
+    clearTimes() {
+        this.#tmax = null;
+        this.#tmin = null;
+        this.#tbuffer = null;
+        const tmaxTxt = this._getGraphicalElement("milestone-tmin-field");
+        tmaxTxt.text("");
+        const tminTxt = this._getGraphicalElement("milestone-tmax-field");
+        tminTxt.text("");
+        const tbuffTxt = this._getGraphicalElement("milestone-tbuff-field");
+        tbuffTxt.text("");
+    }
+
     getImg() {
         return this._img;
     }
@@ -83,14 +140,18 @@ class Milestone {
         return [pos.x, pos.y];
     }
 
+    _getGraphicalElement(name) {
+        return this._img.findOne("."+name);
+    }
+
     getDescriptionPosition() {
-        const txtElement = this._img.findOne(".milestone-description-field");
+        const txtElement = this._getGraphicalElement("milestone-description-field");
         const pos = txtElement.position();
         return [pos.x, pos.y];
     }
 
     setDescriptionPosition(pos) {
-        const txtElement = this._img.findOne(".milestone-description-field");
+        const txtElement = this._getGraphicalElement("milestone-description-field");
         txtElement.x(pos[0]);
         txtElement.y(pos[1]);
     }
@@ -148,6 +209,51 @@ class Milestone {
         txt.addName("milestone-name-field");
         // Center
         txt.offsetX(txt.width() / 2);
+
+        const tminTxt = new Konva.Text({
+            x: 0,
+            y: 0,
+            fontSize: 14,
+            text: "50",
+            name: Milestone._param.name,
+        })
+        tminTxt.addName("milestone-tmin-field");
+        tminTxt.align = function() {
+            this.offsetX(0.9*r);
+            this.offsetY(this.height() / 2);
+        };
+        tminTxt.align();
+        tminTxt.text("");
+
+        const tmaxTxt = new Konva.Text({
+            x: 0,
+            y: 0,
+            fontSize: 14,
+            text: "50",
+            name: Milestone._param.name,
+        })
+        tmaxTxt.addName("milestone-tmax-field");
+        tmaxTxt.align = function() {
+            this.offsetX(-0.9*r+this.width());
+            this.offsetY(this.height() / 2);
+        };
+        tmaxTxt.align();
+        tmaxTxt.text("");
+
+        const tbuffTxt = new Konva.Text({
+            x: 0,
+            y: 0,
+            fontSize: 14,
+            text: "50",
+            name: Milestone._param.name,
+        })
+        tbuffTxt.addName("milestone-tbuff-field");
+        tbuffTxt.align = function() {
+            this.offsetX(this.width() / 2);
+            this.offsetY(-0.4*r);
+        };
+        tbuffTxt.align();
+        tbuffTxt.text("");
     
         const img = new Konva.Group({
             x: x,
@@ -160,6 +266,9 @@ class Milestone {
         img.add(l1);
         img.add(l2);
         img.add(txt);
+        img.add(tminTxt);
+        img.add(tmaxTxt);
+        img.add(tbuffTxt);
 
         if(!description) 
         {
@@ -189,7 +298,12 @@ class Milestone {
             name: obj.name,
             description: obj.description,
             sourceLinks: obj.sourceLinks,
-            destinationLinks: obj.destinationLinks
+            destinationLinks: obj.destinationLinks,
+            timing: {
+                tmin: obj.getTmin(),
+                tmax: obj.getTmax(),
+                tbuf: obj.getTbuffer()
+            }
         }
 
         const str = JSON.stringify(serializeObj);
@@ -217,17 +331,17 @@ class Milestone {
             deserialized_data.description, 
             m);
         m.setDescriptionPosition(deserialized_data.descriptionPos);
+        const timing = deserialized_data.timing;
+        m.setTmin(timing.tmin);
+        m.setTmax(timing.tmax);
+        m.setTbuffer(timing.tbuf);
         m._createCallbackOnMove();
 
         return m;
     }
 
     static getFormItems() {
-        return [{
-            label: "Milestone ID",
-            key: "name",
-            default: ""
-        }, {
+        return [ {
             label: "Description",
             key: "text",
             default: "",
