@@ -37,6 +37,19 @@ export default function suite() {
         expect(deseiralized.getName()).equals(this.m.getName());
     });
 
+    it('deserialized object containes times (tmin,tmax,tbuff)', function() {
+        this.m.setTmin(5);
+        this.m.setTmax(24);
+        this.m.setTbuffer(19);
+        const serialized = Milestone.serialize(this.m);
+
+        let deseiralized = Milestone.deserialize(serialized);
+
+        expect(deseiralized.getTmin()).equals(this.m.getTmin());
+        expect(deseiralized.getTmax()).equals(this.m.getTmax());
+        expect(deseiralized.getTbuffer()).equals(this.m.getTbuffer());
+    });
+
     it('deserialized object keeps source links', function() {
         const serialized = Milestone.serialize(this.m);
 

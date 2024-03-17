@@ -298,7 +298,12 @@ class Milestone {
             name: obj.name,
             description: obj.description,
             sourceLinks: obj.sourceLinks,
-            destinationLinks: obj.destinationLinks
+            destinationLinks: obj.destinationLinks,
+            timing: {
+                tmin: obj.getTmin(),
+                tmax: obj.getTmax(),
+                tbuf: obj.getTbuffer()
+            }
         }
 
         const str = JSON.stringify(serializeObj);
@@ -326,6 +331,10 @@ class Milestone {
             deserialized_data.description, 
             m);
         m.setDescriptionPosition(deserialized_data.descriptionPos);
+        const timing = deserialized_data.timing;
+        m.setTmin(timing.tmin);
+        m.setTmax(timing.tmax);
+        m.setTbuffer(timing.tbuf);
         m._createCallbackOnMove();
 
         return m;
