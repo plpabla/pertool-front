@@ -81,12 +81,14 @@ class Milestone {
     }
 
     setTmin(t) {
-        const tnum = Number(t);
+        const tnum = t===null ? null : Number(t);
         if(Number.isFinite(tnum)) {
             this.#tmin = tnum;
             const tminTxt = this._getGraphicalElement("milestone-tmin-field");
             tminTxt.text(this.#tmin);
             tminTxt.align();
+        } else {
+            this.#tmin = null;
         }
     }
 
@@ -95,12 +97,14 @@ class Milestone {
     }
 
     setTmax(t) {
-        const tnum = Number(t);
+        const tnum = t===null ? null : Number(t);
         if(Number.isFinite(tnum)) {
             this.#tmax = tnum;
             const tmaxTxt = this._getGraphicalElement("milestone-tmax-field");
             tmaxTxt.text(this.#tmax);
             tmaxTxt.align();
+        } else {
+            this.#tmax = null;
         }
     }
 
@@ -109,12 +113,14 @@ class Milestone {
     }
 
     setTbuffer(t) {
-        const tnum = Number(t);
+        const tnum = t===null ? null : Number(t);
         if(Number.isFinite(tnum)) {
             this.#tbuffer = tnum;
             const tbuffTxt = this._getGraphicalElement("milestone-tbuff-field");
             tbuffTxt.text(this.#tbuffer);
             tbuffTxt.align();
+        } else {
+            this.#tbuffer = null;
         }
     }
 
