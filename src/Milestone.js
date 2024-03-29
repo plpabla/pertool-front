@@ -311,15 +311,10 @@ class Milestone {
                 tbuf: obj.getTbuffer()
             }
         }
-
-        const str = JSON.stringify(serializeObj);
-        
-        return str;
+        return serializeObj;
     }
 
-    static deserialize(str, parentModel) {
-        const deserialized_data = JSON.parse(str);
-
+    static deserialize(deserialized_data, parentModel) {
         // Create a new milestone
         const m = new Milestone(
             deserialized_data.position[0], 

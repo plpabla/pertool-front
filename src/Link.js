@@ -214,13 +214,10 @@ class Link {
             points: obj.points,
             taskLength: obj.taskLength
         }
-        const str = JSON.stringify(serializeObj);
-
-        return str;
+        return serializeObj;
     }
 
-    static deserialize(str) {
-        const deserialized_data = JSON.parse(str);
+    static deserialize(deserialized_data) {
         const deserialized = new Link(
             deserialized_data.sourceId, 
             deserialized_data.destId, 

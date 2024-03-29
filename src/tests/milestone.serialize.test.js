@@ -16,23 +16,23 @@ export default function suite() {
         let serialized;
 
         expect(() => {
-            serialized = Milestone.serialize(this.m);
+            serialized = JSON.stringify(Milestone.serialize(this.m));
         }).to.not.throw();
         expect(serialized).to.be.a.string;
     });
 
     it('can be deserialized into Milestone object', function() {
-        const serialized = Milestone.serialize(this.m);
+        const serialized = JSON.stringify(Milestone.serialize(this.m));
 
-        let deseiralized = Milestone.deserialize(serialized);
+        let deseiralized = Milestone.deserialize(JSON.parse(serialized));
 
-        expect(deseiralized).instanceOf(Milestone);
+        expect(deseiralized).instanceOf(Milestone); 
     });
 
     it('deserialized object keeps its name', function() {
-        const serialized = Milestone.serialize(this.m);
+        const serialized = JSON.stringify(Milestone.serialize(this.m));
 
-        let deseiralized = Milestone.deserialize(serialized);
+        let deseiralized = Milestone.deserialize(JSON.parse(serialized));
 
         expect(deseiralized.getName()).equals(this.m.getName());
     });
@@ -41,9 +41,9 @@ export default function suite() {
         this.m.setTmin(5);
         this.m.setTmax(24);
         this.m.setTbuffer(19);
-        const serialized = Milestone.serialize(this.m);
+        const serialized = JSON.stringify(Milestone.serialize(this.m));
 
-        let deseiralized = Milestone.deserialize(serialized);
+        let deseiralized = Milestone.deserialize(JSON.parse(serialized));
 
         expect(deseiralized.getTmin()).equals(this.m.getTmin());
         expect(deseiralized.getTmax()).equals(this.m.getTmax());
@@ -51,42 +51,42 @@ export default function suite() {
     });
 
     it('deserialized object keeps source links', function() {
-        const serialized = Milestone.serialize(this.m);
+        const serialized = JSON.stringify(Milestone.serialize(this.m));
 
-        let deseiralized = Milestone.deserialize(serialized);
+        let deseiralized = Milestone.deserialize(JSON.parse(serialized));
 
         expect(deseiralized.sourceLinks).eqls([4]);
     });
 
     it('deserialized object keeps destination links', function() {
-        const serialized = Milestone.serialize(this.m);
+        const serialized = JSON.stringify(Milestone.serialize(this.m));
 
-        let deseiralized = Milestone.deserialize(serialized);
+        let deseiralized = Milestone.deserialize(JSON.parse(serialized));
 
         expect(deseiralized.destinationLinks).eqls([10, 20]);
     });
 
     it('deserialized object has no pos field', function() {
-        const serialized = Milestone.serialize(this.m);
+        const serialized = JSON.stringify(Milestone.serialize(this.m));
 
-        let deseiralized = Milestone.deserialize(serialized);
+        let deseiralized = Milestone.deserialize(JSON.parse(serialized));
 
         expect(deseiralized).to.not.have.property('pos');
     });
 
     it('deserialized object have image object', function() {
-        const serialized = Milestone.serialize(this.m);
+        const serialized = JSON.stringify(Milestone.serialize(this.m));
 
-        let deseiralized = Milestone.deserialize(serialized);
+        let deseiralized = Milestone.deserialize(JSON.parse(serialized));
 
         const img = deseiralized.getImg();
         expect(img).instanceOf(Konva.Group);
     });
 
     it('deserialized object image is in correct position', function() {
-        const serialized = Milestone.serialize(this.m);
+        const serialized = JSON.stringify(Milestone.serialize(this.m));
 
-        let deseiralized = Milestone.deserialize(serialized);
+        let deseiralized = Milestone.deserialize(JSON.parse(serialized));
 
         expect(deseiralized.getPos()).eqls([100, 42]);
     });

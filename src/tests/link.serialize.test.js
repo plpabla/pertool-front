@@ -14,50 +14,50 @@ export default function suite() {
         let serialized;
 
         expect(() => {
-            serialized = Link.serialize(this.l);
+            serialized = JSON.stringify(Link.serialize(this.l));
         }).to.not.throw();
         expect(serialized).to.be.a.string;
     });
 
     it('deserialized contains the same milestone IDs', function() {
-        const serialized = Link.serialize(this.l);
+        const serialized = JSON.stringify(Link.serialize(this.l));
 
-        const deserialized = Link.deserialize(serialized);
+        const deserialized = Link.deserialize(JSON.parse(serialized));
 
         expect(deserialized.getSourceMilestoneId()).to.equal(this.l.getSourceMilestoneId());
         expect(deserialized.getDestinationMilestoneId()).to.equal(this.l.getDestinationMilestoneId());
     });
 
     it('deserialized contains task length', function() {
-        const serialized = Link.serialize(this.l);
+        const serialized = JSON.stringify(Link.serialize(this.l));
 
-        const deserialized = Link.deserialize(serialized);
+        const deserialized = Link.deserialize(JSON.parse(serialized));
 
         expect(deserialized.taskLength).to.equal(4.2);
     });
 
     it('deserialized contains link id', function() {
-        const serialized = Link.serialize(this.l);
+        const serialized = JSON.stringify(Link.serialize(this.l));
         const linkId = this.l.getId();
 
-        const deserialized = Link.deserialize(serialized);
+        const deserialized = Link.deserialize(JSON.parse(serialized));
 
         expect(deserialized.getId()).to.equal(linkId);
     });
 
     it('deserialized contains Konva.Group', function() {
-        const serialized = Link.serialize(this.l);
+        const serialized = JSON.stringify(Link.serialize(this.l));
 
-        const deserialized = Link.deserialize(serialized);
+        const deserialized = Link.deserialize(JSON.parse(serialized));
 
         expect(deserialized.getImg()).instanceOf(Konva.Group);
     });
 
     it('deserialized contains the same graphical element properties', function() {
         this.skip("Not needed");
-        const serialized = Link.serialize(this.l);
+        const serialized = JSON.stringify(Link.serialize(this.l));
 
-        const deserialized = Link.deserialize(serialized);
+        const deserialized = Link.deserialize(JSON.parse(serialized));
 
         expect(deserialized.img.attrs).to.eqls(this.l.img.attrs);
     });

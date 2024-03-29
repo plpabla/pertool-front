@@ -65,7 +65,7 @@ function exportModel(e) {
 }
 
 function importModel(e) {
-    console.log("TO DO dododo"); 
+    console.log("TO DO"); 
 }
 
 function saveModel(e) {
