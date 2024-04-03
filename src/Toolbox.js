@@ -157,6 +157,7 @@ class Toolbox {
 
     createImgMilestone() {
         const m = new Milestone(32,32,"","");
+        Milestone._id--; // Do not influence milestones counter in the model itself
         return changeLineColor(m.getImg(), this.param.mainColor);
         
         function changeLineColor(img, color) {
