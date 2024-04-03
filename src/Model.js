@@ -12,10 +12,7 @@ class Model {
         const root = new Milestone(200, 300, "0", "", this);
         root.setTmin(0);
         root.setTmax(0);
-        // root.setTbuffer(100);
-        // root.clearTimes();
         this.milestones = [root];
-        this.rootId = root.getId();
     }
 
     static serialize(obj) {
@@ -27,9 +24,6 @@ class Model {
         serializableObj.state = {"Link._id": Link._id, "Milestone._id": Milestone._id};
         serializableObj.milestones = [];
         serializableObj.links = [];
-
-        const root = obj.getRoot();
-        serializableObj.rootId = root.getId();
 
         milestones.forEach(m=>{
             serializableObj.milestones.push(Milestone.serialize(m));
@@ -76,11 +70,6 @@ class Model {
         const m2 = this.getMilestoneById(link.destId);
         const pos = Model.calculateArrowPosition(m1, m2);
         link.setPosition(...pos);
-    }
-
-
-    getRoot() {
-        return this.milestones.find(m=>m.getId()===this.rootId);
     }
 
     addMilestone(x, y, name, description="") {

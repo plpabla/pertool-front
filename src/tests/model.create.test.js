@@ -16,16 +16,4 @@ export default function suite() {
     it('when created does not contain any link', function() {
         expect(this.model.links).lengthOf(0);
     });
-
-    it('when created has root milestone', function() {
-        expect(this.model.getRoot()).instanceOf(Milestone);
-    });
-
-    it('root milestone has name "0"', function() {
-        expect(this.model.getRoot().getName()).to.equal('0');
-        });
-
-    it('root milestone has empty description', function() {
-        expect(this.model.getRoot().getDescription()).to.equal('');
-    });
 }

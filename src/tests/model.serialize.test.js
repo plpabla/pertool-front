@@ -30,16 +30,6 @@ export default function suite() {
 
         expect(deserialized).instanceOf(Model);
     })
-    
-
-    it('I can access root object in deserialized object', function() {
-        const serialized = Model.serialize(this.model);
-
-        const deserialized = Model.deserialize(serialized);
-        const rootObj = deserialized.getRoot();
-
-        expect(rootObj.getName()).to.equal("0");
-    })
 
     it('Restored milestone has the same properties', function() {
         this.model.addMilestone(0, 0, "m2");

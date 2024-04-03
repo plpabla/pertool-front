@@ -13,7 +13,7 @@ export default function suite() {
     });
 
     it('can add link using id and I get link id >= 0', function() {
-        const id1 = this.model.rootId;
+        const id1 = this.model.milestones[0].id;
         const id2 = this.model.addMilestone(10, 0, "m2");
         const linkid = this.model.addLink(id1, id2);
 
@@ -22,7 +22,7 @@ export default function suite() {
     });
 
     it('can add 2 links using id and second gets link id = n+1', function() {
-        const id1 = this.model.rootId;
+        const id1 = this.model.milestones[0].id;
         const id2 = this.model.addMilestone(10, 0, "m2");
         const linkid0 = this.model.addLink(id1, id2);
         const linkid = this.model.addLink(id1, id2);
@@ -32,8 +32,8 @@ export default function suite() {
     });
 
     it('cannot add link to itself', function() {
-        const id1 = this.model.rootId;
-        const id2 = this.model.rootId;
+        const id1 = 0;
+        const id2 = 0;
         const linkid = this.model.addLink(id1, id2);
 
         expect(linkid).to.equal(null);
@@ -48,7 +48,7 @@ export default function suite() {
     });
 
     it('when link is created, it is added to the source milestone sourceLinks list', function() {
-        const id1 = this.model.rootId;
+        const id1 = this.model.milestones[0].id;
         const id2 = this.model.addMilestone(10, 0, "m2");
 
         const linkId = this.model.addLink(id1, id2);
@@ -58,7 +58,7 @@ export default function suite() {
     });
 
     it('when link is created, it is added to the destination milestone destLinks list', function() {
-        const id1 = this.model.rootId;
+        const id1 = this.model.milestones[0].id;
         const id2 = this.model.addMilestone(10, 0, "m2");
 
         const linkId = this.model.addLink(id1, id2);
@@ -83,7 +83,7 @@ export default function suite() {
     });
 
     it('added link has stored task length', function() {
-        const id1 = this.model.rootId;
+        const id1 = this.model.milestones[0].id;
         const id2 = this.model.addMilestone(10, 0, "m2");
 
         const linkId = this.model.addLink(id1, id2, 4.2);

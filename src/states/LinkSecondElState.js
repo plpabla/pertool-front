@@ -37,7 +37,7 @@ class LinkSecondElState extends State {
         }
         if(State.containsName(clickedItem,  "milestone-element")) {
             const milestone2 = target.parent.attrs.objInstance;
-            if ((this.milestone1 !== milestone2) && (milestone2 != this.context.model.getRoot())) {
+            if (this.milestone1 !== milestone2) {
                 this.pause();
                 return new GetTaskLengthState(this.context, this.milestone1, milestone2, this.linkArrow);
             } else {

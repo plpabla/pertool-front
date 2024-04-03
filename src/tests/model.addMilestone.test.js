@@ -53,8 +53,8 @@ export default function suite() {
     describe('Moving milestone', function() {
         it('onDrag() function updates source link arrows', function() {
             this.model.addMilestone(10, 10, "m");
-            this.model.addLink(this.model.rootId,this.model.findMilestoneIDByName("m"),10);
-            const m = this.model.getRoot();
+            this.model.addLink(0, this.model.findMilestoneIDByName("m"),10);
+            const m = this.model.milestones[0];
             const link = this.model.links[0];
             const setPositionSpy = sinon.spy(link, "setPosition");
 
