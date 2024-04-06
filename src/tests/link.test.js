@@ -22,6 +22,10 @@ export default function suite() {
         expect(this.l.getId()).to.equal(0);
     })
 
+    it('is not on critical path when createted', function() {
+        expect(this.l.onCriticalPath).to.equal(false);
+    });
+
     it('second created link has id=1', function() {
         const l2 = new Link(0, 1, 0, [10, 20, 100, 100]);
 
