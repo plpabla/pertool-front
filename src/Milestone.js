@@ -5,6 +5,7 @@ class Milestone {
     #tmin = null;
     #tmax = null;
     #tbuffer = null;
+    #onCriticalPath = false;
 
     constructor(x,y,name,description,model) {
         this.id = Milestone._id++;
@@ -15,6 +16,19 @@ class Milestone {
         this._img = Milestone.createImg(x, y, name, description, this);
         this.parentModel = model;
         this._createCallbackOnMove();
+    }
+
+    get onCriticalPath() {
+        return this.#onCriticalPath
+    }
+
+    set onCriticalPath(val) {
+        if(this.#onCriticalPath !== val) {
+            if(typeof val === "boolean") {
+                this.#onCriticalPath = val
+                this.#highlightIfOnCriticalPath(val)
+            }
+        }
     }
 
     _createCallbackOnMove() {
@@ -174,12 +188,20 @@ class Milestone {
         return el[0];
     }
 
+    #highlightIfOnCriticalPath(enable) {
+        const c = this._getElement("Circle");
+        c.stroke(enable ? Milestone._param.onCriticalPathColor : Milestone._param.mainColor);
+        c.strokeWidth(enable ? Milestone._param.onCriticalPathWidth : Milestone._param.width);
+    }
+
     static radius = 27;   // as used outside the class
 
     static _param = { "name": "milestone-element",
     "mainColor": "black", 
     "secondaryColor": "#D243F7",
+    "onCriticalPathColor": "#D243F7",
     "width": 2,
+    "onCriticalPathWidth": 3,
     "focusedWidth": 5,
     "radius": Milestone.radius};
 
@@ -305,6 +327,7 @@ class Milestone {
             description: obj.description,
             sourceLinks: obj.sourceLinks,
             destinationLinks: obj.destinationLinks,
+            onCriticalPath: obj.onCriticalPath,
             timing: {
                 tmin: obj.getTmin(),
                 tmax: obj.getTmax(),
@@ -336,6 +359,7 @@ class Milestone {
         m.setTmin(timing.tmin);
         m.setTmax(timing.tmax);
         m.setTbuffer(timing.tbuf);
+        m.onCriticalPath = deserialized_data.onCriticalPath;
         m._createCallbackOnMove();
 
         return m;
