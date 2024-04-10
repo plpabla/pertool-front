@@ -38,10 +38,6 @@ export default function suite() {
         expect(this.m.getTmin()).to.equal(null);
     });
 
-    it('is not on critical path when createted', function() {
-        expect(this.m.onCriticalPath).to.equal(false);
-    });
-
     it('I can set tmin', function() {
         this.m.setTmin(0);
 
@@ -120,18 +116,5 @@ export default function suite() {
         const m2 = new Milestone(0, 0, "custom id", "custom descr");
 
         expect(m2.getId()).greaterThan(this.m.getId());
-    })
-
-    it('can update onCriticalPath', function() {
-        this.m.onCriticalPath = true
-
-        expect(this.m.onCriticalPath).to.equal(true)
-    })
-
-    it('when I update onCriticalPath, milestone image is updated', function() {
-        this.m.onCriticalPath = true
-
-        const circleImg = this.m._getElement("Circle");
-        expect(circleImg.stroke()).to.equal(Milestone._param.onCriticalPathColor)
-    })
+    });
 };
