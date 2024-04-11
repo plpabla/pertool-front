@@ -3,6 +3,7 @@ import Link from './Link';
 import Model from './Model';
 import Toolbox from './Toolbox';
 import PointerState from './states/PointerState';
+import Backend from './Backend';
 
 class Editor {
     
@@ -22,6 +23,8 @@ class Editor {
         this.toolbox = new Toolbox(this.toolboxLayer);
 
         this.state = new PointerState(this);
+
+        this.backend = new Backend();
     }
 
     makeOnClicker() {
@@ -68,6 +71,11 @@ class Editor {
         this.model = Model.deserialize(modelSerialized, this.modelLayer);
         this.model.canvasLayer = this.modelLayer;
         this.render();
+    }
+
+    calculate() {
+        this.clear(false)
+        console.log(">>> Fetching data")
     }
 }
 
