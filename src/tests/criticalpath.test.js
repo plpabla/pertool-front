@@ -115,6 +115,18 @@ export default function suite() {
       expect(this.model.getLinkWithId(this.idl12).onCriticalPath).to.equal(false)
     })
 
+    it('when I update task lenght, highlight is cleared as critical path might be changed', function () {
+      this.skip('too complex to test (or I am too lazy)')
+      this.model.getMilestoneById(this.idm1).onCriticalPath = true
+      this.model.getLinkWithId(this.idl12).onCriticalPath = true
+      const idm3 = this.model.getMilestoneById(this.idm3)
+
+      // To do
+
+      expect(this.model.getMilestoneById(this.idm1).onCriticalPath).to.equal(false)
+      expect(this.model.getLinkWithId(this.idl12).onCriticalPath).to.equal(false)
+    })
+
   })
 
 }
