@@ -4,6 +4,7 @@ import Model from './Model';
 import Toolbox from './Toolbox';
 import PointerState from './states/PointerState';
 import Backend from './Backend';
+import axios from 'axios';
 
 class Editor {
     
@@ -74,8 +75,24 @@ class Editor {
     }
 
     calculate() {
-        this.clear(false)
-        console.log(">>> Fetching data")
+        console.log(`>>> Fetching data from ${this.backend.calculateUrl}`)
+        axios({
+            url: this.backend.calculateUrl,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            transformResponse: r=>r,                 // do not convert to JSON automatically
+            data: Model.serialize(this.model)
+        })
+        .then(res => {
+            const model = res.data
+            this.clear()
+            this.load(model)
+        })
+        .catch(err => {
+            console.error("not possible to process")
+        })
     }
 }
 

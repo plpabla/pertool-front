@@ -4,4 +4,8 @@ export default class Backend {
   constructor() {
     console.log(`Backend endpoint configured as ${Backend.#url}`)
   }
+
+  get calculateUrl() {
+    return `${Backend.#url}/api/calculate`
+  }
 }
