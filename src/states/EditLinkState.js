@@ -20,6 +20,8 @@ class EditLinkState extends State {
 
             this.context.state = new PointerState(this.context);
             this._link.focus(false);
+
+            this.context.model._clearCriticalPath();
         });
     }
 

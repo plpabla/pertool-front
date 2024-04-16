@@ -15,6 +15,7 @@ import editorRenderTest from './tests/editor.render.test.js';
 import editorSMTest from './tests/editor.statemachine.test.js';
 import editorClearTest from './tests/editor.clear.test.js';
 import inputBoxTest from './tests/inputbox.test.js';
+import criticalPathTest from './tests/criticalpath.test.js'
 
 describe('Milestone object', function(){
     describe('creation', milestoneTest.bind(this));
@@ -52,3 +53,7 @@ describe('Editor', function() {
     describe('state machine', editorSMTest.bind(this));
     describe('clearing model', editorClearTest.bind(this));
 })
+
+describe('Critical path', function() {
+    describe('', criticalPathTest.bind(this));
+});

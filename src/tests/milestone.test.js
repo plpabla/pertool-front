@@ -116,5 +116,5 @@ export default function suite() {
         const m2 = new Milestone(0, 0, "custom id", "custom descr");
 
         expect(m2.getId()).greaterThan(this.m.getId());
-    })
+    });
 };

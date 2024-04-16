@@ -2,6 +2,8 @@ const Konva = require('konva');
 
 class Link {
     static _id = 0;
+
+    #onCriticalPath = false;
     constructor(sourceId, destId, taskLength, points) {
         this.id = Link._id++;
         this.sourceId = sourceId;
@@ -10,6 +12,19 @@ class Link {
         this.taskLength = taskLength ? parseFloat(taskLength) : 0;
         this._img = Link.createImg(this.points, this.taskLength, this);
         this._updateDash();
+    }
+
+    get onCriticalPath() {
+        return this.#onCriticalPath
+    }
+
+    set onCriticalPath(val) {
+        if(this.#onCriticalPath !== val) {
+            if(typeof val === "boolean") {
+                this.#onCriticalPath = val
+                this.#highlightIfOnCriticalPath(val)
+            }
+        }
     }
 
     getSourceMilestoneId() {
@@ -51,6 +66,8 @@ class Link {
             "name": "link-element",
             "mainColor": "black",
             "strokeWidth": 2,
+            "onCriticalPathColor": "#D243F7",
+            "onCriticalPathWidth": 3,
             "hitStrokeWidth": 8,            // when hit is detected
             "focusedWidth": 5,
             "pointerLength": 20,
@@ -60,6 +77,13 @@ class Link {
             "backgroundColor": "#fef9e6",
             "backgroundPadding": "3"
         };
+
+    #highlightIfOnCriticalPath(enable) {
+        const c = this._getElement("Arrow");
+        c.stroke(enable ? Link._param.onCriticalPathColor : Link._param.mainColor);
+        c.fill(enable ? Link._param.onCriticalPathColor : Link._param.mainColor);
+        c.strokeWidth(enable ? Link._param.onCriticalPathWidth : Link._param.strokeWidth);
+    }
 
     static createImg(points, taskLength, instance) {
         
@@ -212,6 +236,7 @@ class Link {
             sourceId: obj.sourceId,
             destId: obj.destId,
             points: obj.points,
+            onCriticalPath: obj.onCriticalPath,
             taskLength: obj.taskLength
         }
         return serializeObj;
@@ -226,6 +251,7 @@ class Link {
         deserialized.id = deserialized_data.id;
         deserialized._img = Link.createImg(deserialized.points, deserialized.taskLength, deserialized);
         deserialized._updateDash();
+        deserialized.onCriticalPath = deserialized_data.onCriticalPath;
         return deserialized;
     }
 }

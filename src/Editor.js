@@ -3,6 +3,8 @@ import Link from './Link';
 import Model from './Model';
 import Toolbox from './Toolbox';
 import PointerState from './states/PointerState';
+import Backend from './Backend';
+import axios from 'axios';
 
 class Editor {
     
@@ -22,6 +24,8 @@ class Editor {
         this.toolbox = new Toolbox(this.toolboxLayer);
 
         this.state = new PointerState(this);
+
+        this.backend = new Backend();
     }
 
     makeOnClicker() {
@@ -68,6 +72,27 @@ class Editor {
         this.model = Model.deserialize(modelSerialized, this.modelLayer);
         this.model.canvasLayer = this.modelLayer;
         this.render();
+    }
+    
+    calculate() {
+        // console.log(`>>>> Fetching data from ${this.backend.calculateUrl}`)
+        axios({
+            url: this.backend.calculateUrl,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            transformResponse: r=>r,                 // do not convert to JSON automatically
+            data: Model.serialize(this.model)
+        })
+        .then(res => {
+            const model = res.data
+            this.clear(false)
+            this.load(model)
+        })
+        .catch(err => {
+            // console.error("not possible to process")
+        })
     }
 }
 

@@ -136,6 +136,8 @@ class Model {
             linkId = link.getId();
             this.getMilestoneById(m1id).addLinkWhereIAmSource(linkId);
             this.getMilestoneById(m2id).addLinkWhereIAmDestination(linkId);
+
+            this._clearCriticalPath()
         }
 
         return linkId;
@@ -160,6 +162,8 @@ class Model {
             linkObj.destroy();
             const idx = this.links.indexOf(linkObj);
             this.links.splice(idx, 1);
+
+            this._clearCriticalPath()
         }
     }
 
@@ -174,6 +178,11 @@ class Model {
             this.milestones.splice(idx,1);
         }
         m.destroy();
+    }
+
+    _clearCriticalPath() {
+        this.milestones.forEach(m=>m.onCriticalPath=false)
+        this.links.forEach(l=>l.onCriticalPath=false)
     }
 
     static calculateArrowPosition(m1, m2, r=Milestone.radius) {
