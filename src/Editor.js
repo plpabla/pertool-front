@@ -73,9 +73,9 @@ class Editor {
         this.model.canvasLayer = this.modelLayer;
         this.render();
     }
-
+    
     calculate() {
-        console.log(`>>> Fetching data from ${this.backend.calculateUrl}`)
+        // console.log(`>>>> Fetching data from ${this.backend.calculateUrl}`)
         axios({
             url: this.backend.calculateUrl,
             method: 'POST',
@@ -87,11 +87,11 @@ class Editor {
         })
         .then(res => {
             const model = res.data
-            this.clear()
+            this.clear(false)
             this.load(model)
         })
         .catch(err => {
-            console.error("not possible to process")
+            // console.error("not possible to process")
         })
     }
 }
