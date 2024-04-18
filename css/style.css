@@ -70,6 +70,7 @@ body {
 
 #btn-menu-right {
     align-content: flex-start;
+    padding-left: 50px
 }
 
 .btn-block {
@@ -116,4 +117,10 @@ button {
     background-color: #07ab88;
     box-shadow: 4px 5px 4px #00000049;
     grid-column-start: 2;
+}
+
+.alert {
+    margin-top: 1rem;
+    border-radius: 0.75rem;
+    font-style: italic;
 }
