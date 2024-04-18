@@ -74,9 +74,9 @@ class Editor {
         this.render();
     }
     
-    calculate() {
-        // console.log(`>>>> Fetching data from ${this.backend.calculateUrl}`)
-        axios({
+    async calculate() {
+        let retVal;
+        await axios({
             url: this.backend.calculateUrl,
             method: 'POST',
             headers: {
@@ -89,10 +89,25 @@ class Editor {
             const model = res.data
             this.clear(false)
             this.load(model)
+            retVal = {
+                res: 'ok',
+                msg: 'Critical path calculated' 
+            }
         })
         .catch(err => {
-            // console.error("not possible to process")
+            let msg = null
+            try {
+                const resData = JSON.parse(err.response.data)
+                msg = resData.msg
+            } catch (e) {
+                msg = "No backend connectivity"
+            }
+            retVal = {
+                res: 'fail',
+                msg
+            }
         })
+        return retVal
     }
 }
 

@@ -2,6 +2,7 @@
 import Konva from 'konva';
 import Editor from './Editor';
 import Model from './Model';
+import setAlertMessage from './alert';
 
 let sceneWidth = 1000;
 let sceneHeight = 700;
@@ -55,8 +56,13 @@ function fitStageIntoParentContainer() {
     stage.scale({ x: scale, y: scale });
 }
 
-function calculate(e) {
-    editor.calculate();
+async function calculate(e) {
+    const res = await editor.calculate();
+    if(res.res==='ok') {
+        setAlertMessage("Critical path calculated", "info")
+    } else {
+        setAlertMessage(res.msg, "danger")
+    }
 }
 
 function clearModel(e) {
