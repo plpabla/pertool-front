@@ -8,7 +8,7 @@ import axios from 'axios';
 
 class Editor {
     
-    constructor(stage) {
+    constructor(stage, callbackForCriticalPathCalc=null) {
         this.stage = stage;
         this.onClickCallback = this.makeOnClicker();
         this.stage.on('click', this.onClickCallback);
@@ -19,6 +19,7 @@ class Editor {
         this.stage.add(this.toolboxLayer);
 
         this.model = new Model(this.modelLayer);
+        Model.registerCallbackForCriticalPathCalc(callbackForCriticalPathCalc)
         this.render();
         
         this.toolbox = new Toolbox(this.toolboxLayer);

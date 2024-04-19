@@ -15,20 +15,25 @@ class Model {
         this.milestones = [root];
     }
 
+    static criticalPathCallback = null;
+    static registerCallbackForCriticalPathCalc(cb) {
+        Model.criticalPathCallback = cb;
+    }
+
     static serialize(obj) {
         const milestones = obj.milestones;
         const links = obj.links;
 
         const serializableObj = {};
 
-        serializableObj.state = {"Link._id": Link._id, "Milestone._id": Milestone._id};
+        serializableObj.state = { "Link._id": Link._id, "Milestone._id": Milestone._id };
         serializableObj.milestones = [];
         serializableObj.links = [];
 
-        milestones.forEach(m=>{
+        milestones.forEach(m => {
             serializableObj.milestones.push(Milestone.serialize(m));
         });
-        links.forEach(l=>{
+        links.forEach(l => {
             serializableObj.links.push(Link.serialize(l));
         });
 
@@ -60,8 +65,8 @@ class Model {
     }
 
     onDrag(milestone) {
-        milestone.sourceLinks.forEach(e=>this._updateArrow(e));
-        milestone.destinationLinks.forEach(e=>this._updateArrow(e));
+        milestone.sourceLinks.forEach(e => this._updateArrow(e));
+        milestone.destinationLinks.forEach(e => this._updateArrow(e));
     }
 
     _updateArrow(linkId) {
@@ -72,15 +77,15 @@ class Model {
         link.setPosition(...pos);
     }
 
-    addMilestone(x, y, name, description="") {
+    addMilestone(x, y, name, description = "") {
         const m = new Milestone(x, y, name, description, this);
         this.milestones.push(m);
         return m.getId();
     }
-    
+
     findMilestoneIDByName(name) {
         const m = this.milestones.find(m => m.getName() === name);
-        if(m) {
+        if (m) {
             return m.getId();
         } else {
             return null;
@@ -88,18 +93,18 @@ class Model {
     }
 
     getMilestoneByName(name) {
-        return this.milestones.find(m=>m.getName()===name) || null;
+        return this.milestones.find(m => m.getName() === name) || null;
     }
 
     getMilestoneById(id) {
-        return this.milestones.find(m=>m.getId()===id) || null;
+        return this.milestones.find(m => m.getId() === id) || null;
     }
 
     checkIfMilestoneWithGivenIdExists(id) {
         // TODO - refactor here!!!
         let res = null;
-        this.milestones.forEach(m=>{
-            if(m.getId()===id) {
+        this.milestones.forEach(m => {
+            if (m.getId() === id) {
                 res = id;
                 return;
             }
@@ -113,23 +118,23 @@ class Model {
 
     addLink(id1, id2, taskLength) {
         let m1id, m2id = null;
-        if ((typeof id1)==='number') {
+        if ((typeof id1) === 'number') {
             m1id = this.checkIfMilestoneWithGivenIdExists(id1);
             m2id = this.checkIfMilestoneWithGivenIdExists(id2);
-        } else if (id1 instanceof(Milestone)) {
+        } else if (id1 instanceof (Milestone)) {
             m1id = id1.getId();
             m2id = id2.getId();
         } else {
             m1id = this.findMilestoneIDByName(id1);
             m2id = this.findMilestoneIDByName(id2);
-            if(m1id===null || m2id===null) {
+            if (m1id === null || m2id === null) {
                 return;
             }
         }
 
         let linkId = null;
-        if((m1id != null) && (m2id != null) && (m1id !== m2id)) {
-            const points = Model.calculateArrowPosition(this.getMilestoneById(m1id),this.getMilestoneById(m2id));
+        if ((m1id != null) && (m2id != null) && (m1id !== m2id)) {
+            const points = Model.calculateArrowPosition(this.getMilestoneById(m1id), this.getMilestoneById(m2id));
             const link = new Link(m1id, m2id, taskLength, points);
             this.links.push(link);
             this.canvasLayer.add(link.getImg());
@@ -137,7 +142,8 @@ class Model {
             this.getMilestoneById(m1id).addLinkWhereIAmSource(linkId);
             this.getMilestoneById(m2id).addLinkWhereIAmDestination(linkId);
 
-            this._clearCriticalPath()
+            console.log(">>> addLink")
+            this._updateCriticalPath()
         }
 
         return linkId;
@@ -145,7 +151,7 @@ class Model {
 
     removeLink(link) {
         let linkObj = null;
-        if((typeof link) === "number") {
+        if ((typeof link) === "number") {
             linkObj = this.getLinkWithId(link);
         } else if (link instanceof Link) {
             linkObj = link;
@@ -153,8 +159,8 @@ class Model {
             console.error("Unsupported argument passed to Model.removeLink()");
             return;
         }
-        
-        if(linkObj !== null) {
+
+        if (linkObj !== null) {
             const srcMilestone = linkObj.getSourceMilestoneId();
             const dstMilestone = linkObj.getDestinationMilestoneId();
             this.getMilestoneById(srcMilestone).removeLink(linkObj.getId());
@@ -163,41 +169,46 @@ class Model {
             const idx = this.links.indexOf(linkObj);
             this.links.splice(idx, 1);
 
-            this._clearCriticalPath()
+            console.log(">>> removeLink")
+            this._updateCriticalPath()
         }
     }
 
     removeMilestone(m) {
         const idx = this.milestones.indexOf(m);
-        if(idx>=0) {
+        if (idx >= 0) {
             const m = this.milestones[idx];
             const links = [...m.sourceLinks, ...m.destinationLinks];
-            for(let id of links) {
+            for (let id of links) {
                 this.removeLink(id);
             }
-            this.milestones.splice(idx,1);
+            this.milestones.splice(idx, 1);
         }
         m.destroy();
     }
 
-    _clearCriticalPath() {
-        this.milestones.forEach(m=>m.onCriticalPath=false)
-        this.links.forEach(l=>l.onCriticalPath=false)
+    _updateCriticalPath() {
+        if(Model.criticalPathCallback != null) {
+            Model.criticalPathCallback()
+        } else {
+            this.milestones.forEach(m => m.onCriticalPath = false)
+            this.links.forEach(l => l.onCriticalPath = false)
+        }
     }
 
-    static calculateArrowPosition(m1, m2, r=Milestone.radius) {
+    static calculateArrowPosition(m1, m2, r = Milestone.radius) {
         return calcPos(...m1.getPos(), r, ...m2.getPos(), r);
 
         function calcPos(x1, y1, r1, x2, y2, r2) {
-            const l = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
-            const cosA = (x2-x1) / l;
-            const sinA = (y2-y1) / l;
-            return [x1 + r1*cosA,
-                    y1 + r1*sinA,
-                    x2 - r2*cosA,
-                    y2 - r2*sinA];
+            const l = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+            const cosA = (x2 - x1) / l;
+            const sinA = (y2 - y1) / l;
+            return [x1 + r1 * cosA,
+            y1 + r1 * sinA,
+            x2 - r2 * cosA,
+            y2 - r2 * sinA];
         }
-    } 
+    }
 }
 
 export default Model;

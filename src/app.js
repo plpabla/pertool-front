@@ -25,7 +25,7 @@ layer.add(new Konva.Rect({
     strokeWidth: 2
 }));
 
-const editor = new Editor(stage);
+const editor = new Editor(stage, calculate);
 
 window.onload = function() {
     fitStageIntoParentContainer();
@@ -38,6 +38,8 @@ window.onload = function() {
     document.getElementById("btn-export").addEventListener("click", exportModel);
     document.getElementById("btn-import").addEventListener("click", importModel);
     document.getElementById("btn-clear").addEventListener("click", clearModel);
+
+    calculate();
 };
 
 
