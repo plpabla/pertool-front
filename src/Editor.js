@@ -74,6 +74,23 @@ class Editor {
         this.model.canvasLayer = this.modelLayer;
         this.render();
     }
+
+    update(modelSerialized) {
+        const data = JSON.parse(modelSerialized)
+        data.milestones.forEach(m=>{
+            const currentM = this.model.getMilestoneById(m.id)
+            currentM.onCriticalPath = m.onCriticalPath
+            currentM.setTmin(m.timing.tmin)
+            currentM.setTmax(m.timing.tmax)
+            currentM.setTbuffer(m.timing.tbuf)
+            currentM.setName(m.name)
+        })
+
+        data.links.forEach(l=>{
+            const currentL = this.model.getLinkWithId(l.id)
+            currentL.onCriticalPath = l.onCriticalPath
+        })
+    }
     
     async calculate() {
         let retVal;
@@ -88,8 +105,9 @@ class Editor {
         })
         .then(res => {
             const model = res.data
-            this.clear(false)
-            this.load(model)
+            // this.clear(false)
+            // this.load(model)
+            this.update(model)
             retVal = {
                 res: 'ok',
                 msg: 'Critical path calculated' 

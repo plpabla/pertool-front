@@ -142,7 +142,6 @@ class Model {
             this.getMilestoneById(m1id).addLinkWhereIAmSource(linkId);
             this.getMilestoneById(m2id).addLinkWhereIAmDestination(linkId);
 
-            console.log(">>> addLink")
             this._updateCriticalPath()
         }
 
@@ -169,7 +168,6 @@ class Model {
             const idx = this.links.indexOf(linkObj);
             this.links.splice(idx, 1);
 
-            console.log(">>> removeLink")
             this._updateCriticalPath()
         }
     }
