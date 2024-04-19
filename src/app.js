@@ -62,8 +62,10 @@ async function calculate(e) {
     const res = await editor.calculate();
     if(res.res==='ok') {
         setAlertMessage("Critical path calculated", "info")
+        return 0
     } else {
         setAlertMessage(res.msg, "danger")
+        return 1
     }
 }
 

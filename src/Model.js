@@ -186,12 +186,11 @@ class Model {
     }
 
     _updateCriticalPath() {
+        this.milestones.forEach(m => m.onCriticalPath = false)
+        this.links.forEach(l => l.onCriticalPath = false)
         if(Model.criticalPathCallback != null) {
             Model.criticalPathCallback()
-        } else {
-            this.milestones.forEach(m => m.onCriticalPath = false)
-            this.links.forEach(l => l.onCriticalPath = false)
-        }
+        } 
     }
 
     static calculateArrowPosition(m1, m2, r = Milestone.radius) {

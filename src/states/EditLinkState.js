@@ -16,8 +16,10 @@ class EditLinkState extends State {
 
         this.inputBox = new InputBox(this.context.modelLayer, posOnCanvas, formItems , (data) => {
             const taskLen = data["taskLen"];
-            this._link.setTaskLength(String(taskLen));
-
+            if(taskLen !== undefined) {
+                this._link.setTaskLength(String(taskLen));
+            }
+            this.context.model._updateCriticalPath();
             this.context.state = new PointerState(this.context);
             this._link.focus(false);
         });
