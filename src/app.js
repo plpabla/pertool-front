@@ -2,6 +2,7 @@
 import Konva from 'konva';
 import Editor from './Editor';
 import Model from './Model';
+import setAlertMessage from './alert';
 
 let sceneWidth = 1000;
 let sceneHeight = 700;
@@ -24,7 +25,7 @@ layer.add(new Konva.Rect({
     strokeWidth: 2
 }));
 
-const editor = new Editor(stage);
+const editor = new Editor(stage, calculate);
 
 window.onload = function() {
     fitStageIntoParentContainer();
@@ -37,6 +38,8 @@ window.onload = function() {
     document.getElementById("btn-export").addEventListener("click", exportModel);
     document.getElementById("btn-import").addEventListener("click", importModel);
     document.getElementById("btn-clear").addEventListener("click", clearModel);
+
+    calculate();
 };
 
 
@@ -55,8 +58,15 @@ function fitStageIntoParentContainer() {
     stage.scale({ x: scale, y: scale });
 }
 
-function calculate(e) {
-    editor.calculate();
+async function calculate(e) {
+    const res = await editor.calculate();
+    if(res.res==='ok') {
+        setAlertMessage("Critical path calculated", "info")
+        return 0
+    } else {
+        setAlertMessage(res.msg, "danger")
+        return 1
+    }
 }
 
 function clearModel(e) {
@@ -81,4 +91,5 @@ function loadModel(e) {
     editor.clear(false);
     const serialized = localStorage.getItem("model");
     editor.load(serialized);
+    calculate();
 }

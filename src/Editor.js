@@ -8,7 +8,7 @@ import axios from 'axios';
 
 class Editor {
     
-    constructor(stage) {
+    constructor(stage, callbackForCriticalPathCalc=null) {
         this.stage = stage;
         this.onClickCallback = this.makeOnClicker();
         this.stage.on('click', this.onClickCallback);
@@ -19,6 +19,7 @@ class Editor {
         this.stage.add(this.toolboxLayer);
 
         this.model = new Model(this.modelLayer);
+        Model.registerCallbackForCriticalPathCalc(callbackForCriticalPathCalc)
         this.render();
         
         this.toolbox = new Toolbox(this.toolboxLayer);
@@ -73,10 +74,27 @@ class Editor {
         this.model.canvasLayer = this.modelLayer;
         this.render();
     }
+
+    update(modelSerialized) {
+        const data = JSON.parse(modelSerialized)
+        data.milestones.forEach(m=>{
+            const currentM = this.model.getMilestoneById(m.id)
+            currentM.onCriticalPath = m.onCriticalPath
+            currentM.setTmin(m.timing.tmin)
+            currentM.setTmax(m.timing.tmax)
+            currentM.setTbuffer(m.timing.tbuf)
+            currentM.setName(m.name)
+        })
+
+        data.links.forEach(l=>{
+            const currentL = this.model.getLinkWithId(l.id)
+            currentL.onCriticalPath = l.onCriticalPath
+        })
+    }
     
-    calculate() {
-        // console.log(`>>>> Fetching data from ${this.backend.calculateUrl}`)
-        axios({
+    async calculate() {
+        let retVal;
+        await axios({
             url: this.backend.calculateUrl,
             method: 'POST',
             headers: {
@@ -87,12 +105,28 @@ class Editor {
         })
         .then(res => {
             const model = res.data
-            this.clear(false)
-            this.load(model)
+            // this.clear(false)
+            // this.load(model)
+            this.update(model)
+            retVal = {
+                res: 'ok',
+                msg: 'Critical path calculated' 
+            }
         })
         .catch(err => {
-            // console.error("not possible to process")
+            let msg = null
+            try {
+                const resData = JSON.parse(err.response.data)
+                msg = resData.msg
+            } catch (e) {
+                msg = "No backend connectivity"
+            }
+            retVal = {
+                res: 'fail',
+                msg
+            }
         })
+        return retVal
     }
 }
 
