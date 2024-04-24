@@ -148,7 +148,7 @@ class Model {
         return linkId;
     }
 
-    removeLink(link) {
+    removeLink(link, updateCriticalPath=true) {
         let linkObj = null;
         if ((typeof link) === "number") {
             linkObj = this.getLinkWithId(link);
@@ -168,7 +168,9 @@ class Model {
             const idx = this.links.indexOf(linkObj);
             this.links.splice(idx, 1);
 
-            this._updateCriticalPath()
+            if(updateCriticalPath) {
+                this._updateCriticalPath()
+            }
         }
     }
 
@@ -178,7 +180,7 @@ class Model {
             const m = this.milestones[idx];
             const links = [...m.sourceLinks, ...m.destinationLinks];
             for (let id of links) {
-                this.removeLink(id);
+                this.removeLink(id, false);
             }
             this.milestones.splice(idx, 1);
         }
