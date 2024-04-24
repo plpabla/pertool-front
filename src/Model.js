@@ -183,6 +183,8 @@ class Model {
             this.milestones.splice(idx, 1);
         }
         m.destroy();
+
+        this._updateCriticalPath()
     }
 
     _updateCriticalPath() {
