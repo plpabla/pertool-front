@@ -174,7 +174,7 @@ class Model {
         }
     }
 
-    removeMilestone(m) {
+    removeMilestone(m, updateCriticalPath=true) {
         const idx = this.milestones.indexOf(m);
         if (idx >= 0) {
             const m = this.milestones[idx];
@@ -186,7 +186,9 @@ class Model {
         }
         m.destroy();
 
-        this._updateCriticalPath()
+        if(updateCriticalPath) {
+            this._updateCriticalPath()
+        }
     }
 
     _updateCriticalPath() {

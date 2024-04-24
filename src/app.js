@@ -60,10 +60,6 @@ function fitStageIntoParentContainer() {
 
 async function calculate(e) {
     let res = await editor.calculate();
-    // recalculate once if failed
-    if(res.res !== 'ok') {
-        res = await editor.calculate();
-    }
     
     if(res.res==='ok') {
         setAlertMessage("Critical path calculated", "info")

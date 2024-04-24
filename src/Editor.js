@@ -58,7 +58,7 @@ class Editor {
 
         const milestones = [...this.model.milestones];
         for(const m of milestones) {
-            this.model.removeMilestone(m);
+            this.model.removeMilestone(m, false);
         }
 
         Milestone._id = 0;
