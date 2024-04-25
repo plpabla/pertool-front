@@ -32,7 +32,6 @@ window.onload = function() {
     // adapt the stage on any window resize
     window.addEventListener('resize', fitStageIntoParentContainer);
     
-    document.getElementById("btn-calculate").addEventListener("click", calculate);
     document.getElementById("btn-save").addEventListener("click", saveModel);
     document.getElementById("btn-load").addEventListener("click", loadModel);
     document.getElementById("btn-export").addEventListener("click", exportModel);

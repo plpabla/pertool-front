@@ -1,53 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="./dist/bundle.js" defer></script>
-    <title>PERTool</title>
-</head>
-<body>
-    <div class="container-fluid" id="main">
-    <header class="navbar navbar-expand-lg navbar-light bg-light">
-            <nav class="container-fluid">
-                <div class="d-flex flex-row align-items-center">
-                    <a class="navbar-brand" href="#"><img src="media/logo1.png" alt="PERTool" id="img-logo"></a>
-                    <a href="frontend-tests.html" class="testing-only"><button type="button" class="btn btn-secondary">Unit tests</button></a>
-                    <span style="padding-left: 20px;"></span>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="./dist/bundle.js" defer></script>
+        <script src="./lib/bootstrap.bundle.min.js" defer></script>
+        <title>PERTool</title>
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid mx-4">
+                    <a class="navbar-brand" href="#"><img src="media/logo1.png"
+                            alt="PERTool" id="img-logo"></a>
+                    <button class="navbar-toggler" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="mx-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32"
+                                height="32" fill="currentColor"
+                                class="bi bi-list" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="collapse navbar-collapse"
+                        id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item active px-2 ml-4 my-1"><button
+                                    type="button"
+                                    class="btn btn-primary w-100 px-4"
+                                    id="btn-save">Save</button></li>
+                            <li class="nav-item active  px-2 ml-4 my-1"><button
+                                    type="button"
+                                    class="btn btn-primary w-100 px-4"
+                                    id="btn-load">Load</button></li>
+                            <li class="nav-item active  px-2 ml-4 my-1"><button
+                                    type="button"
+                                    class="btn btn-primary w-100 px-4 disabled"
+                                    id="btn-export">Export</button></li>
+                            <li class="nav-item active  px-2 ml-4 my-1"><button
+                                    type="button"
+                                    class="btn btn-primary w-100 px-4 disabled"
+                                    id="btn-import">Import</button></li>
+                        </ul>
+                        <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+                            <li class="nav-item active  px-1 ml-4 my-1"><button
+                                type="button"
+                                class="btn w-100 btn-danger px-4 "
+                                id="btn-clear">Clear</button></li>
+                        </ul>
+                            
+                            
+                        </div>
+                    </div>
+                </nav>
+            </header>
+
+            <main class="row p-2">
+                <div class="container-fluid" id="main">
+                    <div class="container-fluid">
+
+                        <div id="canvas-parent" class="col col-12">
+                            <div id="canvas"></div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="alert alert-info" role="alert" hidden
+                            id="alert-info"></div>
+                    </div>
                 </div>
+            </main>
 
-                <div class="d-flex flex-row align-items-center">
-                <button type="button" class="btn btn-primary disabled">Log in</button>
-                </div>
-            </nav>
-        </header>
+            <footer>
+                <hr>
+                <em>&#169;&nbsp;Pawel Blaszczyk</em>
+            </footer>
 
-    <div class="container-fluid">
-        <main class="row">
-            <div id="canvas-parent"  class="col col-12 col-lg-10">
-                <div id="canvas"></div>
-            </div>
-
-            <div class="gap-4 col col-2 d-flex align-items-end flex-column bd-highlight" id="btn-menu-right">
-                <button type="button" class="p-2 btn btn-primary btn-block w-100" id="btn-calculate" hidden="true">Calculate</button>
-                <button type="button" class="p-2 btn btn-primary btn-block w-100" id="btn-save">Save</button>
-                <button type="button" class="p-2 btn btn-primary btn-block w-100" id="btn-load">Load</button>
-                <button type="button" class="p-2 btn btn-primary btn-block w-100 disabled" id="btn-export">Export</button>
-                <button type="button" class="p-2 btn btn-primary btn-block w-100 disabled" id="btn-import">Import</button>
-                <button type="button" class="p-2 mt-auto btn btn-danger btn-block w-100" id="btn-clear">Clear</button>
-            </div>
-
-            <div class="alert alert-info" role="alert" hidden id="alert-info"></div>
-        </main>
-    </div>
-
-        <footer>
-            <hr>
-            <em>&#169;&nbsp;Pawel Blaszczyk</em>
-        </footer>
-
-    </div>
-</body>
-</html>
+        </body>
+    </html>
