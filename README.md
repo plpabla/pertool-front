@@ -4,11 +4,11 @@ Webpage is hosted on https://pert.oncriticalpath.com/
 # Local installation
 * clone repository
 
-      $ git clone https://github.com/plpabla/pertool-front.git
+      git clone https://github.com/plpabla/pertool-front.git
 
 * install dependencies
 
-      $ npm install
+      npm install
 
 * set up backend connectivity in `./src/Backend.js` file (*note: you can use that one as it is hosted on Azure cloud*)
 
@@ -16,7 +16,7 @@ Webpage is hosted on https://pert.oncriticalpath.com/
 
 * create a bundle
 
-      $ npm build
+      npm build
 
 * run backend if you use local one (it should support endpoints which are defined in `./src/Backend.js`)
 
